@@ -23,42 +23,107 @@ export function Hero() {
         }}
       />
 
+      {/* ── MOBILE: Full-bleed image at top, fading into dark ── */}
+      <div className="block md:hidden absolute inset-x-0 top-0 h-[55vh] pointer-events-none z-0">
+        <motion.div
+          className="w-full h-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
+        >
+          <img
+            src={heroBg}
+            alt="Everyday life and hospitality at Lidya"
+            className="w-full h-full object-cover object-top"
+            loading="eager"
+          />
+        </motion.div>
+        {/* Fade bottom — image dissolves into text section */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[60%] z-10"
+          style={{
+            background:
+              "linear-gradient(to top, #1e1008 0%, rgba(30,16,8,0.9) 40%, rgba(30,16,8,0.3) 80%, transparent 100%)",
+          }}
+        />
+        {/* Fade top — into navbar */}
+        <div
+          className="absolute inset-x-0 top-0 h-28 z-10"
+          style={{
+            background:
+              "linear-gradient(to bottom, #1e1008 0%, rgba(30,16,8,0.5) 50%, transparent 100%)",
+          }}
+        />
+        {/* Fade left edge */}
+        <div
+          className="absolute inset-y-0 left-0 w-10 z-10"
+          style={{ background: "linear-gradient(to right, #1e1008, transparent)" }}
+        />
+        {/* Fade right edge */}
+        <div
+          className="absolute inset-y-0 right-0 w-10 z-10"
+          style={{ background: "linear-gradient(to left, #1e1008, transparent)" }}
+        />
+      </div>
+
+      {/* ── DESKTOP: Full-bleed image on right half ── */}
+      <div className="hidden md:block absolute inset-y-0 right-0 w-[55%] pointer-events-none z-0">
+        <motion.div
+          className="w-full h-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1.4, ease: "easeOut", delay: 0.2 }}
+        >
+          <img
+            src={heroBg}
+            alt="Everyday life and hospitality at Lidya"
+            className="w-full h-full object-cover object-center"
+            loading="eager"
+          />
+        </motion.div>
+        {/* Vignette — left: strong blend into text */}
+        <div
+          className="absolute inset-y-0 left-0 w-[60%] z-10"
+          style={{
+            background:
+              "linear-gradient(to right, #1e1008 0%, rgba(30,16,8,0.85) 30%, rgba(30,16,8,0.4) 65%, transparent 100%)",
+          }}
+        />
+        {/* Vignette — right edge */}
+        <div
+          className="absolute inset-y-0 right-0 w-[15%] z-10"
+          style={{ background: "linear-gradient(to left, #1e1008 0%, transparent 100%)" }}
+        />
+        {/* Vignette — top */}
+        <div
+          className="absolute inset-x-0 top-0 h-40 z-10"
+          style={{
+            background:
+              "linear-gradient(to bottom, #1e1008 0%, rgba(30,16,8,0.5) 50%, transparent 100%)",
+          }}
+        />
+        {/* Vignette — bottom */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-40 z-10"
+          style={{
+            background:
+              "linear-gradient(to top, #1e1008 0%, rgba(30,16,8,0.5) 50%, transparent 100%)",
+          }}
+        />
+      </div>
+
       {/* Floating cultural icons */}
       <HeroDecoration />
 
-      {/* ── Main two-column wrapper ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pt-24 pb-12 flex flex-col md:flex-row md:items-center gap-8 md:gap-10 min-h-screen">
+      {/* ── Main content wrapper ── */}
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pb-12 flex flex-col md:flex-row md:items-center gap-0 md:gap-10 min-h-screen">
 
-        {/* ── MOBILE: Image above text ── */}
-        <motion.div
-          className="block md:hidden w-full max-w-[340px] mx-auto flex-shrink-0"
-          initial={{ opacity: 0, y: 28 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-        >
-          <div
-            className="relative rounded-2xl overflow-hidden"
-            style={{
-              boxShadow:
-                "0 24px 60px rgba(0,0,0,0.65), 0 0 0 1px rgba(212,168,67,0.2)",
-            }}
-          >
-            <img
-              src={heroBg}
-              alt="Everyday life and hospitality at Lidya"
-              className="w-full h-auto block object-contain"
-              loading="eager"
-            />
-            <div
-              className="absolute inset-0 rounded-2xl pointer-events-none"
-              style={{ boxShadow: "inset 0 0 0 1px rgba(212,168,67,0.18)" }}
-            />
-          </div>
-        </motion.div>
+        {/* Mobile spacer — pushes text below the image area */}
+        <div className="block md:hidden h-[42vh] flex-shrink-0" />
 
-        {/* ── LEFT: Text content ── */}
+        {/* ── Text content ── */}
         <motion.div
-          className="flex flex-col justify-center w-full md:w-[48%] lg:w-[44%] flex-shrink-0"
+          className="flex flex-col justify-center w-full md:w-[48%] lg:w-[44%] flex-shrink-0 pt-0 pb-10 md:pt-24"
           style={{ opacity: fade }}
         >
           {/* Eyebrow */}
@@ -158,56 +223,6 @@ export function Hero() {
             </span>
           </motion.div>
         </motion.div>
-
-
-    {/* ── RIGHT: Full-bleed image — desktop only ── */}
-    <div className="hidden md:block absolute inset-y-0 right-0 w-[55%] pointer-events-none z-0">
-      <motion.div
-        className="w-full h-full"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.4, ease: "easeOut", delay: 0.2 }}
-      >
-        <img
-          src={heroBg}
-          alt="Everyday life and hospitality at Lidya"
-          className="w-full h-full object-cover object-center"
-          loading="eager"
-        />
-      </motion.div>
-
-      {/* Vignette — left: strong blend into text */}
-      <div
-        className="absolute inset-y-0 left-0 w-[60%] z-10"
-        style={{
-          background:
-            "linear-gradient(to right, #1e1008 0%, rgba(30,16,8,0.85) 30%, rgba(30,16,8,0.4) 65%, transparent 100%)",
-        }}
-      />
-      {/* Vignette — right edge */}
-      <div
-        className="absolute inset-y-0 right-0 w-[15%] z-10"
-        style={{
-          background: "linear-gradient(to left, #1e1008 0%, transparent 100%)",
-        }}
-      />
-      {/* Vignette — top */}
-      <div
-        className="absolute inset-x-0 top-0 h-40 z-10"
-        style={{
-          background:
-            "linear-gradient(to bottom, #1e1008 0%, rgba(30,16,8,0.5) 50%, transparent 100%)",
-        }}
-      />
-      {/* Vignette — bottom */}
-      <div
-        className="absolute inset-x-0 bottom-0 h-40 z-10"
-        style={{
-          background:
-            "linear-gradient(to top, #1e1008 0%, rgba(30,16,8,0.5) 50%, transparent 100%)",
-        }}
-      />
-    </div>
 
       </div>
     </section>
