@@ -9,7 +9,7 @@ const BRANCHES = [
   {
     name: "Wolaita Sodo",
     label: "Flagship",
-    address: "Green Land Area, Wolaita Sodo, SNNPR, Ethiopia",
+    address: "Green Land Area, Wolaita Sodo, South Ethiopia, Ethiopia",
     phone: "0920994499",
     email: "letusletalemma@gmail.com",
     hours: "Mon–Sun: 7:00 AM – 11:00 PM",
