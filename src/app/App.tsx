@@ -12,10 +12,11 @@ import { Testimonials } from "./components/sections/Testimonials";
 import { Reservation } from "./components/sections/Reservation";
 import { Contact } from "./components/sections/Contact";
 import { Footer } from "./components/sections/Footer";
+import { MobileActionBar } from "./components/MobileActionBar";
 
 export default function App() {
   return (
-    <div className="bg-background text-foreground overflow-x-hidden">
+    <div className="bg-background text-foreground overflow-x-hidden pb-24 md:pb-0">
       <Navbar />
       <Hero />
       <OurStory />
@@ -29,6 +30,7 @@ export default function App() {
       <Reservation />
       <Contact />
       <Footer />
+      <MobileActionBar />
     </div>
   );
 }

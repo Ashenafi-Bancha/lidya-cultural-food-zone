@@ -27,6 +27,8 @@ export interface GalleryItem {
   poster?: string;
   alt: string;
   span: string;
+  title: string;
+  description: string;
 }
 
 export interface MenuItem {

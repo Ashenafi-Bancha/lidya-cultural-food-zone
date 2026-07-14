@@ -49,13 +49,51 @@ export const MENU_ITEMS: MenuItem[] = [
 ];
 
 export const GALLERY_ITEMS: GalleryItem[] = [
-  { type: "image", thumb: photo2, src: photo2, alt: "Guests gathered for a meal at Lidya Cultural Food Zone",        span: "col-span-2 row-span-2" },
-  { type: "image", thumb: photo1, src: photo1, alt: "Warm amber-lit dining room at Lidya restaurant",                span: "col-span-1 row-span-1" },
-  { type: "image", thumb: life1, src: life1, alt: "Everyday life and hospitality at Lidya",                          span: "col-span-1 row-span-1" },
-  { type: "image", thumb: photo3, src: photo3, alt: "Wolaita people in traditional cultural attire at an outdoor celebration", span: "col-span-1 row-span-2" },
-  { type: "image", thumb: photo4, src: photo4, alt: "Wolaita group dressed in traditional cultural clothing",         span: "col-span-2 row-span-1" },
-  { type: "image", thumb: life2, src: life2, alt: "Cultural experiences and joyful moments at Lidya",                span: "col-span-1 row-span-1" },
-  { type: "image", thumb: "https://images.unsplash.com/photo-1643372672636-34d776a7e032?w=500&h=340&fit=crop&auto=format", src: "https://images.unsplash.com/photo-1643372672636-34d776a7e032?w=1400&h=900&fit=crop&auto=format", alt: "Handcrafted Ethiopian clay pottery vessels", span: "col-span-1 row-span-1" },
+  {
+    type: "image", thumb: photo2, src: photo2, span: "col-span-2 row-span-2",
+    alt: "Guests gathered for a meal at Lidya Cultural Food Zone",
+    title: "The Art of Gathering",
+    description: "Lidya is not just a restaurant — it is a living ritual. Families, friends, and strangers arrive as guests and leave as kin, bound by the shared warmth of injera and story.",
+  },
+  {
+    type: "image", thumb: photo1, src: photo1, span: "col-span-1 row-span-1",
+    alt: "Warm amber-lit dining room at Lidya restaurant",
+    title: "Amber Glow",
+    description: "Every corner is wrapped in hand-placed candlelight and Wolaita woven textiles — a space designed to feel like the embrace of an ancestral home.",
+  },
+  {
+    type: "image", thumb: life1, src: life1, span: "col-span-1 row-span-1",
+    alt: "Everyday life and hospitality at Lidya",
+    title: "Living Hospitality",
+    description: "Genuine warmth is woven into every interaction. Our team does not perform hospitality — they embody it, rooted in generations of Wolaita welcome.",
+  },
+  {
+    type: "image", thumb: photo3, src: photo3, span: "col-span-1 row-span-2",
+    alt: "Wolaita people in traditional cultural attire at an outdoor celebration",
+    title: "Heritage in Colour",
+    description: "Traditional Wolaita woven attire, worn with pride at celebrations that have remained unchanged for centuries. Culture is not a costume here — it is an identity.",
+  },
+  {
+    type: "image", thumb: photo4, src: photo4, span: "col-span-2 row-span-1",
+    alt: "Wolaita group dressed in traditional cultural clothing",
+    title: "Threads of Tradition",
+    description: "Hand-loomed Wolaita textiles carry the patterns of an ancient people. Each garment is a textile map of a community's history, pride, and spiritual life.",
+  },
+  {
+    type: "image", thumb: life2, src: life2, span: "col-span-1 row-span-1",
+    alt: "Cultural experiences and joyful moments at Lidya",
+    title: "Joy Without Translation",
+    description: "Music, laughter, and the scent of freshly roasted coffee fill the air. Some moments speak beyond language — this is one of them.",
+  },
+  {
+    type: "image",
+    thumb: "https://images.unsplash.com/photo-1643372672636-34d776a7e032?w=500&h=340&fit=crop&auto=format",
+    src:   "https://images.unsplash.com/photo-1643372672636-34d776a7e032?w=1400&h=900&fit=crop&auto=format",
+    span: "col-span-1 row-span-1",
+    alt: "Handcrafted Ethiopian clay pottery vessels",
+    title: "Clay & Memory",
+    description: "Jebenas shaped by Wolaita hands carry coffee that has flowed through generations. Each vessel holds not just liquid, but time itself.",
+  },
 ];
 
 export const EXPERIENCES = [
