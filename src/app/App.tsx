@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar } from "./components/sections/Navbar";
 import { Hero } from "./components/sections/Hero";
 import { OurStory } from "./components/sections/OurStory";
@@ -15,9 +15,10 @@ import { Footer } from "./components/sections/Footer";
 import { MobileActionBar } from "./components/MobileActionBar";
 
 export default function App() {
+  const [menuOpen, setMenuOpen] = useState(false);
   return (
     <div className="bg-background text-foreground overflow-x-hidden pb-24 md:pb-0">
-      <Navbar />
+      <Navbar onOpenChange={setMenuOpen} />
       <Hero />
       <OurStory />
       <MenuSection />
@@ -30,7 +31,7 @@ export default function App() {
       <Reservation />
       <Contact />
       <Footer />
-      <MobileActionBar />
+      <MobileActionBar isMenuOpen={menuOpen} />
     </div>
   );
 }
