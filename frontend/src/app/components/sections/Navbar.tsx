@@ -1,0 +1,238 @@
+import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
+import logoImg from "@/imports/image.png";
+import { Icon } from "../Icons";
+import { NAV_LINKS, goto } from "../../data/constants";
+
+interface NavbarProps {
+  onOpenChange?: (open: boolean) => void;
+}
+
+export function Navbar({ onOpenChange }: NavbarProps) {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  const toggleMenu = (next: boolean) => {
+    setOpen(next);
+    onOpenChange?.(next);
+  };
+
+  useEffect(() => {
+    const h = () => setScrolled(window.scrollY > 60);
+    window.addEventListener("scroll", h, { passive: true });
+    return () => window.removeEventListener("scroll", h);
+  }, []);
+
+  return (
+    <header
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      style={{
+        background: scrolled ? "rgba(30,16,8,0.96)" : "transparent",
+        backdropFilter: scrolled ? "blur(12px)" : "none",
+      }}
+    >
+      {/* Top bar — Call & Facebook (desktop only) */}
+      <div
+        className="hidden lg:block transition-all duration-300"
+        style={{
+          background: scrolled ? "rgba(20,10,4,0.6)" : "rgba(30,16,8,0.35)",
+          borderBottom: "1px solid rgba(212,168,67,0.12)",
+        }}
+      >
+        <div className="max-w-[1400px] mx-auto px-6 xl:px-10 flex items-center justify-end gap-3 h-[34px]">
+          <motion.a
+            href="tel:+251920994499"
+            className="flex items-center gap-1.5 px-3 py-1 text-[#1a0e04] font-bold text-[10px] tracking-wide rounded-sm"
+            style={{
+              fontFamily: "var(--font-lidya-sans)",
+              background: "linear-gradient(135deg,#f5c842 0%,#e8a820 45%,#fde272 100%)",
+              boxShadow: "0 0 0 1px rgba(212,168,67,0.4), 0 0 10px rgba(212,168,67,0.5), 0 2px 6px rgba(0,0,0,0.35)",
+            }}
+            whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(212,168,67,0.9), 0 3px 10px rgba(0,0,0,0.45)" }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Icon.Phone />
+            0920994499
+          </motion.a>
+
+          <motion.a
+            href="https://web.facebook.com/leta.lemma.1"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Follow us on Facebook"
+            className="flex items-center justify-center w-[28px] h-[28px] rounded-md"
+            style={{
+              background: "linear-gradient(160deg,#4a90e8 0%,#1877F2 55%,#145dbf 100%)",
+              boxShadow: "0 0 10px rgba(24,119,242,0.5), 0 2px 6px rgba(0,0,0,0.35)",
+            }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="white">
+              <path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+            </svg>
+          </motion.a>
+        </div>
+      </div>
+
+      {/* Main nav row */}
+      <nav className="max-w-[1400px] mx-auto px-6 xl:px-10 flex items-center justify-between h-[64px] lg:h-[56px]">
+        {/* Logo */}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="flex items-center gap-3 shrink-0"
+        >
+          <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 ring-2 ring-[#d4a843]/40">
+            <ImageWithFallback src={logoImg} alt="Lidya Cultural Food Zone logo" className="w-full h-full object-cover" />
+          </div>
+          <div className="flex flex-col leading-none gap-[3px]">
+            <span
+              className="text-[18px] font-bold tracking-[0.04em] text-[#f5efe6]"
+              style={{ fontFamily: "var(--font-lidya-serif)" }}
+            >
+              Lidya Cultural
+            </span>
+            <span
+              className="text-[11px] tracking-[0.28em] uppercase font-bold"
+              style={{
+                fontFamily: "var(--font-lidya-serif)",
+                background: "linear-gradient(180deg,#ffe98a 0%,#d4a843 40%,#a0701a 75%,#f0d060 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                filter: "drop-shadow(0 0 6px rgba(212,168,67,0.75)) drop-shadow(0 1px 0 rgba(80,40,0,0.9))",
+              }}
+            >
+              Food Zone
+            </span>
+          </div>
+        </button>
+
+        {/* Desktop nav links */}
+        <ul className="hidden lg:flex items-center gap-4 xl:gap-5">
+          {NAV_LINKS.map(({ label, id }) => (
+            <li key={id}>
+              <button
+                onClick={() => goto(id)}
+                className="text-[10px] xl:text-[11px] tracking-widest uppercase text-[#e8dcc8]/70 hover:text-[#d4a843] transition-colors duration-200 whitespace-nowrap"
+                style={{ fontFamily: "var(--font-lidya-sans)" }}
+              >
+                {label}
+              </button>
+            </li>
+          ))}
+        </ul>
+
+        {/* Mobile hamburger */}
+        <button
+          className="lg:hidden text-[#f5efe6] p-2 -mr-2 text-[26px]"
+          onClick={() => toggleMenu(!open)}
+          aria-label="Menu"
+        >
+          {open ? <Icon.X /> : <Icon.Menu />}
+        </button>
+      </nav>
+
+      {/* Mobile drawer */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="lg:hidden px-6 pb-6 border-t border-[#d4a843]/15"
+            style={{ background: "rgba(30,16,8,0.98)" }}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+          >
+            <ul className="flex flex-col gap-1 pt-4">
+              {NAV_LINKS.map(({ label, id }) => (
+                <li key={id}>
+                  <button
+                    onClick={() => { goto(id); toggleMenu(false); }}
+                    className="w-full text-left py-3 text-base text-[#e8dcc8]/75 hover:text-[#d4a843] transition-colors"
+                    style={{ fontFamily: "var(--font-lidya-sans)" }}
+                  >
+                    {label}
+                  </button>
+                </li>
+              ))}
+              <li className="pt-3 border-t border-[#d4a843]/10 flex flex-col gap-3">
+                <motion.a
+                  href="tel:+251920994499"
+                  className="flex items-center justify-center gap-2 px-4 py-3.5 text-[#1a0e04] font-bold text-base rounded-lg"
+                  style={{
+                    fontFamily: "var(--font-lidya-sans)",
+                    background: "linear-gradient(135deg,#f5c842 0%,#e8a820 45%,#fde272 100%)",
+                    boxShadow: "0 0 0 1px rgba(212,168,67,0.4), 0 0 16px rgba(212,168,67,0.65), 0 3px 10px rgba(0,0,0,0.45)",
+                  }}
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 26px rgba(212,168,67,0.95), 0 4px 14px rgba(0,0,0,0.5)" }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <Icon.Phone /> Call: 0920994499
+                </motion.a>
+                <motion.a
+                  href="https://web.facebook.com/leta.lemma.1"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 px-4 py-3.5 text-white font-bold text-sm rounded-lg"
+                  style={{
+                    fontFamily: "var(--font-lidya-sans)",
+                    background: "linear-gradient(160deg,#4a90e8 0%,#1877F2 55%,#145dbf 100%)",
+                    boxShadow: "0 0 14px rgba(24,119,242,0.6), 0 3px 8px rgba(0,0,0,0.4)",
+                  }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="white">
+                    <path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+                  </svg>
+                  Follow on Facebook
+                </motion.a>
+              </li>
+            </ul>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Action Buttons for Mobile */}
+      <div className="lg:hidden fixed bottom-6 right-4 z-50 flex flex-col gap-3 pointer-events-none">
+        <motion.a
+          href="https://web.facebook.com/leta.lemma.1"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Follow us on Facebook"
+          className="flex items-center justify-center w-12 h-12 rounded-full pointer-events-auto"
+          style={{
+            background: "linear-gradient(160deg,#4a90e8 0%,#1877F2 55%,#145dbf 100%)",
+            boxShadow: "0 0 20px rgba(24,119,242,0.6), 0 4px 12px rgba(0,0,0,0.5)",
+          }}
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+        >
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="white">
+            <path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+          </svg>
+        </motion.a>
+        
+        <motion.a
+          href="tel:+251920994499"
+          className="flex items-center justify-center w-14 h-14 rounded-full pointer-events-auto"
+          style={{
+            background: "linear-gradient(135deg,#f5c842 0%,#e8a820 45%,#fde272 100%)",
+            boxShadow: "0 0 0 2px rgba(212,168,67,0.4), 0 0 24px rgba(212,168,67,0.8), 0 6px 16px rgba(0,0,0,0.6)",
+          }}
+          whileHover={{ scale: 1.1, boxShadow: "0 0 30px rgba(212,168,67,1), 0 8px 20px rgba(0,0,0,0.7)" }}
+          whileTap={{ scale: 0.95 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <Icon.Phone />
+        </motion.a>
+      </div>
+    </header>
+  );
+}

@@ -1,0 +1,171 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  OWNER
+  MANAGER
+  STAFF
+}
+
+model User {
+  id       String  @id @default(uuid())
+  name     String
+  email    String  @unique
+  password String
+  role     Role    @default(MANAGER)
+  isActive Boolean @default(true)
+
+  refreshTokens RefreshToken[]
+  activityLogs  ActivityLog[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique // Hashed
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
+
+model Branch {
+  id           String  @id @default(uuid())
+  name         String
+  label        String?
+  address      String
+  phone        String
+  email        String?
+  workingHours String // E.g., "Mon-Sun: 7:00 AM - 11:00 PM"
+  note         String?
+  imageUrl     String?
+  capacity     Int     @default(50)
+
+  reservations Reservation[]
+  menuItems    MenuItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model Category {
+  id    String @id @default(uuid())
+  name  String @unique
+  order Int    @default(0)
+
+  menuItems MenuItem[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model MenuItem {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  price       String
+  imageUrl    String?
+  tag         String? // e.g. "Signature", "Spicy"
+  isAvailable Boolean @default(true)
+  order       Int     @default(0)
+
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  branchId String? // If null, available at all branches
+  branch   Branch? @relation(fields: [branchId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model GalleryItem {
+  id          String  @id @default(uuid())
+  title       String?
+  description String?
+  imageUrl    String
+  thumbUrl    String?
+  span        String  @default("col-span-1 row-span-1") // For UI grid
+  alt         String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  NO_SHOW
+  COMPLETED
+}
+
+model Reservation {
+  id             String            @id @default(uuid())
+  customerName   String
+  phone          String
+  email          String?
+  date           String // YYYY-MM-DD
+  time           String // HH:MM
+  partySize      Int
+  specialRequest String?
+  status         ReservationStatus @default(PENDING)
+
+  branchId String
+  branch   Branch @relation(fields: [branchId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+enum ContactStatus {
+  UNREAD
+  READ
+  REPLIED
+}
+
+model ContactMessage {
+  id      String        @id @default(uuid())
+  name    String
+  email   String
+  phone   String?
+  subject String?
+  message String
+  status  ContactStatus @default(UNREAD)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+model WebsiteSetting {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String // Could be JSON string
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ActivityLog {
+  id     String @id @default(uuid())
+  action String // Human readable sentence: "Manager Aster removed 'Doro Wat'"
+
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+}
