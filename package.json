@@ -1,0 +1,7 @@
+{
+  "name": "lidya-monorepo",
+  "private": true,
+  "scripts": {
+    "vercel-build": "pnpm --filter lidyaculturalfood-frontend build"
+  }
+}
