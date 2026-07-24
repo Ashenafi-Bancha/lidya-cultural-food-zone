@@ -10,7 +10,7 @@ export class AppError extends Error {
 }
 
 export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-  if (err instanceof ZodError) {
+  if (err instanceof ZodError || err?.name === 'ZodError') {
     logger.warn({ err }, 'Validation Error');
     return res.status(400).json({
       status: 'error',

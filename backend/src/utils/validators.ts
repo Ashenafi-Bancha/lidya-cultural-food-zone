@@ -45,7 +45,7 @@ export const createMenuItemSchema = z.object({
     categoryId: z.string().uuid('Invalid category ID'),
     branchId: z.string().uuid().optional().nullable(),
     isAvailable: z.boolean().optional(),
-    imageUrl: z.string().url('A valid image URL is required').optional().nullable(),
+    imageUrl: z.union([z.literal(''), z.string()]).optional().nullable(),
   }),
 });
 
@@ -55,7 +55,7 @@ export const createBranchSchema = z.object({
     label: z.string().optional().nullable(),
     address: z.string().min(5, 'Address is required'),
     phone: z.string().min(10, 'Phone is required'),
-    email: z.string().email().optional().nullable(),
+    email: z.union([z.literal(''), z.string().email('Invalid email address')]).optional().nullable(),
     workingHours: z.string().optional().nullable(),
     note: z.string().optional().nullable(),
     capacity: z.number().int().min(1).optional(),
@@ -83,10 +83,10 @@ export const updateCategorySchema = z.object({
 
 export const createGalleryItemSchema = z.object({
   body: z.object({
-    imageUrl: z.string().url('A valid image URL is required'),
+    imageUrl: z.string().min(1, 'An image URL is required'),
     title: z.string().max(200).optional().nullable(),
     description: z.string().max(1000).optional().nullable(),
-    thumbUrl: z.string().url().optional().nullable(),
+    thumbUrl: z.union([z.literal(''), z.string()]).optional().nullable(),
     span: z.string().max(100).optional(),
     alt: z.string().max(200).optional().nullable(),
   }),
@@ -95,10 +95,10 @@ export const createGalleryItemSchema = z.object({
 export const updateGalleryItemSchema = z.object({
   params: z.object({ id: z.string().uuid('Invalid gallery item ID') }),
   body: z.object({
-    imageUrl: z.string().url('A valid image URL is required').optional(),
+    imageUrl: z.string().min(1, 'An image URL is required').optional(),
     title: z.string().max(200).optional().nullable(),
     description: z.string().max(1000).optional().nullable(),
-    thumbUrl: z.string().url().optional().nullable(),
+    thumbUrl: z.union([z.literal(''), z.string()]).optional().nullable(),
     span: z.string().max(100).optional(),
     alt: z.string().max(200).optional().nullable(),
   }),
