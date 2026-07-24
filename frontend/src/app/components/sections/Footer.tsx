@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
-import logoImg from "@/imports/image.png";
+import logoImg from "@/imports/lidya-logo2.PNG";
 import { Icon } from "../Icons";
 import { NAV_LINKS, goto } from "../../data/constants";
 

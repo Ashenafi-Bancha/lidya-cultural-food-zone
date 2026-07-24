@@ -5,7 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/auth.service';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
-import logoImg from '../imports/image.png';
+import logoImg from '../imports/lidya-logo2.PNG';
 
 export function Login() {
   const [email, setEmail] = useState('');
@@ -171,10 +171,10 @@ export function Login() {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     disabled={loading}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-[#e8dcc8]/50 hover:text-[#d4a843] transition-colors focus:outline-none p-1 disabled:opacity-50"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 z-10 text-[#d4a843]/70 hover:text-[#d4a843] transition-colors focus:outline-none p-1 disabled:opacity-50 flex items-center justify-center cursor-pointer"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>
                 </div>
                 <AnimatePresence>
