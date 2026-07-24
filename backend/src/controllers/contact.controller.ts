@@ -30,7 +30,7 @@ export const createContactMessage = async (req: Request, res: Response, next: Ne
 
 export const updateContactMessageStatus = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { status } = req.body;
 
     const contactMessage = await prisma.contactMessage.update({

@@ -35,7 +35,7 @@ export const createMenuItem = async (req: Request, res: Response, next: NextFunc
 
 export const updateMenuItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const data = req.body;
     const item = await prisma.menuItem.update({
       where: { id },
@@ -49,7 +49,7 @@ export const updateMenuItem = async (req: Request, res: Response, next: NextFunc
 
 export const deleteMenuItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     await prisma.menuItem.update({
       where: { id },
       data: { deletedAt: new Date() },

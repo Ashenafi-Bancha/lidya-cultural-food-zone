@@ -16,8 +16,8 @@ export const authenticate = async (req: AuthRequest, res: Response, next: NextFu
       throw new AppError(401, 'Unauthorized');
     }
 
-    const token = authHeader.split(' ')[1];
-    const decoded = jwt.verify(token, env.JWT_SECRET) as { id: string; role: Role };
+    const token = authHeader.split(' ')[1]!;
+    const decoded = jwt.verify(token, env.JWT_SECRET) as unknown as { id: string; role: Role };
 
     req.user = decoded;
     next();

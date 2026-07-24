@@ -27,7 +27,7 @@ export const createGalleryItem = async (req: Request, res: Response, next: NextF
 
 export const updateGalleryItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const data = req.body;
     const item = await prisma.galleryItem.update({
       where: { id },
@@ -41,7 +41,7 @@ export const updateGalleryItem = async (req: Request, res: Response, next: NextF
 
 export const deleteGalleryItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     await prisma.galleryItem.update({
       where: { id },
       data: { deletedAt: new Date() },

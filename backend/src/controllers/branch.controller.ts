@@ -16,7 +16,7 @@ export const getBranches = async (req: Request, res: Response, next: NextFunctio
 
 export const getBranchById = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const branch = await prisma.branch.findFirst({
       where: { id, deletedAt: null },
     });
@@ -45,7 +45,7 @@ export const createBranch = async (req: Request, res: Response, next: NextFuncti
 
 export const updateBranch = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const data = req.body;
     const branch = await prisma.branch.update({
       where: { id },
@@ -59,7 +59,7 @@ export const updateBranch = async (req: Request, res: Response, next: NextFuncti
 
 export const deleteBranch = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     await prisma.branch.update({
       where: { id },
       data: { deletedAt: new Date() },

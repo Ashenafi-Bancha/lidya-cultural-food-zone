@@ -86,9 +86,9 @@ async function main() {
 
   for (let i = 0; i < categoriesData.length; i++) {
     const cat = await prisma.category.upsert({
-      where: { name: categoriesData[i] },
+      where: { name: categoriesData[i]! },
       update: { order: i },
-      create: { name: categoriesData[i], order: i },
+      create: { name: categoriesData[i]!, order: i },
     });
     categoryMap.set(cat.name, cat.id);
   }

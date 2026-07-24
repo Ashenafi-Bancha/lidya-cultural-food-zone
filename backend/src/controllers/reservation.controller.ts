@@ -34,7 +34,7 @@ export const createReservation = async (req: Request, res: Response, next: NextF
 
 export const updateReservationStatus = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const { status } = req.body;
     
     const reservation = await prisma.reservation.update({
