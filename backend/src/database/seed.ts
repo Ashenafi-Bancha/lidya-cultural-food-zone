@@ -9,15 +9,15 @@ async function main() {
 
   // ─── 1. Create Root Admin (OWNER) ────────────────────────────────────────
   const ownerPasswordHash = await bcrypt.hash(
-    process.env.SEED_OWNER_PASSWORD || 'ChangeMe@2025!',
+    process.env.SEED_OWNER_PASSWORD || 'LetaOwner@2026!',
     12
   );
   const owner = await prisma.user.upsert({
-    where: { email: 'owner@lidyafoodzone.com' },
+    where: { email: 'letaowner@lidyafoodzone.com' },
     update: {},
     create: {
-      name: 'Lidya Owner',
-      email: 'owner@lidyafoodzone.com',
+      name: 'Owner',
+      email: 'letaowner@lidyafoodzone.com',
       password: ownerPasswordHash,
       role: Role.OWNER,
     },
@@ -26,15 +26,15 @@ async function main() {
 
   // ─── 2. Create Default Manager ───────────────────────────────────────────
   const managerPasswordHash = await bcrypt.hash(
-    process.env.SEED_MANAGER_PASSWORD || 'Manager@2025!',
+    process.env.SEED_MANAGER_PASSWORD || 'TemuAdmin@2026!',
     12
   );
   const manager = await prisma.user.upsert({
-    where: { email: 'manager@lidyafoodzone.com' },
+    where: { email: 'temuadmin@lidyafoodzone.com' },
     update: {},
     create: {
-      name: 'Leta Manager',
-      email: 'manager@lidyafoodzone.com',
+      name: 'Admin',
+      email: 'temuadmin@lidyafoodzone.com',
       password: managerPasswordHash,
       role: Role.MANAGER,
     },
@@ -189,8 +189,8 @@ async function main() {
 
   logger.info('✅ Database seeding completed successfully!');
   logger.info('');
-  logger.info('  OWNER login  →  owner@lidyafoodzone.com  /  ChangeMe@2025!');
-  logger.info('  MANAGER login → manager@lidyafoodzone.com /  Manager@2025!');
+  logger.info('  OWNER login  →  letaowner@lidyafoodzone.com  /  LetaOwner@2026!');
+  logger.info('  MANAGER login → temuadmin@lidyafoodzone.com /  TemuAdmin@2026!');
   logger.info('  ⚠️  Change these passwords immediately after first login!');
 }
 

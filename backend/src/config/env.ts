@@ -12,4 +12,14 @@ const envSchema = z.object({
   FRONTEND_URL: z.string().default('http://localhost:5173'),
 });
 
-export const env = envSchema.parse(process.env);
+const _env = envSchema.safeParse(process.env);
+
+if (!_env.success) {
+  console.error('❌ Invalid or missing environment variables:');
+  for (const error of _env.error.errors) {
+    console.error(`  - ${error.path.join('.')}: ${error.message}`);
+  }
+  process.exit(1);
+}
+
+export const env = _env.data;

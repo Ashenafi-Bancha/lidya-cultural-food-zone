@@ -49,6 +49,16 @@ Expand the **Environment Variables** section and add:
 1. Click **Create Web Service**. Render will install dependencies, generate the Prisma client (using `postinstall`), and build the TypeScript code.
 2. **Run Prisma Migrations**: Since your Neon database is empty, you need to push the Prisma schema and seed the database.
    - Run the migration from your local machine using the Neon Connection String:
+     
+     **On Windows (PowerShell):**
+     ```powershell
+     cd backend
+     $env:DATABASE_URL="your-neon-connection-string"
+     npx prisma migrate deploy
+     npx prisma db seed
+     ```
+     
+     **On Mac/Linux:**
      ```bash
      cd backend
      DATABASE_URL="your-neon-connection-string" npx prisma migrate deploy
