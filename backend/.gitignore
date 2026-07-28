@@ -3,3 +3,6 @@ node_modules
 .env
 
 /generated/prisma
+
+# User-uploaded images (local fallback storage) — not source, and ephemeral in prod
+uploads/

@@ -4,11 +4,31 @@ import { AppError } from '../middleware/errorHandler';
 
 export const getBranches = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const skip = (page - 1) * limit;
+
     const branches = await prisma.branch.findMany({
       where: { deletedAt: null },
       orderBy: { createdAt: 'asc' },
+      skip,
+      take: limit,
     });
-    res.status(200).json({ status: 'success', data: branches });
+
+    const total = await prisma.branch.count({
+      where: { deletedAt: null },
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: branches,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) {
     next(error);
   }

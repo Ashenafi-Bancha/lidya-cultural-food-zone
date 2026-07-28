@@ -1,7 +1,9 @@
 import axios from 'axios';
 
-// Get base URL from env, or default to /api if not set (relies on Vite proxy in dev)
-const baseURL = import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : '/api';
+// Base URL comes from VITE_API_URL (must already include the `/api` suffix,
+// e.g. https://lidya-backend.onrender.com/api). When unset, fall back to the
+// relative `/api` path which the Vite dev proxy forwards to the local backend.
+const baseURL = import.meta.env.VITE_API_URL || '/api';
 
 export const api = axios.create({
   baseURL,
@@ -20,16 +22,61 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor to handle 401s and token refresh (simplified for now)
+// Share a single in-flight refresh across concurrent 401s so we only hit the
+// refresh endpoint once and every queued request retries with the new token.
+let refreshPromise: Promise<string> | null = null;
+
+const requestNewAccessToken = async (): Promise<string> => {
+  // Use a bare axios call (not `api`) so this request skips the interceptors
+  // and can't recurse. The refresh token travels in the httpOnly cookie.
+  const { data } = await axios.post(
+    `${baseURL}/auth/refresh`,
+    {},
+    { withCredentials: true }
+  );
+  const newToken = data?.data?.accessToken as string;
+  localStorage.setItem('accessToken', newToken);
+  if (data?.data?.user) {
+    localStorage.setItem('user', JSON.stringify(data.data.user));
+  }
+  return newToken;
+};
+
+const clearSessionAndRedirect = () => {
+  localStorage.removeItem('accessToken');
+  localStorage.removeItem('user');
+  if (!window.location.pathname.includes('/login')) {
+    window.location.href = '/admin/login';
+  }
+};
+
+// Interceptor to handle 401s: try to refresh the access token once, then retry
+// the original request. If refresh fails, clear the session and redirect.
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
-    // If we had a robust refresh token endpoint we would hit it here on 401
-    // For now, if we get a 401 and we are not on the login page, clear token and redirect
-    if (error.response?.status === 401 && !window.location.pathname.includes('/login')) {
-      localStorage.removeItem('accessToken');
-      // window.location.href = '/admin/login'; // Redirect to login if unauthorized
+    const original = error.config;
+    const url = String(original?.url ?? '');
+    const isAuthEndpoint = url.includes('/auth/login') || url.includes('/auth/refresh');
+
+    if (error.response?.status === 401 && original && !original._retry && !isAuthEndpoint) {
+      original._retry = true;
+      try {
+        if (!refreshPromise) {
+          refreshPromise = requestNewAccessToken().finally(() => {
+            refreshPromise = null;
+          });
+        }
+        const newToken = await refreshPromise;
+        original.headers = original.headers ?? {};
+        original.headers.Authorization = `Bearer ${newToken}`;
+        return api(original);
+      } catch (refreshError) {
+        clearSessionAndRedirect();
+        return Promise.reject(refreshError);
+      }
     }
+
     return Promise.reject(error);
   }
 );

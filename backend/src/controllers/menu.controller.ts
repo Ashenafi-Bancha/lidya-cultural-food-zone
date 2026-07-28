@@ -5,6 +5,10 @@ import { AppError } from '../middleware/errorHandler';
 export const getMenuItems = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { branchId, categoryId } = req.query;
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const skip = (page - 1) * limit;
+
     const filter: any = { deletedAt: null };
 
     if (branchId) filter.branchId = branchId;
@@ -14,8 +18,24 @@ export const getMenuItems = async (req: Request, res: Response, next: NextFuncti
       where: filter,
       include: { category: true, branch: true },
       orderBy: { order: 'asc' },
+      skip,
+      take: limit,
     });
-    res.status(200).json({ status: 'success', data: items });
+
+    const total = await prisma.menuItem.count({
+      where: filter,
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: items,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) {
     next(error);
   }

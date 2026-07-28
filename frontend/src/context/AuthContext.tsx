@@ -1,6 +1,24 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { User } from '../types/api';
 import { authService } from '../services/auth.service';
+
+// Restore the persisted session synchronously so that route guards (e.g.
+// AdminLayout) see the correct auth state on the very first render. Doing this
+// in a useEffect caused a hard refresh of any /admin page to briefly report
+// "not authenticated" and bounce logged-in users to the login screen.
+const getInitialUser = (): User | null => {
+  const token = localStorage.getItem('accessToken');
+  const savedUser = localStorage.getItem('user');
+  if (token && savedUser) {
+    try {
+      return JSON.parse(savedUser) as User;
+    } catch {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('user');
+    }
+  }
+  return null;
+};
 
 interface AuthContextType {
   user: User | null;
@@ -12,22 +30,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    // In a real app we might decode the JWT or fetch user profile on load
-    // For simplicity, we just check if token exists to maintain logged-in state across reloads
-    const token = localStorage.getItem('accessToken');
-    const savedUser = localStorage.getItem('user');
-    if (token && savedUser) {
-      try {
-        setUser(JSON.parse(savedUser));
-      } catch (e) {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('user');
-      }
-    }
-  }, []);
+  const [user, setUser] = useState<User | null>(getInitialUser);
 
   const login = (token: string, userData: User) => {
     localStorage.setItem('accessToken', token);

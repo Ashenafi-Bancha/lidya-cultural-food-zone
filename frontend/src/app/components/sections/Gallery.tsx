@@ -3,8 +3,11 @@ import { motion, AnimatePresence } from "motion/react";
 import { Reveal } from "../Reveal";
 import { Icon } from "../Icons";
 import { OptimizedImage } from "../OptimizedImage";
-import { GALLERY_ITEMS as FALLBACK_GALLERY_ITEMS } from "../../data/constants";
 import { useGallery } from "../../../hooks/useGallery";
+import { useLang } from "../../../context/LanguageContext";
+
+// Section order for the public gallery. Items are grouped under these headings.
+const GALLERY_GROUPS = ["MOMENTS", "LIFE"];
 
 /* ─── Individual gallery card ─────────────────────────────────────────── */
 function GalleryCard({
@@ -14,6 +17,7 @@ function GalleryCard({
   item: any;
   onClick: () => void;
 }) {
+  const { tf } = useLang();
   const [hovered, setHovered] = useState(false);
 
   return (
@@ -67,7 +71,7 @@ function GalleryCard({
             className="text-white font-semibold leading-tight text-sm sm:text-base drop-shadow"
             style={{ fontFamily: "var(--font-lidya-serif)" }}
           >
-            {item.title}
+            {tf(item, "title")}
           </p>
 
           {/* Description — hidden on desktop until hover; always shown on mobile */}
@@ -82,7 +86,7 @@ function GalleryCard({
             }}
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
-            {item.description}
+            {tf(item, "description")}
           </motion.p>
 
           {/* Mobile: always visible, static */}
@@ -127,9 +131,11 @@ export function Gallery() {
   const [selected, setSelected] = useState<any | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
-  const { data: galleryData, isLoading } = useGallery();
-  
-  const items = galleryData && galleryData.length > 0 ? galleryData : FALLBACK_GALLERY_ITEMS;
+  const { t, tf } = useLang();
+  const { data: galleryData, isLoading, isError } = useGallery();
+
+  // API is the source of truth — no fabricated fallback content.
+  const items = galleryData ?? [];
 
   useEffect(() => {
     if (selected) document.body.style.overflow = "hidden";
@@ -151,19 +157,19 @@ export function Gallery() {
             className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-3"
             style={{ fontFamily: "var(--font-lidya-sans)" }}
           >
-            Moments Captured
+            {t("gallery.eyebrow")}
           </p>
           <h2
             className="text-4xl md:text-5xl font-bold text-[#f5efe6] leading-tight"
             style={{ fontFamily: "var(--font-lidya-serif)" }}
           >
-            Inside <em className="text-[#d4a843]">Lidya</em>
+            {t("gallery.titlePre")} <em className="text-[#d4a843]">{t("gallery.titleEm")}</em>
           </h2>
           <p
             className="mt-4 text-white/50 text-sm max-w-md mx-auto leading-relaxed"
             style={{ fontFamily: "var(--font-lidya-sans)" }}
           >
-            Hover each image to reveal its story. Tap to view in full.
+            {t("gallery.body")}
           </p>
         </Reveal>
 
@@ -176,17 +182,40 @@ export function Gallery() {
               />
             ))}
           </div>
+        ) : items.length === 0 ? (
+          <div className="py-16 text-center text-white/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
+            {isError ? t("gallery.emptyError") : t("gallery.emptyComingSoon")}
+          </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 auto-rows-[140px] sm:auto-rows-[180px] md:auto-rows-[210px]">
-            {items.map((item, i) => (
-              <Reveal
-                key={`${item.id || item.alt}-${i}`}
-                delay={i * 0.05}
-                className={`${item.span} relative overflow-hidden rounded-sm`}
-              >
-                <GalleryCard item={item} onClick={() => setSelected(item)} />
-              </Reveal>
-            ))}
+          <div className="space-y-14 md:space-y-20">
+            {GALLERY_GROUPS.map((group) => {
+              const groupItems = items.filter((it) => (it.group || "MOMENTS") === group);
+              if (groupItems.length === 0) return null;
+              return (
+                <div key={group}>
+                  <Reveal className="text-center mb-6 md:mb-8">
+                    <h3
+                      className="text-2xl md:text-3xl font-bold text-[#d4a843]"
+                      style={{ fontFamily: "var(--font-lidya-serif)" }}
+                    >
+                      {t(`gallery.groups.${group}`)}
+                    </h3>
+                    <div className="mx-auto mt-3 w-16 h-px bg-[#d4a843]/40" />
+                  </Reveal>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 auto-rows-[140px] sm:auto-rows-[180px] md:auto-rows-[210px]">
+                    {groupItems.map((item, i) => (
+                      <Reveal
+                        key={`${item.id || item.alt}-${i}`}
+                        delay={i * 0.05}
+                        className={`${item.span} relative overflow-hidden rounded-sm`}
+                      >
+                        <GalleryCard item={item} onClick={() => setSelected(item)} />
+                      </Reveal>
+                    ))}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -240,13 +269,13 @@ export function Gallery() {
                   className="text-white text-xl sm:text-2xl font-semibold"
                   style={{ fontFamily: "var(--font-lidya-serif)" }}
                 >
-                  {selected.title}
+                  {tf(selected, "title")}
                 </h3>
                 <p
                   className="text-white/60 text-sm mt-2 max-w-xl mx-auto leading-relaxed"
                   style={{ fontFamily: "var(--font-lidya-sans)" }}
                 >
-                  {selected.description}
+                  {tf(selected, "description")}
                 </p>
               </div>
 

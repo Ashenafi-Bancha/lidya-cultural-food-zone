@@ -3,11 +3,31 @@ import { prisma } from '../database/prisma';
 
 export const getGalleryItems = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const skip = (page - 1) * limit;
+
     const items = await prisma.galleryItem.findMany({
       where: { deletedAt: null },
       orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
     });
-    res.status(200).json({ status: 'success', data: items });
+
+    const total = await prisma.galleryItem.count({
+      where: { deletedAt: null },
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: items,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) {
     next(error);
   }

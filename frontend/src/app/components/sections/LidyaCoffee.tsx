@@ -1,5 +1,6 @@
 import React from "react";
 import { Reveal } from "../Reveal";
+import { useLang } from "../../../context/LanguageContext";
 import lidyaCoffee1 from "../../../imports/lidyacoffee1.png";
 import lidyaCoffee2 from "../../../imports/ldiyacoffee2.png";
 
@@ -17,12 +18,13 @@ const OFFERINGS = [
 ];
 
 export function LidyaCoffee() {
+  const { t } = useLang();
   return (
     <section id="coffee" className="bg-[#0e0703] py-16 md:py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
 
         <Reveal className="mb-12 md:mb-16 text-center">
-          <p className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>Ethiopia's Living Tradition</p>
+          <p className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("coffee.eyebrow")}</p>
           <div className="flex flex-col items-center gap-1 mb-4">
             <div className="text-5xl sm:text-6xl md:text-7xl font-bold leading-none text-[#f5efe6]" style={{ fontFamily: "var(--font-lidya-serif)" }}>
               Lidya <em className="text-[#d4a843]">Buna</em>
@@ -32,7 +34,7 @@ export function LidyaCoffee() {
             </div>
           </div>
           <p className="text-base md:text-lg max-w-xl mx-auto leading-relaxed text-[#e8dcc8]/55" style={{ fontFamily: "var(--font-lidya-body)" }}>
-            In Wolaita, coffee is not a beverage — it is a ceremony, a ritual of welcome, and the most intimate act of hospitality a home can offer.
+            {t("coffee.intro")}
           </p>
         </Reveal>
 
@@ -48,21 +50,21 @@ export function LidyaCoffee() {
               <div className="absolute inset-0" style={{ background: "linear-gradient(to right,transparent 60%,#0e0703)" }} />
             </div>
             <div className="bg-[#160b04] flex flex-col justify-center px-8 sm:px-10 py-10 md:py-12">
-              <p className="text-[#d4a843] text-[10px] tracking-[0.3em] uppercase mb-4" style={{ fontFamily: "var(--font-lidya-sans)" }}>The Sacred Ceremony</p>
+              <p className="text-[#d4a843] text-[10px] tracking-[0.3em] uppercase mb-4" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("coffee.ceremonyEyebrow")}</p>
               <h3 className="text-3xl md:text-4xl font-bold text-[#f5efe6] mb-6 leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>
-                Three Rounds,<br /><em className="text-[#d4a843]">One Blessing</em>
+                {t("coffee.ceremonyTitleTop")}<br /><em className="text-[#d4a843]">{t("coffee.ceremonyTitleEm")}</em>
               </h3>
               <p className="text-sm leading-relaxed mb-8 text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
-                Every Lidya Buna ceremony follows the three sacred rounds passed down through Wolaita generations. Each pour has a name, a meaning, and a place in the ritual.
+                {t("coffee.ceremonyIntro")}
               </p>
               <div className="space-y-4">
-                {ROUNDS.map(r => (
+                {ROUNDS.map((r, i) => (
                   <div key={r.name} className="flex gap-4 items-start">
                     <span className="text-[#d4a843]/40 text-xs font-bold mt-0.5 shrink-0 w-6 text-right" style={{ fontFamily: "var(--font-lidya-sans)" }}>{r.num}</span>
                     <div>
                       <span className="text-[#f5efe6] font-bold tracking-wide mr-2" style={{ fontFamily: "var(--font-lidya-sans)" }}>{r.name}</span>
-                      <span className="text-[#d4a843]/60 text-[10px] uppercase tracking-wider" style={{ fontFamily: "var(--font-lidya-sans)" }}>{r.sub}</span>
-                      <p className="mt-1 text-sm leading-relaxed text-[#e8dcc8]/40" style={{ fontFamily: "var(--font-lidya-body)" }}>{r.desc}</p>
+                      <span className="text-[#d4a843]/60 text-[10px] uppercase tracking-wider" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t(`coffee.rounds.${i}.sub`)}</span>
+                      <p className="mt-1 text-sm leading-relaxed text-[#e8dcc8]/40" style={{ fontFamily: "var(--font-lidya-body)" }}>{t(`coffee.rounds.${i}.desc`)}</p>
                     </div>
                   </div>
                 ))}
@@ -85,17 +87,17 @@ export function LidyaCoffee() {
               </div>
               <div className="order-1 lg:order-2">
                 <h4 className="text-[#f5efe6] text-3xl md:text-4xl font-bold mb-10 text-left" style={{ fontFamily: "var(--font-lidya-serif)" }}>
-                  Coffee <em className="text-[#d4a843]">Offerings</em>
+                  {t("coffee.offeringsPre")} <em className="text-[#d4a843]">{t("coffee.offeringsEm")}</em>
                 </h4>
                 <div className="grid grid-cols-1 gap-y-8">
-                  {OFFERINGS.map(o => (
+                  {OFFERINGS.map((o, i) => (
                     <div key={o.name} className="group cursor-pointer">
                       <div className="flex justify-between items-end gap-4 mb-2">
-                        <h5 className="text-[#f5efe6] font-medium text-lg md:text-xl transition-colors duration-300 group-hover:text-[#d4a843]" style={{ fontFamily: "var(--font-lidya-sans)" }}>{o.name}</h5>
+                        <h5 className="text-[#f5efe6] font-medium text-lg md:text-xl transition-colors duration-300 group-hover:text-[#d4a843]" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t(`coffee.offerings.${i}.name`)}</h5>
                         <div className="flex-1 border-b border-dotted border-[#d4a843]/20 mb-2 transition-colors duration-300 group-hover:border-[#d4a843]/50" />
                         <span className="text-[#d4a843] font-bold text-base md:text-lg shrink-0" style={{ fontFamily: "var(--font-lidya-sans)" }}>{o.price}</span>
                       </div>
-                      <p className="text-sm md:text-base text-[#e8dcc8]/50 leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>{o.desc}</p>
+                      <p className="text-sm md:text-base text-[#e8dcc8]/50 leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>{t(`coffee.offerings.${i}.desc`)}</p>
                     </div>
                   ))}
                 </div>

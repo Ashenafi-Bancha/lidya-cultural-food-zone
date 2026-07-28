@@ -4,11 +4,31 @@ import { ContactStatus } from '@prisma/client';
 
 export const getContactMessages = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const skip = (page - 1) * limit;
+
     const messages = await prisma.contactMessage.findMany({
       where: { deletedAt: null },
       orderBy: { createdAt: 'desc' },
+      skip,
+      take: limit,
     });
-    res.status(200).json({ status: 'success', data: messages });
+
+    const total = await prisma.contactMessage.count({
+      where: { deletedAt: null },
+    });
+
+    res.status(200).json({
+      status: 'success',
+      data: messages,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit),
+      },
+    });
   } catch (error) {
     next(error);
   }

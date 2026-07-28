@@ -7,6 +7,13 @@ export const loginSchema = z.object({
   }),
 });
 
+export const updateContactStatusSchema = z.object({
+  params: z.object({ id: z.string().uuid('Invalid contact message ID') }),
+  body: z.object({
+    status: z.enum(['UNREAD', 'READ', 'REPLIED']),
+  }),
+});
+
 export const contactMessageSchema = z.object({
   body: z.object({
     name: z.string().min(2, 'Name is required').max(100),
@@ -36,30 +43,82 @@ export const updateReservationStatusSchema = z.object({
   }),
 });
 
-export const createMenuItemSchema = z.object({
+const menuItemBody = z.object({
+  name: z.string().min(2, 'Name is required'),
+  nameAm: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
+  descriptionAm: z.string().optional().nullable(),
+  price: z.string().min(1, 'Price is required'),
+  tag: z.string().optional().nullable(),
+  categoryId: z.string().uuid('Invalid category ID'),
+  branchId: z.string().uuid().optional().nullable(),
+  isAvailable: z.boolean().optional(),
+  imageUrl: z.union([z.literal(''), z.string()]).optional().nullable(),
+});
+
+export const createEventBookingSchema = z.object({
   body: z.object({
-    name: z.string().min(2, 'Name is required'),
-    description: z.string().optional().nullable(),
-    price: z.string().min(1, 'Price is required'),
-    tag: z.string().optional().nullable(),
-    categoryId: z.string().uuid('Invalid category ID'),
-    branchId: z.string().uuid().optional().nullable(),
-    isAvailable: z.boolean().optional(),
-    imageUrl: z.union([z.literal(''), z.string()]).optional().nullable(),
+    customerName: z.string().min(2, 'Name is required'),
+    phone: z.string().min(10, 'A valid phone number is required'),
+    email: z.string().email('A valid email is required for your confirmation'),
+    serviceType: z.enum([
+      'WEDDING',
+      'ENGAGEMENT',
+      'HALL_RENTAL',
+      'CATERING',
+      'CORPORATE',
+      'BIRTHDAY',
+      'VIP',
+      'VVIP',
+      'OTHER',
+    ]),
+    eventDate: z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date format' }),
+    guestCount: z.number().int().min(1).max(5000).optional().nullable(),
+    branchId: z.string().uuid('Invalid branch ID').optional().nullable(),
+    message: z.string().max(1000).optional().nullable(),
   }),
 });
 
-export const createBranchSchema = z.object({
+export const updateEventBookingStatusSchema = z.object({
+  params: z.object({ id: z.string().uuid('Invalid booking ID') }),
   body: z.object({
-    name: z.string().min(2, 'Name is required'),
-    label: z.string().optional().nullable(),
-    address: z.string().min(5, 'Address is required'),
-    phone: z.string().min(10, 'Phone is required'),
-    email: z.union([z.literal(''), z.string().email('Invalid email address')]).optional().nullable(),
-    workingHours: z.string().optional().nullable(),
-    note: z.string().optional().nullable(),
-    capacity: z.number().int().min(1).optional(),
+    status: z.enum(['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED', 'NO_SHOW']),
   }),
+});
+
+export const createMenuItemSchema = z.object({
+  body: menuItemBody,
+});
+
+// PUT edits are partial — only the changed fields need to be sent.
+export const updateMenuItemSchema = z.object({
+  params: z.object({ id: z.string().uuid('Invalid menu item ID') }),
+  body: menuItemBody.partial(),
+});
+
+const branchBody = z.object({
+  name: z.string().min(2, 'Name is required'),
+  nameAm: z.string().optional().nullable(),
+  label: z.string().optional().nullable(),
+  labelAm: z.string().optional().nullable(),
+  address: z.string().min(5, 'Address is required'),
+  phone: z.string().min(10, 'Phone is required'),
+  email: z.union([z.literal(''), z.string().email('Invalid email address')]).optional().nullable(),
+  workingHours: z.string().optional().nullable(),
+  workingHoursAm: z.string().optional().nullable(),
+  note: z.string().optional().nullable(),
+  noteAm: z.string().optional().nullable(),
+  capacity: z.number().int().min(1).optional(),
+});
+
+export const createBranchSchema = z.object({
+  body: branchBody,
+});
+
+// PUT edits are partial — only the changed fields need to be sent.
+export const updateBranchSchema = z.object({
+  params: z.object({ id: z.string().uuid('Invalid branch ID') }),
+  body: branchBody.partial(),
 });
 
 // ─── Category Schemas ────────────────────────────────────────────────────────
@@ -67,7 +126,9 @@ export const createBranchSchema = z.object({
 export const createCategorySchema = z.object({
   body: z.object({
     name: z.string().min(2, 'Category name is required').max(100),
+    nameAm: z.string().max(100).optional().nullable(),
     order: z.number().int().min(0).optional(),
+    parentId: z.string().uuid('Invalid parent category ID').optional().nullable(),
   }),
 });
 
@@ -75,7 +136,9 @@ export const updateCategorySchema = z.object({
   params: z.object({ id: z.string().uuid('Invalid category ID') }),
   body: z.object({
     name: z.string().min(2, 'Category name is required').max(100).optional(),
+    nameAm: z.string().max(100).optional().nullable(),
     order: z.number().int().min(0).optional(),
+    parentId: z.string().uuid('Invalid parent category ID').optional().nullable(),
   }),
 });
 
@@ -85,9 +148,12 @@ export const createGalleryItemSchema = z.object({
   body: z.object({
     imageUrl: z.string().min(1, 'An image URL is required'),
     title: z.string().max(200).optional().nullable(),
+    titleAm: z.string().max(200).optional().nullable(),
     description: z.string().max(1000).optional().nullable(),
+    descriptionAm: z.string().max(1000).optional().nullable(),
     thumbUrl: z.union([z.literal(''), z.string()]).optional().nullable(),
     span: z.string().max(100).optional(),
+    group: z.enum(['MOMENTS', 'LIFE']).optional(),
     alt: z.string().max(200).optional().nullable(),
   }),
 });
@@ -97,11 +163,37 @@ export const updateGalleryItemSchema = z.object({
   body: z.object({
     imageUrl: z.string().min(1, 'An image URL is required').optional(),
     title: z.string().max(200).optional().nullable(),
+    titleAm: z.string().max(200).optional().nullable(),
     description: z.string().max(1000).optional().nullable(),
+    descriptionAm: z.string().max(1000).optional().nullable(),
     thumbUrl: z.union([z.literal(''), z.string()]).optional().nullable(),
     span: z.string().max(100).optional(),
+    group: z.enum(['MOMENTS', 'LIFE']).optional(),
     alt: z.string().max(200).optional().nullable(),
   }),
+});
+
+// ─── Testimonial Schemas ──────────────────────────────────────────────────────
+
+const testimonialBody = z.object({
+  name: z.string().min(2, 'Name is required').max(120),
+  role: z.string().max(160).optional().nullable(),
+  roleAm: z.string().max(160).optional().nullable(),
+  quote: z.string().min(4, 'Quote is required').max(1000),
+  quoteAm: z.string().max(1000).optional().nullable(),
+  imageUrl: z.union([z.literal(''), z.string()]).optional().nullable(),
+  rating: z.number().int().min(1).max(5).optional(),
+  order: z.number().int().min(0).optional(),
+  isActive: z.boolean().optional(),
+});
+
+export const createTestimonialSchema = z.object({
+  body: testimonialBody,
+});
+
+export const updateTestimonialSchema = z.object({
+  params: z.object({ id: z.string().uuid('Invalid testimonial ID') }),
+  body: testimonialBody.partial(),
 });
 
 // ─── Settings Schema ──────────────────────────────────────────────────────────

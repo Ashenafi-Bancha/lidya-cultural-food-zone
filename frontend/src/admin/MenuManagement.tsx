@@ -11,7 +11,7 @@ export function MenuManagement() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [form, setForm] = useState({
-    name: '', description: '', price: '', tag: '', categoryId: '', isAvailable: true, imageUrl: ''
+    name: '', nameAm: '', description: '', descriptionAm: '', price: '', tag: '', categoryId: '', isAvailable: true, imageUrl: ''
   });
 
   const { data: items, isLoading } = useQuery({
@@ -57,7 +57,7 @@ export function MenuManagement() {
   });
 
   const resetForm = () => {
-    setForm({ name: '', description: '', price: '', tag: '', categoryId: '', isAvailable: true, imageUrl: '' });
+    setForm({ name: '', nameAm: '', description: '', descriptionAm: '', price: '', tag: '', categoryId: '', isAvailable: true, imageUrl: '' });
     setEditingId(null);
     setShowForm(false);
   };
@@ -65,7 +65,9 @@ export function MenuManagement() {
   const handleEdit = (item: any) => {
     setForm({
       name: item.name,
+      nameAm: item.nameAm || '',
       description: item.description || '',
+      descriptionAm: item.descriptionAm || '',
       price: item.price,
       tag: item.tag || '',
       categoryId: item.categoryId || '',
@@ -156,7 +158,12 @@ export function MenuManagement() {
               <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Item Name</label>
               <input className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none" placeholder="e.g. Doro Wat" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
             </div>
-            
+
+            <div>
+              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Item Name (Amharic)</label>
+              <input dir="auto" className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none" placeholder="ለምሳሌ፦ ዶሮ ወጥ" value={form.nameAm} onChange={e => setForm({ ...form, nameAm: e.target.value })} />
+            </div>
+
             <div>
               <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Price</label>
               <input className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none" placeholder="e.g. 350 ETB" value={form.price} onChange={e => setForm({ ...form, price: e.target.value })} required />
@@ -166,7 +173,17 @@ export function MenuManagement() {
               <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Category</label>
               <select className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none" value={form.categoryId} onChange={e => setForm({ ...form, categoryId: e.target.value })} required>
                 <option value="">Select Category...</option>
-                {categories?.map((cat: any) => <option key={cat.id} value={cat.id}>{cat.name}</option>)}
+                {categories?.map((cat: any) =>
+                  cat.children && cat.children.length > 0 ? (
+                    <optgroup key={cat.id} label={cat.name}>
+                      {cat.children.map((child: any) => (
+                        <option key={child.id} value={child.id}>{child.name}</option>
+                      ))}
+                    </optgroup>
+                  ) : (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  )
+                )}
               </select>
             </div>
 
@@ -178,6 +195,11 @@ export function MenuManagement() {
             <div className="md:col-span-2">
               <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Description</label>
               <textarea className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none resize-none" rows={3} placeholder="A short description of the dish..." value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Description (Amharic)</label>
+              <textarea dir="auto" className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none resize-none" rows={3} placeholder="የምግቡ አጭር መግለጫ..." value={form.descriptionAm} onChange={e => setForm({ ...form, descriptionAm: e.target.value })} />
             </div>
 
             <div className="md:col-span-2 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-100">
@@ -202,7 +224,8 @@ export function MenuManagement() {
         </form>
       )}
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      {/* Desktop table (md and up) */}
+      <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -284,6 +307,64 @@ export function MenuManagement() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile card list (below md) */}
+      <div className="md:hidden space-y-3">
+        {isLoading ? (
+          <div className="bg-white rounded-xl border border-gray-200 p-6 text-center text-gray-500">Loading menu…</div>
+        ) : items && items.length > 0 ? (
+          items.map((item: any) => (
+            <div key={item.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-4 flex gap-4">
+              <div className="shrink-0">
+                {item.imageUrl ? (
+                  <img src={item.imageUrl} alt={item.name} className="w-16 h-16 rounded-lg object-cover border border-gray-200" />
+                ) : (
+                  <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center border border-gray-200">
+                    <ImageIcon className="w-6 h-6 text-gray-400" />
+                  </div>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-gray-900 truncate">{item.name}</h3>
+                    <p className="text-xs text-gray-500 mt-0.5">{item.category?.name || '—'}</p>
+                  </div>
+                  <span className="shrink-0 text-sm font-semibold text-gray-900">{item.price}</span>
+                </div>
+                <div className="flex items-center gap-2 mt-2 flex-wrap">
+                  {item.tag && <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[#c25e2a]/10 text-[#c25e2a]">{item.tag}</span>}
+                  <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium ${item.isAvailable ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'}`}>
+                    {item.isAvailable ? <CheckCircle2 className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                    {item.isAvailable ? 'Available' : 'Unavailable'}
+                  </span>
+                </div>
+                <div className="flex gap-2 mt-3">
+                  <button
+                    onClick={() => handleEdit(item)}
+                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                  >
+                    <Pencil className="w-4 h-4" />
+                    Edit
+                  </button>
+                  <button
+                    onClick={() => { if (confirm(`Are you sure you want to delete ${item.name}?`)) deleteMutation.mutate(item.id); }}
+                    className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
+            <p className="text-gray-500 font-medium">No menu items found.</p>
+            <p className="text-sm text-gray-400 mt-1">Click "Add New Item" to create one.</p>
+          </div>
+        )}
       </div>
     </div>
   );

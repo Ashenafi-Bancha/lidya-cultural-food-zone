@@ -88,8 +88,8 @@ export function ReservationManagement() {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+      {/* Desktop table (md and up) */}
+      <div className="hidden md:block bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead className="bg-gray-50 border-b border-gray-200">
@@ -215,6 +215,92 @@ export function ReservationManagement() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      {/* Mobile card list (below md) */}
+      <div className="md:hidden space-y-3">
+        {isLoading ? (
+          <div className="bg-white rounded-xl border border-gray-200 p-6 text-center text-gray-500">Loading reservations…</div>
+        ) : filteredReservations.length > 0 ? (
+          filteredReservations.map((r: any) => {
+            const hasSpecialRequest = r.specialRequest && r.specialRequest.trim().length > 0;
+            const StatusIcon = statusConfig[r.status]?.icon || Clock;
+            return (
+              <div key={r.id} className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <h3 className="font-semibold text-gray-900 truncate">{r.customerName}</h3>
+                    <p className="text-xs text-gray-500 mt-0.5">{r.phone}</p>
+                  </div>
+                  <span className={`shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusConfig[r.status]?.bg} ${statusConfig[r.status]?.text}`}>
+                    <StatusIcon className="w-3.5 h-3.5" />
+                    {r.status}
+                  </span>
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wide text-gray-400">Date & Time</p>
+                    <p className="text-gray-900 font-medium">{new Date(r.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                    <p className="text-gray-500 text-xs">{r.time} • {r.branch?.name || 'All Branches'}</p>
+                  </div>
+                  <div>
+                    <p className="text-[11px] uppercase tracking-wide text-gray-400">Party</p>
+                    <p className="text-gray-900 font-medium">{r.partySize} guests</p>
+                  </div>
+                </div>
+                {hasSpecialRequest && (
+                  <div className="mt-3 bg-amber-50/60 border border-amber-100 rounded-lg p-3 flex gap-2">
+                    <MessageSquare className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
+                    <div>
+                      <strong className="text-amber-900 block text-xs mb-0.5">Special Request</strong>
+                      <p className="text-amber-800/80 leading-relaxed text-xs">{r.specialRequest}</p>
+                    </div>
+                  </div>
+                )}
+                {(r.status === 'PENDING' || r.status === 'CONFIRMED') && (
+                  <div className="flex gap-2 mt-3">
+                    {r.status === 'PENDING' && (
+                      <>
+                        <button
+                          onClick={() => statusMutation.mutate({ id: r.id, status: 'CONFIRMED' })}
+                          disabled={statusMutation.isPending}
+                          className="flex-1 px-3 py-2 bg-emerald-600 text-white rounded text-xs font-medium hover:bg-emerald-700 transition-colors disabled:opacity-50"
+                        >
+                          Confirm
+                        </button>
+                        <button
+                          onClick={() => statusMutation.mutate({ id: r.id, status: 'CANCELLED' })}
+                          disabled={statusMutation.isPending}
+                          className="flex-1 px-3 py-2 bg-white border border-gray-300 text-gray-700 rounded text-xs font-medium hover:bg-gray-50 hover:text-red-600 transition-colors disabled:opacity-50"
+                        >
+                          Reject
+                        </button>
+                      </>
+                    )}
+                    {r.status === 'CONFIRMED' && (
+                      <button
+                        onClick={() => statusMutation.mutate({ id: r.id, status: 'COMPLETED' })}
+                        disabled={statusMutation.isPending}
+                        className="flex-1 px-3 py-2 bg-blue-600 text-white rounded text-xs font-medium hover:bg-blue-700 transition-colors disabled:opacity-50"
+                      >
+                        Mark Complete
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
+            );
+          })
+        ) : (
+          <div className="bg-white rounded-xl border border-gray-200 p-8 text-center">
+            <h3 className="text-sm font-medium text-gray-900">No reservations found</h3>
+            <p className="text-sm text-gray-500 mt-1">
+              {searchTerm || statusFilter !== 'ALL'
+                ? 'Try adjusting your filters or search term.'
+                : 'There are no reservations in the system yet.'}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import logoImg from "@/imports/lidya-logo2.PNG";
 import { Icon } from "../Icons";
 import { NAV_LINKS, goto } from "../../data/constants";
+import { useLang } from "../../../context/LanguageContext";
 
 const SOCIALS = [
   {
@@ -51,6 +52,7 @@ const SOCIALS = [
 ];
 
 export function Footer() {
+  const { t } = useLang();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
@@ -83,9 +85,9 @@ export function Footer() {
               </div>
             </div>
             <p className="text-sm leading-relaxed mt-4 mb-5 text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
-              Celebrating the culinary heritage of the Wolaita people — one unforgettable meal at a time.
+              {t("footer.brandTagline")}
             </p>
-            <p className="text-[9px] tracking-[0.3em] uppercase mb-3 font-medium text-[#e8dcc8]/45" style={{ fontFamily: "var(--font-lidya-sans)" }}>Follow Us</p>
+            <p className="text-[9px] tracking-[0.3em] uppercase mb-3 font-medium text-[#e8dcc8]/45" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.followUs")}</p>
             <div className="flex gap-2 flex-wrap">
               {SOCIALS.map(s => (
                 <motion.a
@@ -108,11 +110,11 @@ export function Footer() {
 
           {/* Navigate */}
           <div>
-            <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>Navigate</h4>
+            <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.navigate")}</h4>
             <ul className="space-y-3">
-              {NAV_LINKS.map(({ label, id }) => (
+              {NAV_LINKS.map(({ id }) => (
                 <li key={id}>
-                  <button onClick={() => goto(id)} className="text-sm hover:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-sans)" }}>{label}</button>
+                  <button onClick={() => goto(id)} className="text-sm hover:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t(`nav.${id}`)}</button>
                 </li>
               ))}
             </ul>
@@ -120,7 +122,7 @@ export function Footer() {
 
           {/* Branches */}
           <div>
-            <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>Our Branches</h4>
+            <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.ourBranches")}</h4>
             <div className="space-y-5 text-sm" style={{ fontFamily: "var(--font-lidya-sans)" }}>
               {[
                 { city: "Wolaita Sodo", addr: "Green Land Area, Wolaita Sodo", hrs: "7:00 AM – 11:00 PM" },
@@ -137,17 +139,17 @@ export function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>Stay Connected</h4>
+            <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.stayConnected")}</h4>
             <p className="text-sm leading-relaxed mb-5 text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
-              Cultural event updates, seasonal menus, and invitations to special evenings.
+              {t("footer.newsletterBody")}
             </p>
             {subscribed ? (
-              <p className="text-[#d4a843] text-sm" style={{ fontFamily: "var(--font-lidya-body)" }}>You are subscribed — thank you.</p>
+              <p className="text-[#d4a843] text-sm" style={{ fontFamily: "var(--font-lidya-body)" }}>{t("footer.subscribed")}</p>
             ) : (
               <form onSubmit={e => { e.preventDefault(); if (email) setSubscribed(true); }} className="flex w-full">
                 <input
                   type="email"
-                  placeholder="your@email.com"
+                  placeholder={t("footer.emailPlaceholder")}
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   className="min-w-0 flex-1 border px-3 py-3 text-xs focus:outline-none transition-colors text-[#f5efe6]"
@@ -161,7 +163,7 @@ export function Footer() {
                   whileTap={{ scale: 0.95 }}
                   transition={{ duration: 0.2 }}
                 >
-                  Join
+                  {t("footer.join")}
                 </motion.button>
               </form>
             )}
@@ -179,8 +181,8 @@ export function Footer() {
         </div>
 
         <div className="pt-6 flex flex-col md:flex-row items-center justify-between gap-3 text-[10px] text-[#e8dcc8]/28" style={{ fontFamily: "var(--font-lidya-sans)" }}>
-          <span>© 2024 Lidya Cultural Food Zone. All rights reserved.</span>
-          <span>Crafted with pride for the Wolaita, the Ethiopia and the world.</span>
+          <span>{t("footer.rights")}</span>
+          <span>{t("footer.crafted")}</span>
         </div>
       </div>
     </footer>

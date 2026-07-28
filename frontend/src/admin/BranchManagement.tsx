@@ -9,7 +9,7 @@ export function BranchManagement() {
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({
-    name: '', label: '', address: '', phone: '', email: '', workingHours: '', note: '', capacity: '50',
+    name: '', nameAm: '', label: '', labelAm: '', address: '', phone: '', email: '', workingHours: '', workingHoursAm: '', note: '', noteAm: '', capacity: '50',
   });
 
   const { data: branches, isLoading } = useQuery({
@@ -50,7 +50,7 @@ export function BranchManagement() {
   });
 
   const resetForm = () => {
-    setForm({ name: '', label: '', address: '', phone: '', email: '', workingHours: '', note: '', capacity: '50' });
+    setForm({ name: '', nameAm: '', label: '', labelAm: '', address: '', phone: '', email: '', workingHours: '', workingHoursAm: '', note: '', noteAm: '', capacity: '50' });
     setEditingId(null);
     setShowForm(false);
   };
@@ -58,12 +58,16 @@ export function BranchManagement() {
   const handleEdit = (branch: any) => {
     setForm({
       name: branch.name,
+      nameAm: branch.nameAm || '',
       label: branch.label || '',
+      labelAm: branch.labelAm || '',
       address: branch.address,
       phone: branch.phone,
       email: branch.email || '',
       workingHours: branch.workingHours || '',
+      workingHoursAm: branch.workingHoursAm || '',
       note: branch.note || '',
+      noteAm: branch.noteAm || '',
       capacity: String(branch.capacity ?? 50),
     });
     setEditingId(branch.id);
@@ -95,13 +99,17 @@ export function BranchManagement() {
       {showForm && (
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-[#2a1a0e]/10 p-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <input className="border rounded px-3 py-2 text-sm" placeholder="Branch Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
+          <input dir="auto" className="border rounded px-3 py-2 text-sm" placeholder="የቅርንጫፍ ስም (አማርኛ)" value={form.nameAm} onChange={e => setForm({ ...form, nameAm: e.target.value })} />
           <input className="border rounded px-3 py-2 text-sm" placeholder="Label (e.g., Flagship)" value={form.label} onChange={e => setForm({ ...form, label: e.target.value })} />
+          <input dir="auto" className="border rounded px-3 py-2 text-sm" placeholder="መለያ (አማርኛ)" value={form.labelAm} onChange={e => setForm({ ...form, labelAm: e.target.value })} />
           <input className="border rounded px-3 py-2 text-sm md:col-span-2" placeholder="Full Address" value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} required />
           <input className="border rounded px-3 py-2 text-sm" placeholder="Phone" value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} required />
           <input className="border rounded px-3 py-2 text-sm" placeholder="Email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} />
           <input className="border rounded px-3 py-2 text-sm" placeholder="Working Hours" value={form.workingHours} onChange={e => setForm({ ...form, workingHours: e.target.value })} />
+          <input dir="auto" className="border rounded px-3 py-2 text-sm" placeholder="የስራ ሰዓታት (አማርኛ)" value={form.workingHoursAm} onChange={e => setForm({ ...form, workingHoursAm: e.target.value })} />
           <input className="border rounded px-3 py-2 text-sm" placeholder="Capacity" type="number" value={form.capacity} onChange={e => setForm({ ...form, capacity: e.target.value })} />
           <textarea className="border rounded px-3 py-2 text-sm md:col-span-2 resize-none" rows={2} placeholder="Note / Description" value={form.note} onChange={e => setForm({ ...form, note: e.target.value })} />
+          <textarea dir="auto" className="border rounded px-3 py-2 text-sm md:col-span-2 resize-none" rows={2} placeholder="ማስታወሻ / መግለጫ (አማርኛ)" value={form.noteAm} onChange={e => setForm({ ...form, noteAm: e.target.value })} />
           <div className="md:col-span-2">
             <button
               type="submit"

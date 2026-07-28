@@ -11,7 +11,7 @@ export function GalleryManagement() {
   const [uploading, setUploading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({
-    title: '', description: '', imageUrl: '', span: 'col-span-1 row-span-1', alt: '',
+    title: '', titleAm: '', description: '', descriptionAm: '', imageUrl: '', span: 'col-span-1 row-span-1', group: 'MOMENTS', alt: '',
   });
 
   const { data: items, isLoading } = useQuery({
@@ -52,7 +52,7 @@ export function GalleryManagement() {
   });
 
   const resetForm = () => {
-    setForm({ title: '', description: '', imageUrl: '', span: 'col-span-1 row-span-1', alt: '' });
+    setForm({ title: '', titleAm: '', description: '', descriptionAm: '', imageUrl: '', span: 'col-span-1 row-span-1', group: 'MOMENTS', alt: '' });
     setEditingId(null);
     setShowForm(false);
   };
@@ -60,9 +60,12 @@ export function GalleryManagement() {
   const handleEdit = (item: any) => {
     setForm({
       title: item.title || '',
+      titleAm: item.titleAm || '',
       description: item.description || '',
+      descriptionAm: item.descriptionAm || '',
       imageUrl: item.imageUrl || '',
       span: item.span || 'col-span-1 row-span-1',
+      group: item.group || 'MOMENTS',
       alt: item.alt || '',
     });
     setEditingId(item.id);
@@ -156,7 +159,12 @@ export function GalleryManagement() {
             <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Title</label>
             <input className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none" placeholder="e.g. Traditional Coffee Ceremony" value={form.title} onChange={e => setForm({ ...form, title: e.target.value })} />
           </div>
-          
+
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Title (Amharic)</label>
+            <input dir="auto" className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none" placeholder="ለምሳሌ፦ ባህላዊ የቡና ሥነ-ሥርዓት" value={form.titleAm} onChange={e => setForm({ ...form, titleAm: e.target.value })} />
+          </div>
+
           <div>
             <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Alt Text (For SEO/Accessibility)</label>
             <input className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none" placeholder="e.g. Woman pouring coffee" value={form.alt} onChange={e => setForm({ ...form, alt: e.target.value })} />
@@ -169,9 +177,22 @@ export function GalleryManagement() {
             </select>
           </div>
 
+          <div>
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Section</label>
+            <select className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none" value={form.group} onChange={e => setForm({ ...form, group: e.target.value })}>
+              <option value="MOMENTS">Moments at Lidya</option>
+              <option value="LIFE">Life at Lidya</option>
+            </select>
+          </div>
+
           <div className="md:col-span-2">
             <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Description (Optional)</label>
             <textarea className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none resize-none" rows={2} placeholder="A short description..." value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
+          </div>
+
+          <div className="md:col-span-2">
+            <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Description (Amharic)</label>
+            <textarea dir="auto" className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none resize-none" rows={2} placeholder="አጭር መግለጫ..." value={form.descriptionAm} onChange={e => setForm({ ...form, descriptionAm: e.target.value })} />
           </div>
 
           <div className="md:col-span-2 flex justify-end pt-4 border-t border-gray-100">
@@ -205,9 +226,14 @@ export function GalleryManagement() {
                 <div>
                   <p className="text-sm font-semibold text-gray-900 truncate">{item.title || 'Untitled Image'}</p>
                   <p className="text-xs text-gray-500 truncate mt-0.5">{item.description || 'No description'}</p>
-                  <span className="inline-block mt-2 px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-medium tracking-wide mb-3">
-                    {spanOptions.find(opt => opt.value === item.span)?.label || '1×1'}
-                  </span>
+                  <div className="flex flex-wrap gap-1.5 mt-2 mb-3">
+                    <span className="inline-block px-2 py-0.5 bg-gray-100 text-gray-600 rounded text-[10px] font-medium tracking-wide">
+                      {spanOptions.find(opt => opt.value === item.span)?.label || '1×1'}
+                    </span>
+                    <span className="inline-block px-2 py-0.5 bg-[#c25e2a]/10 text-[#c25e2a] rounded text-[10px] font-medium tracking-wide">
+                      {item.group === 'LIFE' ? 'Life at Lidya' : 'Moments at Lidya'}
+                    </span>
+                  </div>
                 </div>
                 <div className="flex items-center gap-2 mt-2 pt-3 border-t border-gray-100">
                   <button

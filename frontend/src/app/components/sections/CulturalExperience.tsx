@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Reveal } from "../Reveal";
 import { EXPERIENCES } from "../../data/constants";
+import { useLang } from "../../../context/LanguageContext";
 
 const SLIDE_DURATION = 4000; // ms per card
 
@@ -21,6 +22,7 @@ const slideVariants = {
 };
 
 export function CulturalExperience() {
+  const { t } = useLang();
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
 
@@ -54,14 +56,14 @@ export function CulturalExperience() {
             className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-3"
             style={{ fontFamily: "var(--font-lidya-sans)" }}
           >
-            Beyond the Plate
+            {t("experience.eyebrow")}
           </p>
           <h2
             className="text-4xl md:text-5xl font-bold text-[#1e1008] leading-tight"
             style={{ fontFamily: "var(--font-lidya-serif)" }}
           >
-            The Full Cultural{" "}
-            <em className="text-[#c25e2a] not-italic">Experience</em>
+            {t("experience.titlePre")}{" "}
+            <em className="text-[#c25e2a] not-italic">{t("experience.titleEm")}</em>
           </h2>
         </Reveal>
 
@@ -105,7 +107,7 @@ export function CulturalExperience() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, delay: 0.25 }}
                 >
-                  {exp.title}
+                  {t(`experience.cards.${current}.title`)}
                 </motion.h3>
                 <motion.p
                   className="text-[#7a5c3a] text-sm leading-relaxed"
@@ -114,7 +116,7 @@ export function CulturalExperience() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.55, delay: 0.35 }}
                 >
-                  {exp.desc}
+                  {t(`experience.cards.${current}.desc`)}
                 </motion.p>
               </motion.div>
             </AnimatePresence>
@@ -206,13 +208,13 @@ export function CulturalExperience() {
                 className="text-[#1e1008] font-semibold text-xl mb-2"
                 style={{ fontFamily: "var(--font-lidya-serif)" }}
               >
-                {item.title}
+                {t(`experience.cards.${i}.title`)}
               </h3>
               <p
                 className="text-[#7a5c3a] text-sm leading-relaxed"
                 style={{ fontFamily: "var(--font-lidya-body)" }}
               >
-                {item.desc}
+                {t(`experience.cards.${i}.desc`)}
               </p>
             </motion.div>
           ))}
@@ -230,7 +232,7 @@ export function CulturalExperience() {
             className="text-[10px] tracking-[0.25em] uppercase"
             style={{ fontFamily: "var(--font-lidya-sans)" }}
           >
-            Scroll to explore
+            {t("experience.scrollHint")}
           </span>
           <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
             <path d="M1 5h14M10 1l4 4-4 4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />

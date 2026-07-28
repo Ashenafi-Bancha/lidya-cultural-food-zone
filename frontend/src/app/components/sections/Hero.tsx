@@ -4,8 +4,10 @@ import heroBg from "@/imports/liday-life1.jpg";
 import { Icon } from "../Icons";
 import { HeroDecoration } from "../HeroDecoration";
 import { goto } from "../../data/constants";
+import { useLang } from "../../../context/LanguageContext";
 
 export function Hero() {
+  const { t } = useLang();
   const { scrollY } = useScroll();
   const fade = useTransform(scrollY, [0, 500], [1, 0]);
 
@@ -134,7 +136,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.25 }}
           >
-            Wolaita Sodo · Addis Ababa · Est. 2012
+            {t("hero.eyebrow")}
           </motion.p>
 
           {/* Headline */}
@@ -145,9 +147,9 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
           >
-            A Taste of<br />
-            <em className="text-[#d4a843] not-italic">Wolaita</em><br />
-            Cultural Food
+            {t("hero.headlineTop")}<br />
+            <em className="text-[#d4a843] not-italic">{t("hero.headlineMid")}</em><br />
+            {t("hero.headlineBottom")}
           </motion.h1>
 
           {/* Body */}
@@ -158,9 +160,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.58 }}
           >
-            Where ancient Wolaita recipes meet gracious hospitality. Lidya
-            Cultural Food Zone preserves the living culinary traditions of the
-            Wolaita people — one unforgettable meal at a time.
+            {t("hero.body")}
           </motion.p>
 
           {/* Tagline */}
@@ -171,7 +171,7 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.65 }}
           >
-            ✦ Wolaita Sodo · Addis Ababa ✦
+            {t("hero.tagline")}
           </motion.p>
 
           {/* CTA buttons */}
@@ -189,7 +189,7 @@ export function Hero() {
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.2 }}
             >
-              Reserve a Table
+              {t("common.reserveTable")}
             </motion.button>
             <motion.a
               href="tel:+251920994499"
@@ -203,7 +203,7 @@ export function Hero() {
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.2 }}
             >
-              <Icon.Phone /> Call Us Now
+              <Icon.Phone /> {t("common.callUsNow")}
             </motion.a>
           </motion.div>
 
@@ -219,7 +219,7 @@ export function Hero() {
               className="text-[10px] tracking-[0.3em] uppercase"
               style={{ fontFamily: "var(--font-lidya-sans)" }}
             >
-              Scroll to explore
+              {t("hero.scrollHint")}
             </span>
           </motion.div>
         </motion.div>

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Reveal } from "../Reveal";
 import { OptimizedImage } from "../OptimizedImage";
-import { MENU_CATEGORIES, MENU_ITEMS as FALLBACK_MENU_ITEMS } from "../../data/constants";
 import { useMenu, useCategories } from "../../../hooks/useMenu";
+import { useLang } from "../../../context/LanguageContext";
 
 const TAG_BG: Record<string, string> = {
   Signature: "#c25e2a",
@@ -15,35 +15,56 @@ const TAG_BG: Record<string, string> = {
 };
 
 export function MenuSection() {
-  const [active, setActive] = useState("All");
-  
+  // Two-level category state: a top-level tab (e.g. "Drinks") and an optional
+  // sub-category (e.g. "Hot Drinks") shown only for parents that have children.
+  const { t, tf } = useLang();
+  const [activeTop, setActiveTop] = useState("All");
+  const [activeSub, setActiveSub] = useState<string | null>(null);
+
   const { data: menuData, isLoading: isLoadingMenu, isError: isErrorMenu } = useMenu();
   const { data: catData, isLoading: isLoadingCats } = useCategories();
 
-  // Use API data if available, otherwise fallback to static constants
-  const items = menuData && menuData.length > 0 ? menuData : FALLBACK_MENU_ITEMS;
-  
-  // Create category list dynamically if API has them, else use static list
-  let categories = [...MENU_CATEGORIES];
-  if (catData && catData.length > 0) {
-    categories = ["All", ...catData.sort((a, b) => a.order - b.order).map(c => c.name)];
-  }
+  // API is the source of truth — no fabricated fallback content.
+  const items = menuData ?? [];
 
-  const filtered = active === "All" 
-    ? items 
-    : items.filter(i => {
-        // Handle both api shape (category.name) and static shape (cat)
-        const catName = (i as any).category?.name || (i as any).cat;
-        return catName === active;
+  const tree = [...(catData ?? [])].sort((a, b) => a.order - b.order);
+  const topTabs = ["All", ...tree.map(c => c.name)];
+  const activeTopNode = tree.find(t => t.name === activeTop);
+  const subTabs = activeTopNode?.children ?? [];
+
+  const catNameOf = (i: any) => i.category?.name || i.cat;
+
+  const selectTop = (name: string) => {
+    setActiveTop(name);
+    setActiveSub(null);
+  };
+
+  let filtered = items;
+  if (activeTop !== "All") {
+    if (activeSub) {
+      // A specific sub-category is selected.
+      filtered = items.filter(i => catNameOf(i) === activeSub);
+    } else if (subTabs.length > 0) {
+      // A parent with children — show items across all its children (plus any
+      // assigned directly to the parent).
+      const childNames = subTabs.map(c => c.name);
+      filtered = items.filter(i => {
+        const n = catNameOf(i);
+        return childNames.includes(n) || n === activeTop;
       });
+    } else {
+      // A leaf top-level category.
+      filtered = items.filter(i => catNameOf(i) === activeTop);
+    }
+  }
 
   return (
     <section id="menu" className="bg-[#1e1008] py-16 md:py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
         <Reveal className="mb-12 text-center">
-          <p className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>Lidya Cultural Food Zone</p>
+          <p className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("menu.eyebrow")}</p>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#f5efe6] leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>
-            Our <em className="text-[#d4a843]">Menu</em>
+            {t("menu.titlePre")} <em className="text-[#d4a843]">{t("menu.titleEm")}</em>
           </h2>
         </Reveal>
 
@@ -54,23 +75,61 @@ export function MenuSection() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-wrap justify-center gap-2 mb-10">
-            {categories.map(cat => (
-              <motion.button
-                key={cat}
-                onClick={() => setActive(cat)}
-                className="px-4 py-2 text-[10px] tracking-[0.15em] uppercase border transition-colors duration-200"
-                style={{
-                  fontFamily: "var(--font-lidya-sans)",
-                  background: active === cat ? "#c25e2a" : "transparent",
-                  borderColor: active === cat ? "#c25e2a" : "rgba(232,220,200,0.18)",
-                  color: active === cat ? "#faf5ee" : "rgba(232,220,200,0.55)",
-                }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {cat}
-              </motion.button>
-            ))}
+          <div className="mb-10">
+            {/* Top-level category tabs */}
+            <div className="flex flex-wrap justify-center gap-2">
+              {topTabs.map(cat => (
+                <motion.button
+                  key={cat}
+                  onClick={() => selectTop(cat)}
+                  className="px-4 py-2 text-[10px] tracking-[0.15em] uppercase border transition-colors duration-200"
+                  style={{
+                    fontFamily: "var(--font-lidya-sans)",
+                    background: activeTop === cat ? "#c25e2a" : "transparent",
+                    borderColor: activeTop === cat ? "#c25e2a" : "rgba(232,220,200,0.18)",
+                    color: activeTop === cat ? "#faf5ee" : "rgba(232,220,200,0.55)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {cat === "All" ? t("menu.all") : (tf(tree.find(c => c.name === cat), "name") || cat)}
+                </motion.button>
+              ))}
+            </div>
+
+            {/* Sub-category tabs (only for a selected parent that has children) */}
+            {subTabs.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-2 mt-3">
+                <motion.button
+                  onClick={() => setActiveSub(null)}
+                  className="px-3 py-1.5 text-[9px] tracking-[0.15em] uppercase rounded-full border transition-colors duration-200"
+                  style={{
+                    fontFamily: "var(--font-lidya-sans)",
+                    background: activeSub === null ? "#d4a843" : "transparent",
+                    borderColor: activeSub === null ? "#d4a843" : "rgba(212,168,67,0.35)",
+                    color: activeSub === null ? "#1e1008" : "rgba(212,168,67,0.75)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {t("menu.allPrefix")} {tf(activeTopNode, "name") || activeTop}
+                </motion.button>
+                {subTabs.map(sub => (
+                  <motion.button
+                    key={sub.id}
+                    onClick={() => setActiveSub(sub.name)}
+                    className="px-3 py-1.5 text-[9px] tracking-[0.15em] uppercase rounded-full border transition-colors duration-200"
+                    style={{
+                      fontFamily: "var(--font-lidya-sans)",
+                      background: activeSub === sub.name ? "#d4a843" : "transparent",
+                      borderColor: activeSub === sub.name ? "#d4a843" : "rgba(212,168,67,0.35)",
+                      color: activeSub === sub.name ? "#1e1008" : "rgba(212,168,67,0.75)",
+                    }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {tf(sub, "name")}
+                  </motion.button>
+                ))}
+              </div>
+            )}
           </div>
         )}
 
@@ -87,6 +146,10 @@ export function MenuSection() {
                   </div>
                 </div>
               ))}
+            </div>
+          ) : items.length === 0 ? (
+            <div className="col-span-full py-16 text-center text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
+              {isErrorMenu ? t("menu.emptyError") : t("menu.emptyComingSoon")}
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -126,16 +189,16 @@ export function MenuSection() {
                   </div>
                   <div className="p-5 flex-1 flex flex-col">
                     <div className="flex items-start justify-between gap-2 mb-2">
-                      <h3 className="text-[#f5efe6] font-semibold text-lg leading-snug" style={{ fontFamily: "var(--font-lidya-serif)" }}>{item.name}</h3>
+                      <h3 className="text-[#f5efe6] font-semibold text-lg leading-snug" style={{ fontFamily: "var(--font-lidya-serif)" }}>{tf(item, "name")}</h3>
                       <span className="text-[#d4a843] text-sm font-medium shrink-0 mt-0.5" style={{ fontFamily: "var(--font-lidya-sans)" }}>{item.price}</span>
                     </div>
-                    <p className="text-sm leading-relaxed text-[#e8dcc8]/50 mt-auto" style={{ fontFamily: "var(--font-lidya-body)" }}>{item.description || (item as any).desc}</p>
+                    <p className="text-sm leading-relaxed text-[#e8dcc8]/50 mt-auto" style={{ fontFamily: "var(--font-lidya-body)" }}>{tf(item, "description")}</p>
                   </div>
                 </motion.div>
               ))}
               {filtered.length === 0 && (
                 <div className="col-span-full py-10 text-center text-[#e8dcc8]/50">
-                  No items found in this category.
+                  {t("menu.noneInCategory")}
                 </div>
               )}
             </div>

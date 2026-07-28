@@ -1,6 +1,7 @@
 ﻿import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Icon } from "./Icons";
+import { useLang } from "../../context/LanguageContext";
 
 const FACEBOOK_URL = "https://web.facebook.com/leta.lemma.1";
 const PHONE_NUMBER  = "0920994499";
@@ -36,6 +37,7 @@ interface Props {
 }
 
 export function MobileActionBar({ isMenuOpen }: Props) {
+  const { t } = useLang();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -89,7 +91,7 @@ export function MobileActionBar({ isMenuOpen }: Props) {
               </span>
               <span className="flex flex-col leading-none">
                 <span className="text-[8px] tracking-[0.22em] uppercase text-[#1a0e04]/65 font-semibold">
-                  Call us
+                  {t("contact.callUs")}
                 </span>
                 <span className="text-[13px] font-extrabold text-[#1a0e04] tracking-tight">
                   {PHONE_NUMBER}
@@ -117,7 +119,7 @@ export function MobileActionBar({ isMenuOpen }: Props) {
               <FbIcon />
               <span className="flex flex-col leading-none">
                 <span className="text-[8px] tracking-[0.18em] uppercase text-white/65 font-semibold">
-                  Follow us
+                  {t("footer.followUs")}
                 </span>
                 <span className="text-[12px] font-bold text-white">
                   Facebook

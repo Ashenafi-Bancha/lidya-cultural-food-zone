@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import { reservationService } from '../services/reservation.service';
 import { menuService } from '../services/menu.service';
 import { contactService } from '../services/contact.service';
-import { CalendarClock, CalendarCheck, Utensils, MessageSquare, TrendingUp, Clock } from 'lucide-react';
+import { CalendarClock, CalendarCheck, Utensils, MessageSquare, TrendingUp, Clock, Users } from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 
 export function Dashboard() {

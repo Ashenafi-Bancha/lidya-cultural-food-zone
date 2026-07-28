@@ -38,19 +38,24 @@ model RefreshToken {
 }
 
 model Branch {
-  id           String  @id @default(uuid())
-  name         String
-  label        String?
-  address      String
-  phone        String
-  email        String?
-  workingHours String // E.g., "Mon-Sun: 7:00 AM - 11:00 PM"
-  note         String?
-  imageUrl     String?
-  capacity     Int     @default(50)
+  id             String  @id @default(uuid())
+  name           String
+  nameAm         String? // Amharic translation
+  label          String?
+  labelAm        String? // Amharic translation
+  address        String
+  phone          String
+  email          String?
+  workingHours   String // E.g., "Mon-Sun: 7:00 AM - 11:00 PM"
+  workingHoursAm String? // Amharic translation
+  note           String?
+  noteAm         String? // Amharic translation
+  imageUrl       String?
+  capacity       Int     @default(50)
 
-  reservations Reservation[]
-  menuItems    MenuItem[]
+  reservations  Reservation[]
+  menuItems     MenuItem[]
+  eventBookings EventBooking[]
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -58,9 +63,16 @@ model Branch {
 }
 
 model Category {
-  id    String @id @default(uuid())
-  name  String @unique
-  order Int    @default(0)
+  id     String  @id @default(uuid())
+  name   String  @unique
+  nameAm String? // Amharic translation
+  order  Int     @default(0)
+
+  // Self-relation for one level of nesting (e.g. "Drinks" > "Hot Drinks").
+  // Top-level categories have parentId = null.
+  parentId String?
+  parent   Category?  @relation("CategoryChildren", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryChildren")
 
   menuItems MenuItem[]
 
@@ -70,10 +82,12 @@ model Category {
 }
 
 model MenuItem {
-  id          String  @id @default(uuid())
-  name        String
-  description String?
-  price       String
+  id            String  @id @default(uuid())
+  name          String
+  nameAm        String? // Amharic translation
+  description   String?
+  descriptionAm String? // Amharic translation
+  price         String
   imageUrl    String?
   tag         String? // e.g. "Signature", "Spicy"
   isAvailable Boolean @default(true)
@@ -91,13 +105,16 @@ model MenuItem {
 }
 
 model GalleryItem {
-  id          String  @id @default(uuid())
-  title       String?
-  description String?
-  imageUrl    String
-  thumbUrl    String?
-  span        String  @default("col-span-1 row-span-1") // For UI grid
-  alt         String?
+  id            String  @id @default(uuid())
+  title         String?
+  titleAm       String? // Amharic translation
+  description   String?
+  descriptionAm String? // Amharic translation
+  imageUrl      String
+  thumbUrl      String?
+  span          String  @default("col-span-1 row-span-1") // For UI grid
+  group         String  @default("MOMENTS") // Section grouping: MOMENTS | LIFE
+  alt           String?
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
@@ -131,6 +148,39 @@ model Reservation {
   deletedAt DateTime?
 }
 
+enum EventType {
+  WEDDING
+  ENGAGEMENT
+  HALL_RENTAL
+  CATERING
+  CORPORATE
+  BIRTHDAY
+  VIP
+  VVIP
+  OTHER
+}
+
+// Bookings/inquiries for events & premium services (weddings, catering,
+// hall rental, VIP/VVIP experiences). Separate from table Reservations.
+model EventBooking {
+  id           String            @id @default(uuid())
+  customerName String
+  phone        String
+  email        String?
+  serviceType  EventType
+  eventDate    String // YYYY-MM-DD (preferred date)
+  guestCount   Int?
+  message      String?
+  status       ReservationStatus @default(PENDING)
+
+  branchId String?
+  branch   Branch? @relation(fields: [branchId], references: [id])
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
 enum ContactStatus {
   UNREAD
   READ
@@ -145,6 +195,24 @@ model ContactMessage {
   subject String?
   message String
   status  ContactStatus @default(UNREAD)
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+}
+
+// Guest testimonials shown in the "What Our Guests Say" section.
+model Testimonial {
+  id       String  @id @default(uuid())
+  name     String
+  role     String? // e.g. "Food Writer, Addis Fortune"
+  roleAm   String?
+  quote    String
+  quoteAm  String?
+  imageUrl String? // guest photo; falls back to initials avatar if empty
+  rating   Int     @default(5)
+  order    Int     @default(0)
+  isActive Boolean @default(true)
 
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

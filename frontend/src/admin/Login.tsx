@@ -3,11 +3,14 @@ import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { useAuth } from '../context/AuthContext';
 import { authService } from '../services/auth.service';
+import { useNoIndex } from '../hooks/useNoIndex';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
 import logoImg from '../imports/lidya-logo2.PNG';
 
 export function Login() {
+  useNoIndex();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);

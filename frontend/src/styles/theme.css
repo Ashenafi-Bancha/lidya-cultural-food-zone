@@ -131,9 +131,9 @@
   --color-lidya-brown:  #7a5c3a;
 
   /* ── Lidya font stacks ────────────────────────────────────────── */
-  --font-lidya-serif: 'Playfair Display', serif;
-  --font-lidya-body:  'Fraunces', serif;
-  --font-lidya-sans:  'Manrope', sans-serif;
+  --font-lidya-serif: 'Playfair Display', 'Noto Serif Ethiopic', serif;
+  --font-lidya-body:  'Fraunces', 'Noto Serif Ethiopic', serif;
+  --font-lidya-sans:  'Manrope', 'Noto Sans Ethiopic', sans-serif;
 }
 
 @layer base {

@@ -4,9 +4,11 @@ import { useMutation } from "@tanstack/react-query";
 import { Reveal } from "../Reveal";
 import { Icon } from "../Icons";
 import { contactService } from "../../../services/contact.service";
+import { useLang } from "../../../context/LanguageContext";
 import { toast } from "sonner";
 
 export function Contact() {
+  const { t } = useLang();
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [sent, setSent] = useState(false);
 
@@ -14,12 +16,12 @@ export function Contact() {
     mutationFn: () => contactService.sendMessage(form as any),
     onSuccess: () => {
       setSent(true);
-      toast.success("Message sent! We'll reply within 24 hours.");
+      toast.success(t("contact.toastSuccess"));
       setForm({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setSent(false), 4000);
     },
     onError: (error: any) => {
-      toast.error(error.response?.data?.message || "Could not send message. Please try again.");
+      toast.error(error.response?.data?.message || t("contact.toastError"));
     },
   });
 
@@ -35,9 +37,9 @@ export function Contact() {
     <section id="contact" className="bg-[#faf5ee] py-16 md:py-24 lg:py-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
         <Reveal className="mb-14 text-center">
-          <p className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>Get in Touch</p>
+          <p className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("contact.eyebrow")}</p>
           <h2 className="text-4xl md:text-5xl font-bold text-[#1e1008] leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>
-            We would love<br /><em className="text-[#c25e2a]">to hear from you</em>
+            {t("contact.titlePre")}<br /><em className="text-[#c25e2a]">{t("contact.titleEm")}</em>
           </h2>
         </Reveal>
 
@@ -45,12 +47,12 @@ export function Contact() {
           {/* Left info */}
           <Reveal className="lg:col-span-2 flex flex-col gap-8">
             <p className="text-sm leading-relaxed text-[#1e1008]/55" style={{ fontFamily: "var(--font-lidya-body)" }}>
-              For reservations, private events, catering, media requests, or to share your Lidya experience — we respond within 24 hours.
+              {t("contact.body")}
             </p>
             {[
-              { I: Icon.Phone, l: "Call us",  v1: "0920994499",                href1: "tel:+251920994499",           v2: "",                          href2: null },
-              { I: Icon.Mail,  l: "Email us", v1: "letusletalemma@gmail.com", href1: "mailto:letusletalemma@gmail.com", v2: "", href2: null },
-              { I: Icon.MapPin,l: "Visit us", v1: "Green Land Area, Wolaita Sodo", href1: null,                      v2: "Lebu Area, Addis Ababa",     href2: null },
+              { I: Icon.Phone, l: t("contact.callUs"),  v1: "0920994499",                href1: "tel:+251920994499",           v2: "",                          href2: null },
+              { I: Icon.Mail,  l: t("contact.emailUs"), v1: "letusletalemma@gmail.com", href1: "mailto:letusletalemma@gmail.com", v2: "", href2: null },
+              { I: Icon.MapPin,l: t("contact.visitUs"), v1: "Green Land Area, Wolaita Sodo", href1: null,                      v2: "Lebu Area, Addis Ababa",     href2: null },
             ].map(({ I, l, v1, href1, v2, href2 }) => (
               <div key={l} className="flex gap-4">
                 <div className="w-10 h-10 flex items-center justify-center shrink-0 mt-0.5 text-[#c25e2a]" style={{ background: "rgba(194,94,42,0.1)" }}><I /></div>
@@ -83,8 +85,8 @@ export function Contact() {
                   transition={{ duration: 0.3 }}
                 >
                   <div className="text-3xl text-[#d4a843] mb-3" style={{ fontFamily: "var(--font-lidya-serif)" }}>✦</div>
-                  <h3 className="text-[#1e1008] text-xl font-bold mb-2" style={{ fontFamily: "var(--font-lidya-serif)" }}>Message Sent</h3>
-                  <p className="text-sm text-[#7a5c3a]" style={{ fontFamily: "var(--font-lidya-body)" }}>Thank you for reaching out. We will be in touch within 24 hours.</p>
+                  <h3 className="text-[#1e1008] text-xl font-bold mb-2" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("contact.sentTitle")}</h3>
+                  <p className="text-sm text-[#7a5c3a]" style={{ fontFamily: "var(--font-lidya-body)" }}>{t("contact.sentBody")}</p>
                 </motion.div>
               ) : (
                 <motion.form
@@ -97,11 +99,11 @@ export function Contact() {
                   transition={{ duration: 0.25 }}
                 >
                   <div className="grid grid-cols-2 gap-4">
-                    <input className={`${inputCls} col-span-2 sm:col-span-1`} style={inputStyle} placeholder="Your Name"     value={form.name}    onChange={e => setForm({ ...form, name: e.target.value })}    required />
-                    <input type="email" className={`${inputCls} col-span-2 sm:col-span-1`} style={inputStyle} placeholder="Email Address" value={form.email}   onChange={e => setForm({ ...form, email: e.target.value })}   required />
+                    <input aria-label={t("contact.yourName")} autoComplete="name" maxLength={100} className={`${inputCls} col-span-2 sm:col-span-1`} style={inputStyle} placeholder={t("contact.yourName")}     value={form.name}    onChange={e => setForm({ ...form, name: e.target.value })}    required />
+                    <input type="email" aria-label={t("contact.emailAddress")} autoComplete="email" maxLength={254} className={`${inputCls} col-span-2 sm:col-span-1`} style={inputStyle} placeholder={t("contact.emailAddress")} value={form.email}   onChange={e => setForm({ ...form, email: e.target.value })}   required />
                   </div>
-                  <input className={inputCls} style={inputStyle} placeholder="Subject"      value={form.subject}  onChange={e => setForm({ ...form, subject: e.target.value })} />
-                  <textarea className={`${inputCls} resize-none`} style={inputStyle} rows={5} placeholder="Your message…" value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} required />
+                  <input aria-label={t("contact.subject")} maxLength={150} className={inputCls} style={inputStyle} placeholder={t("contact.subject")}      value={form.subject}  onChange={e => setForm({ ...form, subject: e.target.value })} />
+                  <textarea aria-label={t("contact.message")} minLength={10} maxLength={2000} className={`${inputCls} resize-none`} style={inputStyle} rows={5} placeholder={t("contact.message")} value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} required />
                   <motion.button
                     type="submit"
                     disabled={mutation.isPending}
@@ -114,10 +116,10 @@ export function Contact() {
                     {mutation.isPending ? (
                       <>
                         <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
-                        Sending…
+                        {t("contact.sending")}
                       </>
                     ) : (
-                      <><Icon.Send /> Send Message</>
+                      <><Icon.Send /> {t("contact.send")}</>
                     )}
                   </motion.button>
                 </motion.form>

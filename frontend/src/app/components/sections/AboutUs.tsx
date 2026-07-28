@@ -3,15 +3,24 @@ import photo4 from "@/imports/image-4.png";
 import { motion } from "motion/react";
 import { Reveal } from "../Reveal";
 import { STATS } from "../../data/constants";
+import { useLang } from "../../../context/LanguageContext";
+
+const STAT_LABEL_KEY: Record<string, string> = {
+  "Years of Experience": "about.statExperience",
+  "Signature Dishes": "about.statDishes",
+  "Happy Guests": "about.statGuests",
+  "Branches": "about.statBranches",
+};
 
 export function AboutUs() {
+  const { t } = useLang();
   return (
     <section id="about-us" className="bg-[#f5efe6] py-16 md:py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
         <Reveal className="mb-16 text-center">
-          <p className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>Our Heritage</p>
+          <p className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("about.eyebrow")}</p>
           <h2 className="text-4xl md:text-5xl font-bold text-[#1e1008] leading-tight mx-auto" style={{ fontFamily: "var(--font-lidya-serif)" }}>
-            Rooted in Wolaita,<br /><em>Shared with the World</em>
+            {t("about.titleTop")}<br /><em>{t("about.titleEm")}</em>
           </h2>
         </Reveal>
 
@@ -31,7 +40,7 @@ export function AboutUs() {
               <div className="absolute -bottom-4 -right-0 sm:-right-4 w-full h-full border-2 border-[#d4a843]/40 pointer-events-none" />
               <div className="absolute top-4 sm:top-6 right-0 sm:-right-5 bg-[#c25e2a] text-[#faf5ee] p-4 sm:p-5 text-center shadow-xl">
                 <div className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: "var(--font-lidya-serif)" }}>12</div>
-                <div className="text-[9px] tracking-[0.28em] uppercase mt-0.5" style={{ fontFamily: "var(--font-lidya-sans)" }}>Years</div>
+                <div className="text-[9px] tracking-[0.28em] uppercase mt-0.5" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("about.years")}</div>
               </div>
             </div>
           </Reveal>
@@ -39,17 +48,17 @@ export function AboutUs() {
           <Reveal delay={0.18}>
             <div className="flex flex-col gap-5">
               <p className="text-[#1e1008]/80 text-lg leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>
-                Lidya Cultural Food Zone was founded in the heart of Wolaita Sodo by Lidya Lemma and Leta Lemma — driven by one conviction: that Wolaita cuisine is one of Ethiopia's greatest unsung treasures and deserves a home worthy of its history.
+                {t("about.p1")}
               </p>
               <p className="text-[#1e1008]/65 leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>
-                What began as a family dream has grown into a cultural institution. Every dish we serve carries memory — in every bowl of kitfo, every smoke rising from the coffee ceremony. We do not just cook; we preserve.
+                {t("about.p2")}
               </p>
               <p className="text-[#1e1008]/65 leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>
-                Our Addis Ababa branch in Lebu Area carries that same mission to the capital — an open invitation for the city to taste what the south has always known.
+                {t("about.p3")}
               </p>
               <div className="pt-4 border-t border-[#1e1008]/10">
-                <p className="text-[#c25e2a] italic text-lg" style={{ fontFamily: "var(--font-lidya-body)" }}>"Food is not just nourishment — it is our most honest autobiography."</p>
-                <p className="text-[#7a5c3a] text-sm mt-2" style={{ fontFamily: "var(--font-lidya-sans)" }}>— Lidya Lemma &amp; Leta Lemma, Founders</p>
+                <p className="text-[#c25e2a] italic text-lg" style={{ fontFamily: "var(--font-lidya-body)" }}>{t("about.quote")}</p>
+                <p className="text-[#7a5c3a] text-sm mt-2" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("about.quoteAuthor")}</p>
               </div>
             </div>
           </Reveal>
@@ -66,7 +75,7 @@ export function AboutUs() {
               >
                 <div className="flex justify-center mb-3 text-[#c25e2a] text-xl"><I /></div>
                 <div className="text-4xl font-bold text-[#1e1008] mb-1" style={{ fontFamily: "var(--font-lidya-serif)" }}>{value}</div>
-                <div className="text-[10px] tracking-[0.2em] text-[#7a5c3a] uppercase" style={{ fontFamily: "var(--font-lidya-sans)" }}>{label}</div>
+                <div className="text-[10px] tracking-[0.2em] text-[#7a5c3a] uppercase" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t(STAT_LABEL_KEY[label] || label)}</div>
               </motion.div>
             ))}
           </div>

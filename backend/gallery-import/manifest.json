@@ -1,0 +1,62 @@
+[
+  {
+    "file": "addisababa-branch-opening-cermony.JPG",
+    "title": "Addis Ababa Branch Opening",
+    "titleAm": "የአዲስ አበባ ቅርንጫፍ ምረቃ",
+    "description": "The grand opening of our Addis Ababa branch — carrying the warmth of Wolaita cuisine to the capital.",
+    "descriptionAm": "የአዲስ አበባ ቅርንጫፋችን ታላቅ ምረቃ — የወላይታን ምግብ ሙቀት ወደ ዋና ከተማ ማምጣት።",
+    "span": "col-span-2 row-span-2",
+    "group": "MOMENTS",
+    "alt": "Addis Ababa branch opening ceremony at Lidya Cultural Food Zone"
+  },
+  {
+    "file": "gallery.JPG",
+    "title": "Inside Lidya",
+    "titleAm": "ልዲያ ውስጥ",
+    "description": "A warm, welcoming space wrapped in Wolaita colour and hospitality.",
+    "descriptionAm": "በወላይታ ቀለምና እንግዳ ተቀባይነት የተከበበ ሞቅ ያለ ቦታ።",
+    "span": "col-span-2 row-span-1",
+    "group": "MOMENTS",
+    "alt": "Interior dining hall at Lidya Cultural Food Zone"
+  },
+  {
+    "file": "gallery2.JPG",
+    "title": "A Cultural Setting",
+    "titleAm": "ባህላዊ ድባብ",
+    "description": "Every corner tells a story of Wolaita heritage and pride.",
+    "descriptionAm": "እያንዳንዱ ጥግ የወላይታን ቅርስና ኩራት ታሪክ ይተርካል።",
+    "span": "col-span-1 row-span-1",
+    "group": "MOMENTS",
+    "alt": "Cultural decor and setting at Lidya"
+  },
+  {
+    "file": "welcoming.JPG",
+    "title": "A Warm Welcome",
+    "titleAm": "ሞቅ ያለ አቀባበል",
+    "description": "Genuine Wolaita hospitality, offered from the heart.",
+    "descriptionAm": "ከልብ የሚቀርብ እውነተኛ የወላይታ እንግዳ ተቀባይነት።",
+    "span": "col-span-1 row-span-1",
+    "group": "MOMENTS",
+    "alt": "Warm welcome and hospitality at Lidya"
+  },
+  {
+    "file": "guests.JPG",
+    "title": "Gathered as Guests",
+    "titleAm": "እንደ እንግዳ ተሰብስበው",
+    "description": "Friends and family sharing food, story, and the joy of the table.",
+    "descriptionAm": "ጓደኞችና ቤተሰብ ምግብ፣ ወግና የማዕድ ደስታ ሲጋሩ።",
+    "span": "col-span-2 row-span-1",
+    "group": "LIFE",
+    "alt": "Guests sharing a meal at Lidya"
+  },
+  {
+    "file": "life-in-lidyavip.JPG",
+    "title": "Life in the VIP Lounge",
+    "titleAm": "በVIP ማረፊያ ውስጥ ያለ ሕይወት",
+    "description": "Premium comfort and celebration in our VIP experience.",
+    "descriptionAm": "በVIP ተሞክሮአችን ውስጥ ልዩ ምቾትና ደስታ።",
+    "span": "col-span-2 row-span-1",
+    "group": "LIFE",
+    "alt": "Life at Lidya VIP lounge"
+  }
+]

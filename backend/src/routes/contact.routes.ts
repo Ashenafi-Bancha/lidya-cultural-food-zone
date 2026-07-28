@@ -3,7 +3,7 @@ import { getContactMessages, createContactMessage, updateContactMessageStatus } 
 import { authenticate, authorize } from '../middleware/auth';
 import { validate } from '../middleware/validate';
 import { strictLimiter } from '../middleware/rateLimiter';
-import { contactMessageSchema } from '../utils/validators';
+import { contactMessageSchema, updateContactStatusSchema } from '../utils/validators';
 
 const router = Router();
 
@@ -13,6 +13,6 @@ router.post('/', strictLimiter, validate(contactMessageSchema), createContactMes
 // Admin routes
 router.use(authenticate, authorize(['OWNER', 'MANAGER']));
 router.get('/', getContactMessages);
-router.put('/:id/status', updateContactMessageStatus);
+router.put('/:id/status', validate(updateContactStatusSchema), updateContactMessageStatus);
 
 export default router;

@@ -1,0 +1,12 @@
+# Ignore the actual image files (content, not source) but keep the manifest + docs
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.gif
+*.JPG
+*.JPEG
+*.PNG
+*.WEBP
+!manifest.json
+!README.md

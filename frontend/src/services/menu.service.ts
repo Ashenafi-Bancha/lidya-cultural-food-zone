@@ -3,7 +3,9 @@ import { ApiResponse, MenuItem, Category } from '../types/api';
 
 export const menuService = {
   getItems: async () => {
-    const response = await api.get<ApiResponse<MenuItem[]>>('/menus');
+    // Fetch a high limit so the public menu shows every item (the API paginates
+    // at 20 by default).
+    const response = await api.get<ApiResponse<MenuItem[]>>('/menus?limit=500');
     return response.data.data;
   },
   getCategories: async () => {

@@ -4,14 +4,40 @@ import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import logoImg from "@/imports/lidya-logo2.PNG";
 import { Icon } from "../Icons";
 import { NAV_LINKS, goto } from "../../data/constants";
+import { useLang } from "../../../context/LanguageContext";
 
 interface NavbarProps {
   onOpenChange?: (open: boolean) => void;
 }
 
 export function Navbar({ onOpenChange }: NavbarProps) {
+  const { t, lang, setLang } = useLang();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const LangToggle = ({ className = "" }: { className?: string }) => (
+    <div
+      className={`flex items-center rounded-full border border-[#d4a843]/35 overflow-hidden text-[10px] tracking-wide ${className}`}
+      style={{ fontFamily: "var(--font-lidya-sans)" }}
+      role="group"
+      aria-label="Language"
+    >
+      <button
+        onClick={() => setLang("en")}
+        className={`px-2.5 py-1 transition-colors ${lang === "en" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#e8dcc8]/70 hover:text-[#d4a843]"}`}
+        aria-pressed={lang === "en"}
+      >
+        EN
+      </button>
+      <button
+        onClick={() => setLang("am")}
+        className={`px-2.5 py-1 transition-colors ${lang === "am" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#e8dcc8]/70 hover:text-[#d4a843]"}`}
+        aria-pressed={lang === "am"}
+      >
+        አማ
+      </button>
+    </div>
+  );
 
   const toggleMenu = (next: boolean) => {
     setOpen(next);
@@ -111,27 +137,33 @@ export function Navbar({ onOpenChange }: NavbarProps) {
 
         {/* Desktop nav links */}
         <ul className="hidden lg:flex items-center gap-4 xl:gap-5">
-          {NAV_LINKS.map(({ label, id }) => (
+          {NAV_LINKS.map(({ id }) => (
             <li key={id}>
               <button
                 onClick={() => goto(id)}
                 className="text-[10px] xl:text-[11px] tracking-widest uppercase text-[#e8dcc8]/70 hover:text-[#d4a843] transition-colors duration-200 whitespace-nowrap"
                 style={{ fontFamily: "var(--font-lidya-sans)" }}
               >
-                {label}
+                {t(`nav.${id}`)}
               </button>
             </li>
           ))}
+          <li>
+            <LangToggle />
+          </li>
         </ul>
 
-        {/* Mobile hamburger */}
-        <button
-          className="lg:hidden text-[#f5efe6] p-2 -mr-2 text-[26px]"
-          onClick={() => toggleMenu(!open)}
-          aria-label="Menu"
-        >
-          {open ? <Icon.X /> : <Icon.Menu />}
-        </button>
+        {/* Mobile: language toggle + hamburger */}
+        <div className="flex items-center gap-3 lg:hidden">
+          <LangToggle />
+          <button
+            className="text-[#f5efe6] p-2 -mr-2 text-[26px]"
+            onClick={() => toggleMenu(!open)}
+            aria-label="Menu"
+          >
+            {open ? <Icon.X /> : <Icon.Menu />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile drawer */}
@@ -146,14 +178,14 @@ export function Navbar({ onOpenChange }: NavbarProps) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <ul className="flex flex-col gap-1 pt-4">
-              {NAV_LINKS.map(({ label, id }) => (
+              {NAV_LINKS.map(({ id }) => (
                 <li key={id}>
                   <button
                     onClick={() => { goto(id); toggleMenu(false); }}
                     className="w-full text-left py-3 text-base text-[#e8dcc8]/75 hover:text-[#d4a843] transition-colors"
                     style={{ fontFamily: "var(--font-lidya-sans)" }}
                   >
-                    {label}
+                    {t(`nav.${id}`)}
                   </button>
                 </li>
               ))}

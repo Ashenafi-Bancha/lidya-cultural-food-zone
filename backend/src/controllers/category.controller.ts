@@ -3,9 +3,17 @@ import { prisma } from '../database/prisma';
 
 export const getCategories = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    // Return top-level categories with their (non-deleted) children nested, so
+    // the frontend can render a two-level category structure.
     const categories = await prisma.category.findMany({
-      where: { deletedAt: null },
+      where: { deletedAt: null, parentId: null },
       orderBy: { order: 'asc' },
+      include: {
+        children: {
+          where: { deletedAt: null },
+          orderBy: { order: 'asc' },
+        },
+      },
     });
     res.status(200).json({ status: 'success', data: categories });
   } catch (error) {

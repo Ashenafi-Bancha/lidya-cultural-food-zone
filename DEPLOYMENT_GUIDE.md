@@ -40,10 +40,24 @@ Set up the service with the following details:
 ### 3. Set Environment Variables
 Expand the **Environment Variables** section and add:
 - `DATABASE_URL`: Paste the Connection String you copied from Neon.
-- `JWT_SECRET`: A long, secure random string.
+- `JWT_SECRET`: A long, secure random string (**minimum 32 characters** — the server refuses to boot otherwise).
+- `JWT_REFRESH_SECRET`: A **different** long, secure random string (also 32+ characters).
 - `PORT`: `5000` (or leave blank, Render assigns one dynamically).
 - `FRONTEND_URL`: Your future Vercel domain (e.g., `https://lidyaculturalfood.vercel.app`). *For now, you can leave it blank or put a placeholder.*
 - `NODE_ENV`: `production`
+
+> **Tip:** generate each secret with `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`.
+
+#### Image uploads (Cloudinary) — strongly recommended
+Uploaded menu/gallery/branch photos need persistent storage. **Render's disk is ephemeral** — without Cloudinary, every uploaded image is wiped on each redeploy, leaving broken image links in the database. Create a free account at [cloudinary.com](https://cloudinary.com) and add:
+- `CLOUDINARY_CLOUD_NAME`
+- `CLOUDINARY_API_KEY`
+- `CLOUDINARY_API_SECRET`
+
+When these are set, uploads go to the Cloudinary CDN automatically; if omitted, the backend falls back to local disk (fine for local dev, **not** for production).
+
+#### Notifications (optional)
+To enable email/SMS on reservations, also set `RESEND_API_KEY`, `RESEND_FROM_EMAIL`, `MANAGER_EMAIL`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_PHONE_NUMBER`, `MANAGER_PHONE`. If omitted, notifications are logged (mocked) instead of sent.
 
 ### 4. Deploy and Run Migrations
 1. Click **Create Web Service**. Render will install dependencies, generate the Prisma client (using `postinstall`), and build the TypeScript code.
