@@ -1,10 +1,109 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import heroBg from "@/imports/liday-life1.jpg";
 import { Icon } from "../Icons";
 import { HeroDecoration } from "../HeroDecoration";
 import { goto } from "../../data/constants";
 import { useLang } from "../../../context/LanguageContext";
+
+const WELCOME_TEXT = "HASHSHU SARO YEETA!";
+
+// Types the phrase one letter at a time until complete, then keeps it.
+// Loops forever so the animation keeps drawing attention like a sign.
+function Typewriter({ text, speed = 130, startDelay = 900, pauseAfter = 2600 }: {
+  text: string; speed?: number; startDelay?: number; pauseAfter?: number;
+}) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let interval: ReturnType<typeof setInterval>;
+    let restart: ReturnType<typeof setTimeout>;
+    const begin = () => {
+      setCount(0);
+      interval = setInterval(() => {
+        setCount((c) => {
+          if (c >= text.length) {
+            clearInterval(interval);
+            // Pause on the full phrase, then retype.
+            restart = setTimeout(begin, pauseAfter);
+            return c;
+          }
+          return c + 1;
+        });
+      }, speed);
+    };
+    const initial = setTimeout(begin, startDelay);
+    return () => { clearTimeout(initial); clearTimeout(restart); clearInterval(interval); };
+  }, [text, speed, startDelay, pauseAfter]);
+
+  const done = count >= text.length;
+
+  return (
+    <span aria-label={text} className="inline-flex items-baseline">
+      <span
+        style={{
+          fontFamily: "'Cinzel', serif",
+          background: "linear-gradient(180deg,#fff2b0 0%,#f5c842 40%,#c8901f 74%,#ffe488 100%)",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6)) drop-shadow(0 0 14px rgba(212,168,67,0.35))",
+        }}
+      >
+        {text.slice(0, count) || " "}
+      </span>
+      <span
+        className="ml-0.5"
+        style={{
+          color: "#f5c842",
+          opacity: done ? 0 : 1,
+          animation: "blink 1s steps(1) infinite",
+          filter: "drop-shadow(0 0 8px rgba(245,200,66,0.7))",
+        }}
+      >
+        |
+      </span>
+    </span>
+  );
+}
+
+// Premium Wolaita welcome — slides in smoothly, then floats gently.
+function WolaitaWelcome() {
+  return (
+    <motion.div
+      className="relative"
+      initial={{ opacity: 0, y: -28, filter: "blur(6px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 1.1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <style>{`@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}`}</style>
+      {/* soft gold glow */}
+      <motion.div
+        className="absolute -inset-6 rounded-full blur-2xl"
+        style={{ background: "radial-gradient(ellipse at center, rgba(212,168,67,0.36), transparent 70%)" }}
+        animate={{ opacity: [0.5, 1, 0.5] }}
+        transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
+      />
+      {/* gently floating plate */}
+      <motion.div
+        className="relative px-5 sm:px-7 py-3 sm:py-3.5 rounded-2xl border"
+        style={{
+          borderColor: "rgba(212,168,67,0.5)",
+          background: "linear-gradient(180deg, rgba(30,16,8,0.55), rgba(18,10,4,0.35))",
+          backdropFilter: "blur(10px)",
+          WebkitBackdropFilter: "blur(10px)",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.5), inset 0 0 26px rgba(212,168,67,0.12)",
+        }}
+        animate={{ y: [0, -6, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <div className="text-xl lg:text-3xl xl:text-4xl font-bold tracking-[0.06em] sm:tracking-[0.08em] whitespace-nowrap leading-none">
+          <Typewriter text={WELCOME_TEXT} />
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
 
 export function Hero() {
   const { t } = useLang();
@@ -112,6 +211,16 @@ export function Hero() {
               "linear-gradient(to top, #1e1008 0%, rgba(30,16,8,0.5) 50%, transparent 100%)",
           }}
         />
+      </div>
+
+      {/* ── Wolaita welcome — mobile: over the top image ── */}
+      <div className="md:hidden absolute top-0 inset-x-0 h-[55vh] flex items-start justify-center pt-[19%] px-4 z-20 pointer-events-none">
+        <WolaitaWelcome />
+      </div>
+
+      {/* ── Wolaita welcome — desktop: top of the right-side image ── */}
+      <div className="hidden md:flex absolute top-0 right-0 w-[55%] h-full items-start justify-center pt-[7%] px-4 z-20 pointer-events-none">
+        <WolaitaWelcome />
       </div>
 
       {/* Floating cultural icons */}
