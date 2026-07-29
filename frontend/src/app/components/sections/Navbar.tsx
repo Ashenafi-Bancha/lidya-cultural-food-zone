@@ -201,13 +201,13 @@ export function Navbar({ onOpenChange }: NavbarProps) {
       {/* Floating Action Buttons for Mobile — rendered OUTSIDE the header so the
           header's scroll backdrop-filter doesn't become a containing block that
           re-anchors these fixed buttons to the top. They always float bottom-right. */}
-      <div className="lg:hidden fixed bottom-6 right-4 z-50 flex flex-col gap-3 pointer-events-none">
+      <div className="lg:hidden fixed bottom-2 right-2 z-50 flex flex-col gap-2.5 pointer-events-none">
         <motion.a
           href="https://web.facebook.com/leta.lemma.1"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Follow us on Facebook"
-          className="flex items-center justify-center w-14 h-14 rounded-full pointer-events-auto"
+          className="flex items-center justify-center w-11 h-11 rounded-full pointer-events-auto"
           style={{
             background: "linear-gradient(160deg,#4a90e8 0%,#1877F2 55%,#145dbf 100%)",
             boxShadow: "0 0 20px rgba(24,119,242,0.6), 0 4px 12px rgba(0,0,0,0.5)",
@@ -218,14 +218,14 @@ export function Navbar({ onOpenChange }: NavbarProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
         >
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="white">
+          <svg viewBox="0 0 24 24" width="19" height="19" fill="white">
             <path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
           </svg>
         </motion.a>
         
         <motion.a
           href="tel:+251920994499"
-          className="flex items-center justify-center w-14 h-14 rounded-full pointer-events-auto"
+          className="flex items-center justify-center w-11 h-11 rounded-full pointer-events-auto"
           style={{
             background: "linear-gradient(135deg,#f5c842 0%,#e8a820 45%,#fde272 100%)",
             boxShadow: "0 0 0 2px rgba(212,168,67,0.4), 0 0 24px rgba(212,168,67,0.8), 0 6px 16px rgba(0,0,0,0.6)",
