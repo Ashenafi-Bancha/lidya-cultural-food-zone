@@ -6,7 +6,7 @@ import menu1    from "@/imports/lidya-menu1.jpg";
 import menu2    from "@/imports/lidya-menu2.jpg";
 import menu3    from "@/imports/lidya-menu3.jpg";
 import menu4    from "@/imports/lidya-menu4.jpg";
-import life1    from "@/imports/liday-life1.jpg";
+import life1    from "@/imports/lidya-life1.jpg";
 import life2    from "@/imports/lidya-life2.jpg";
 import { Icon } from "../components/Icons";
 import {
@@ -21,8 +21,8 @@ import {
 
 export const NAV_LINKS = [
   { label: "Home",        id: "home"        },
-  { label: "About Us",    id: "about-us"    },
   { label: "Menu",        id: "menu"        },
+  { label: "About Us",    id: "about-us"    },
   { label: "Experience",  id: "experience"  },
   { label: "Lidya Buna",  id: "coffee"      },
   { label: "Gallery",     id: "gallery"     },

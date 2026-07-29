@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import heroBg from "@/imports/liday-life1.jpg";
+import heroBg from "@/imports/lidya-life1.jpg";
 import { Icon } from "../Icons";
 import { HeroDecoration } from "../HeroDecoration";
 import { goto } from "../../data/constants";
@@ -156,92 +156,59 @@ export function Hero() {
         }}
       />
 
-      {/* ── MOBILE: Full-bleed image at top, fading into dark ── */}
+      {/* ── MOBILE: full-bleed image at top, fading smoothly into the dark ── */}
       <div className="block md:hidden absolute inset-x-0 top-0 h-[55vh] pointer-events-none z-0">
-        <motion.div
-          className="w-full h-full"
+        <motion.img
+          src={heroBg}
+          alt="Everyday life and hospitality at Lidya"
+          className="w-full h-full object-cover object-center"
+          loading="eager"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
-        >
-          <img
-            src={heroBg}
-            alt="Everyday life and hospitality at Lidya"
-            className="w-full h-full object-cover object-top"
-            loading="eager"
-          />
-        </motion.div>
-        {/* Fade bottom — image dissolves into text section */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-[60%] z-10"
-          style={{
-            background:
-              "linear-gradient(to top, #1e1008 0%, rgba(30,16,8,0.9) 40%, rgba(30,16,8,0.3) 80%, transparent 100%)",
-          }}
         />
-        {/* Fade top — into navbar */}
+        {/* Fade bottom — image dissolves into the text section */}
         <div
-          className="absolute inset-x-0 top-0 h-28 z-10"
+          className="absolute inset-x-0 bottom-0 h-[62%] z-10"
           style={{
             background:
-              "linear-gradient(to bottom, #1e1008 0%, rgba(30,16,8,0.5) 50%, transparent 100%)",
+              "linear-gradient(to top, #1e1008 0%, rgba(30,16,8,0.92) 38%, rgba(30,16,8,0.35) 78%, transparent 100%)",
           }}
         />
         {/* Fade left edge */}
-        <div
-          className="absolute inset-y-0 left-0 w-10 z-10"
-          style={{ background: "linear-gradient(to right, #1e1008, transparent)" }}
-        />
+        <div className="absolute inset-y-0 left-0 w-10 z-10" style={{ background: "linear-gradient(to right, #1e1008, transparent)" }} />
         {/* Fade right edge */}
-        <div
-          className="absolute inset-y-0 right-0 w-10 z-10"
-          style={{ background: "linear-gradient(to left, #1e1008, transparent)" }}
-        />
+        <div className="absolute inset-y-0 right-0 w-10 z-10" style={{ background: "linear-gradient(to left, #1e1008, transparent)" }} />
       </div>
 
-      {/* ── DESKTOP: Full-bleed image on right half ── */}
-      <div className="hidden md:block absolute inset-y-0 right-0 w-[55%] pointer-events-none z-0">
-        <motion.div
-          className="w-full h-full"
+      {/* ── DESKTOP: full-bleed image on the right, blended into the text ── */}
+      <div className="hidden md:block absolute inset-y-0 right-0 w-[56%] pointer-events-none z-0">
+        <motion.img
+          src={heroBg}
+          alt="Everyday life and hospitality at Lidya"
+          className="w-full h-full object-cover object-center"
+          loading="eager"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.4, ease: "easeOut", delay: 0.2 }}
-        >
-          <img
-            src={heroBg}
-            alt="Everyday life and hospitality at Lidya"
-            className="w-full h-full object-cover object-center"
-            loading="eager"
-          />
-        </motion.div>
-        {/* Vignette — left: strong blend into text */}
+        />
+        {/* Smooth left blend — gradual transition from the text column into the photo */}
         <div
-          className="absolute inset-y-0 left-0 w-[60%] z-10"
+          className="absolute inset-y-0 left-0 w-[70%] z-10"
           style={{
             background:
-              "linear-gradient(to right, #1e1008 0%, rgba(30,16,8,0.85) 30%, rgba(30,16,8,0.4) 65%, transparent 100%)",
+              "linear-gradient(to right, #1e1008 0%, rgba(30,16,8,0.94) 20%, rgba(30,16,8,0.6) 48%, rgba(30,16,8,0.2) 76%, transparent 100%)",
           }}
         />
-        {/* Vignette — right edge */}
+        {/* Right edge feather */}
         <div
-          className="absolute inset-y-0 right-0 w-[15%] z-10"
+          className="absolute inset-y-0 right-0 w-[12%] z-10"
           style={{ background: "linear-gradient(to left, #1e1008 0%, transparent 100%)" }}
         />
-        {/* Vignette — top */}
-        <div
-          className="absolute inset-x-0 top-0 h-40 z-10"
-          style={{
-            background:
-              "linear-gradient(to bottom, #1e1008 0%, rgba(30,16,8,0.5) 50%, transparent 100%)",
-          }}
-        />
-        {/* Vignette — bottom */}
+        {/* Bottom feather */}
         <div
           className="absolute inset-x-0 bottom-0 h-40 z-10"
-          style={{
-            background:
-              "linear-gradient(to top, #1e1008 0%, rgba(30,16,8,0.5) 50%, transparent 100%)",
-          }}
+          style={{ background: "linear-gradient(to top, #1e1008 0%, rgba(30,16,8,0.4) 55%, transparent 100%)" }}
         />
       </div>
 
@@ -283,7 +250,7 @@ export function Hero() {
           {/* Headline */}
           <motion.h1
             className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-[#f5efe6] leading-[1.06] mb-4 md:mb-6"
-            style={{ fontFamily: "var(--font-lidya-serif)" }}
+            style={{ fontFamily: "var(--font-lidya-serif)", textShadow: "0 2px 14px rgba(0,0,0,0.55)" }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}

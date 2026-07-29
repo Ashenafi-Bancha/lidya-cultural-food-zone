@@ -96,7 +96,9 @@ export function Navbar({ onOpenChange }: NavbarProps) {
     <header
       className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
       style={{
-        background: scrolled ? "rgba(30,16,8,0.96)" : "transparent",
+        background: scrolled
+          ? "rgba(30,16,8,0.96)"
+          : "linear-gradient(to bottom, rgba(18,10,5,0.82) 0%, rgba(18,10,5,0.42) 55%, transparent 100%)",
         backdropFilter: scrolled ? "blur(12px)" : "none",
       }}
     >

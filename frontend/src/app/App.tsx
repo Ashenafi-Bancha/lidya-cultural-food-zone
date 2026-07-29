@@ -18,8 +18,8 @@ export default function App() {
     <div className="bg-background text-foreground overflow-x-hidden pb-8 md:pb-0">
       <Navbar />
       <Hero />
-      <AboutUs />
       <MenuSection />
+      <AboutUs />
       <CulturalExperience />
       <LidyaCoffee />
       <Gallery />

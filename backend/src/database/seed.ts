@@ -96,12 +96,11 @@ async function main() {
   // ─── 4. Create Categories (nested) ────────────────────────────────────────
   const categoryMap = new Map<string, string>();
 
-  // Top-level categories. "Drinks" acts as a parent grouping only.
+  // Two major classes only: "Food" (first) then "Drinks". Each is a parent that
+  // groups its sub-categories.
   const topLevelCategories = [
-    { name: 'Breakfast', nameAm: 'ቁርስ', order: 0 },
-    { name: 'Lunch and Dinner', nameAm: 'ምሳ እና እራት', order: 1 },
-    { name: 'Desserts', nameAm: 'ጣፋጮች', order: 2 },
-    { name: 'Drinks', nameAm: 'መጠጦች', order: 3 },
+    { name: 'Food', nameAm: 'ምግብ', order: 0 },
+    { name: 'Drinks', nameAm: 'መጠጦች', order: 1 },
   ];
 
   for (const cat of topLevelCategories) {
@@ -113,8 +112,26 @@ async function main() {
     categoryMap.set(cat.name, created.id);
   }
 
-  // Sub-categories nested under "Drinks".
+  const foodId = categoryMap.get('Food')!;
   const drinksId = categoryMap.get('Drinks')!;
+
+  // Sub-categories nested under "Food".
+  const foodSubCategories = [
+    { name: 'Breakfast', nameAm: 'ቁርስ', order: 0 },
+    { name: 'Lunch and Dinner', nameAm: 'ምሳ እና እራት', order: 1 },
+    { name: 'Desserts', nameAm: 'ጣፋጮች', order: 2 },
+  ];
+
+  for (const sub of foodSubCategories) {
+    const created = await prisma.category.upsert({
+      where: { name: sub.name },
+      update: { nameAm: sub.nameAm, order: sub.order, parentId: foodId, deletedAt: null },
+      create: { name: sub.name, nameAm: sub.nameAm, order: sub.order, parentId: foodId },
+    });
+    categoryMap.set(sub.name, created.id);
+  }
+
+  // Sub-categories nested under "Drinks".
   const drinkSubCategories = [
     { name: 'Hot Drinks', nameAm: 'ትኩስ መጠጦች', order: 0 },
     { name: 'Soft Drinks', nameAm: 'ለስላሳ መጠጦች', order: 1 },
