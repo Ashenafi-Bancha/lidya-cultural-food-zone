@@ -201,7 +201,7 @@ export function Navbar({ onOpenChange }: NavbarProps) {
       {/* Floating Action Buttons for Mobile — rendered OUTSIDE the header so the
           header's scroll backdrop-filter doesn't become a containing block that
           re-anchors these fixed buttons to the top. They always float bottom-right. */}
-      <div className="lg:hidden fixed bottom-2 right-2 z-50 flex flex-col gap-2.5 pointer-events-none">
+      <div className="lg:hidden fixed bottom-4 right-3 z-50 flex flex-col gap-2.5 pointer-events-none">
         <motion.a
           href="https://web.facebook.com/leta.lemma.1"
           target="_blank"

@@ -51,6 +51,32 @@ const SOCIALS = [
   },
 ];
 
+function FollowUs({ label }: { label: string }) {
+  return (
+    <>
+      <p className="text-[9px] tracking-[0.3em] uppercase mb-3 font-medium text-[#e8dcc8]/45" style={{ fontFamily: "var(--font-lidya-sans)" }}>{label}</p>
+      <div className="flex gap-2 flex-wrap">
+        {SOCIALS.map(s => (
+          <motion.a
+            key={s.label}
+            href={s.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={s.label}
+            className="w-7 h-7 flex items-center justify-center rounded-[6px]"
+            style={{ background: s.bg, boxShadow: `0 2px 6px ${s.shadow}` }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            transition={{ duration: 0.2 }}
+          >
+            {s.icon}
+          </motion.a>
+        ))}
+      </div>
+    </>
+  );
+}
+
 export function Footer() {
   const { t } = useLang();
   const [email, setEmail] = useState("");
@@ -87,24 +113,9 @@ export function Footer() {
             <p className="text-sm leading-relaxed mt-4 mb-5 text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
               {t("footer.brandTagline")}
             </p>
-            <p className="text-[9px] tracking-[0.3em] uppercase mb-3 font-medium text-[#e8dcc8]/45" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.followUs")}</p>
-            <div className="flex gap-2 flex-wrap">
-              {SOCIALS.map(s => (
-                <motion.a
-                  key={s.label}
-                  href={s.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={s.label}
-                  className="w-7 h-7 flex items-center justify-center rounded-[6px]"
-                  style={{ background: s.bg, boxShadow: `0 2px 6px ${s.shadow}` }}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {s.icon}
-                </motion.a>
-              ))}
+            {/* Desktop: Follow Us stays under the brand tagline */}
+            <div className="hidden md:block">
+              <FollowUs label={t("footer.followUs")} />
             </div>
           </div>
 
@@ -177,6 +188,11 @@ export function Footer() {
                 <a href="tel:+251920994499" className="hover:text-[#d4a843] transition-colors">0920994499</a>
               </div>
             </div>
+          </div>
+
+          {/* Mobile: Follow Us comes last, after the Newsletter column */}
+          <div className="md:hidden">
+            <FollowUs label={t("footer.followUs")} />
           </div>
         </div>
 

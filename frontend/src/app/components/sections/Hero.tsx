@@ -76,7 +76,7 @@ function WolaitaWelcome() {
       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       transition={{ duration: 1.1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
     >
-      <style>{`@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}`}</style>
+      <style>{`@keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}@keyframes ctaspin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}`}</style>
       {/* soft gold glow */}
       <motion.div
         className="absolute -inset-6 rounded-full blur-2xl"
@@ -84,21 +84,36 @@ function WolaitaWelcome() {
         animate={{ opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
       />
-      {/* gently floating plate */}
+      {/* gently floating plate with a Wolaita tri-color light travelling the border */}
       <motion.div
-        className="relative px-5 sm:px-7 py-3 sm:py-3.5 rounded-2xl border"
-        style={{
-          borderColor: "rgba(212,168,67,0.55)",
-          background: "linear-gradient(180deg, rgba(10,10,10,0.94), rgba(0,0,0,0.92))",
-          backdropFilter: "blur(10px)",
-          WebkitBackdropFilter: "blur(10px)",
-          boxShadow: "0 12px 40px rgba(0,0,0,0.6), inset 0 0 26px rgba(212,168,67,0.14)",
-        }}
+        className="relative rounded-2xl p-[2px] overflow-hidden isolate"
+        style={{ boxShadow: "0 12px 40px rgba(0,0,0,0.6)" }}
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        <div className="text-xl lg:text-3xl xl:text-4xl font-bold tracking-[0.06em] sm:tracking-[0.08em] whitespace-nowrap leading-none">
-          <Typewriter text={WELCOME_TEXT} />
+        {/* rotating Wolaita colours — red · black · yellow — clipped to the border ring */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[200%]"
+          style={{
+            background:
+              "repeating-conic-gradient(from 0deg, #e11d2a 0deg, #f5c842 20deg, #0a0a0a 40deg, #e11d2a 60deg)",
+            animation: "ctaspin 6s linear infinite",
+          }}
+        />
+        {/* inner dark face holding the welcome text */}
+        <div
+          className="relative z-10 px-5 sm:px-7 py-3 sm:py-3.5 rounded-[14px]"
+          style={{
+            background: "linear-gradient(180deg, rgba(10,10,10,0.94), rgba(0,0,0,0.92))",
+            backdropFilter: "blur(10px)",
+            WebkitBackdropFilter: "blur(10px)",
+            boxShadow: "inset 0 0 26px rgba(212,168,67,0.12)",
+          }}
+        >
+          <div className="text-xl lg:text-3xl xl:text-4xl font-bold tracking-[0.06em] sm:tracking-[0.08em] whitespace-nowrap leading-none">
+            <Typewriter text={WELCOME_TEXT} />
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -230,7 +245,7 @@ export function Hero() {
       <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pb-12 flex flex-col md:flex-row md:items-center gap-0 md:gap-10 min-h-screen">
 
         {/* Mobile spacer — pushes text below the image area */}
-        <div className="block md:hidden h-[42vh] flex-shrink-0" />
+        <div className="block md:hidden h-[25vh] flex-shrink-0" />
 
         {/* ── Text content ── */}
         <motion.div
@@ -250,7 +265,7 @@ export function Hero() {
 
           {/* Headline */}
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-[#f5efe6] leading-[1.06] mb-5 md:mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-[#f5efe6] leading-[1.06] mb-4 md:mb-6"
             style={{ fontFamily: "var(--font-lidya-serif)" }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -274,7 +289,7 @@ export function Hero() {
 
           {/* Tagline */}
           <motion.p
-            className="text-[#d4a843] text-[10px] tracking-[0.2em] uppercase mb-5 md:mb-6"
+            className="text-[#d4a843] text-[10px] tracking-[0.2em] uppercase mb-4 md:mb-6"
             style={{ fontFamily: "var(--font-lidya-sans)" }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -290,9 +305,10 @@ export function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.72 }}
           >
+            <style>{`@keyframes ctaspin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}`}</style>
             <motion.button
               onClick={() => goto("reservation")}
-              className="w-full sm:w-auto px-8 py-4 sm:py-3.5 bg-[#c25e2a] text-[#faf5ee] text-[12px] sm:text-[11px] tracking-[0.18em] uppercase"
+              className="w-full sm:w-auto px-8 py-4 sm:py-3.5 rounded-xl bg-[#c25e2a] text-[#faf5ee] text-[12px] sm:text-[11px] tracking-[0.18em] uppercase"
               style={{ fontFamily: "var(--font-lidya-sans)" }}
               whileHover={{ backgroundColor: "#d4a843", color: "#1e1008" }}
               whileTap={{ scale: 0.97 }}
@@ -300,25 +316,44 @@ export function Hero() {
             >
               {t("common.reserveTable")}
             </motion.button>
+
+            {/* Call — a light travels around the rounded rectangular border */}
             <motion.a
               href="tel:+251920994499"
-              className="w-full sm:w-auto px-8 py-4 sm:py-3.5 border text-[12px] sm:text-[11px] tracking-[0.18em] uppercase flex items-center justify-center gap-2"
-              style={{
-                fontFamily: "var(--font-lidya-sans)",
-                borderColor: "rgba(232,220,200,0.35)",
-                color: "rgba(232,220,200,0.75)",
-              }}
-              whileHover={{ borderColor: "#d4a843", color: "#d4a843" }}
+              aria-label={t("common.callUsNow")}
+              className="relative w-full sm:w-auto rounded-xl p-[1.6px] overflow-hidden isolate"
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.2 }}
             >
-              <Icon.Phone /> {t("common.callUsNow")}
+              {/* rotating light source — clipped to the border ring by the inner face */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[220%]"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, transparent 0deg 300deg, rgba(245,200,66,0.15) 320deg, #ffe488 340deg, #fff6cf 346deg, #f5c842 352deg, transparent 360deg)",
+                  animation: "ctaspin 3s linear infinite",
+                }}
+              />
+              {/* faint static ring so the border always reads */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute inset-0 rounded-xl"
+                style={{ boxShadow: "inset 0 0 0 1px rgba(212,168,67,0.3)" }}
+              />
+              {/* inner face */}
+              <span
+                className="relative z-10 flex items-center justify-center gap-2 rounded-[10px] px-8 py-4 sm:py-3.5 text-[12px] sm:text-[11px] tracking-[0.18em] uppercase text-[#e8dcc8]/85"
+                style={{ fontFamily: "var(--font-lidya-sans)", background: "#1e1008" }}
+              >
+                <Icon.Phone /> {t("common.callUsNow")}
+              </span>
             </motion.a>
           </motion.div>
 
           {/* Scroll hint */}
           <motion.div
-            className="flex items-center gap-3 mt-10 md:mt-14 text-[#e8dcc8]/35"
+            className="flex items-center gap-3 mt-6 md:mt-14 text-[#e8dcc8]/35"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
