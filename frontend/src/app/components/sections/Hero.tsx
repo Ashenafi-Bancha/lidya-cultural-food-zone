@@ -88,11 +88,11 @@ function WolaitaWelcome() {
       <motion.div
         className="relative px-5 sm:px-7 py-3 sm:py-3.5 rounded-2xl border"
         style={{
-          borderColor: "rgba(212,168,67,0.5)",
-          background: "linear-gradient(180deg, rgba(30,16,8,0.55), rgba(18,10,4,0.35))",
+          borderColor: "rgba(212,168,67,0.55)",
+          background: "linear-gradient(180deg, rgba(10,10,10,0.94), rgba(0,0,0,0.92))",
           backdropFilter: "blur(10px)",
           WebkitBackdropFilter: "blur(10px)",
-          boxShadow: "0 12px 40px rgba(0,0,0,0.5), inset 0 0 26px rgba(212,168,67,0.12)",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.6), inset 0 0 26px rgba(212,168,67,0.14)",
         }}
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}

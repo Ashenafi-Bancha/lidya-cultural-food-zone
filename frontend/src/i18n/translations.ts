@@ -15,6 +15,8 @@ export const translations: Record<Lang, any> = {
       callUsNow: 'Call Us Now',
       makeReservation: 'Make a Reservation',
       callToDiscuss: 'Call to Discuss',
+      brandLine1: 'Lidya Cultural',
+      brandLine2: 'Food Zone',
     },
     nav: {
       home: 'Home',
@@ -267,6 +269,8 @@ export const translations: Record<Lang, any> = {
       callUsNow: 'አሁን ይደውሉልን',
       makeReservation: 'ማስያዣ ያድርጉ',
       callToDiscuss: 'ለመወያየት ይደውሉ',
+      brandLine1: 'ሊዲያ ባህላዊ',
+      brandLine2: 'ምግብ ቤት',
     },
     nav: {
       home: 'መነሻ',
