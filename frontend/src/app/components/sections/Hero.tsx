@@ -68,7 +68,18 @@ function Typewriter({ text, speed = 130, startDelay = 900, pauseAfter = 2600 }: 
 }
 
 // Premium Wolaita welcome — slides in smoothly, then floats gently.
+const TYPE_SPEED = 130;
+const TYPE_START = 900;
+
 function WolaitaWelcome() {
+  // Ignite the moving-light border only once the greeting has finished typing.
+  const [lightOn, setLightOn] = useState(false);
+  useEffect(() => {
+    const finishMs = TYPE_START + WELCOME_TEXT.length * TYPE_SPEED + 250;
+    const id = setTimeout(() => setLightOn(true), finishMs);
+    return () => clearTimeout(id);
+  }, []);
+
   return (
     <motion.div
       className="relative"
@@ -87,7 +98,10 @@ function WolaitaWelcome() {
       {/* gently floating plate with a Wolaita tri-color light travelling the border */}
       <motion.div
         className="relative rounded-2xl p-[2px] overflow-hidden isolate"
-        style={{ boxShadow: "0 12px 40px rgba(0,0,0,0.6)" }}
+        style={{
+          background: "linear-gradient(180deg, rgba(10,10,10,0.94), rgba(0,0,0,0.92))",
+          boxShadow: "0 12px 40px rgba(0,0,0,0.6)",
+        }}
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
@@ -98,7 +112,10 @@ function WolaitaWelcome() {
           style={{
             background:
               "repeating-conic-gradient(from 0deg, #e11d2a 0deg, #f5c842 20deg, #0a0a0a 40deg, #e11d2a 60deg)",
-            animation: "ctaspin 6s linear infinite",
+            transform: "translate(-50%,-50%)",
+            opacity: lightOn ? 1 : 0,
+            transition: "opacity 0.6s ease",
+            animation: lightOn ? "ctaspin 6s linear infinite" : "none",
           }}
         />
         {/* inner dark face holding the welcome text */}
@@ -112,7 +129,7 @@ function WolaitaWelcome() {
           }}
         >
           <div className="text-xl lg:text-3xl xl:text-4xl font-bold tracking-[0.06em] sm:tracking-[0.08em] whitespace-nowrap leading-none">
-            <Typewriter text={WELCOME_TEXT} />
+            <Typewriter text={WELCOME_TEXT} speed={TYPE_SPEED} startDelay={TYPE_START} />
           </div>
         </div>
       </motion.div>
