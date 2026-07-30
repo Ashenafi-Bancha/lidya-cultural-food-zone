@@ -6,43 +6,65 @@ import { HeroDecoration } from "../HeroDecoration";
 import { goto } from "../../data/constants";
 import { useLang } from "../../../context/LanguageContext";
 
-const WELCOME_TEXT = "HASHSHU SARO YEETA!";
+// Welcome greeting cycles through three languages, in order:
+// Wolaytta → Amharic → English, then loops.
+const WELCOME_TEXTS = [
+  "Hashshu Saro Yeeta!",                  // Wolaytta
+  "እንኳን ደህና መጡ!",                          // Amharic
+  "Welcome to Lidya Cultural Food Zone",  // English
+];
 
 // Types the phrase one letter at a time until complete, then keeps it.
 // Loops forever so the animation keeps drawing attention like a sign.
-function Typewriter({ text, speed = 130, startDelay = 900, pauseAfter = 2600 }: {
-  text: string; speed?: number; startDelay?: number; pauseAfter?: number;
+function Typewriter({
+  texts,
+  typeSpeed = 110,
+  eraseSpeed = 45,
+  hold = 1700,
+  startDelay = 800,
+}: {
+  texts: string[];
+  typeSpeed?: number;
+  eraseSpeed?: number;
+  hold?: number;
+  startDelay?: number;
 }) {
-  const [count, setCount] = useState(0);
+  const [ready, setReady] = useState(false);
+  const [idx, setIdx] = useState(0);
+  const [sub, setSub] = useState(0);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval>;
-    let restart: ReturnType<typeof setTimeout>;
-    const begin = () => {
-      setCount(0);
-      interval = setInterval(() => {
-        setCount((c) => {
-          if (c >= text.length) {
-            clearInterval(interval);
-            // Pause on the full phrase, then retype.
-            restart = setTimeout(begin, pauseAfter);
-            return c;
-          }
-          return c + 1;
-        });
-      }, speed);
-    };
-    const initial = setTimeout(begin, startDelay);
-    return () => { clearTimeout(initial); clearTimeout(restart); clearInterval(interval); };
-  }, [text, speed, startDelay, pauseAfter]);
+    const id = setTimeout(() => setReady(true), startDelay);
+    return () => clearTimeout(id);
+  }, [startDelay]);
 
-  const done = count >= text.length;
+  useEffect(() => {
+    if (!ready) return;
+    const current = texts[idx];
+    if (!deleting && sub === current.length) {
+      const id = setTimeout(() => setDeleting(true), hold);
+      return () => clearTimeout(id);
+    }
+    if (deleting && sub === 0) {
+      setDeleting(false);
+      setIdx((i) => (i + 1) % texts.length);
+      return;
+    }
+    const id = setTimeout(
+      () => setSub((s) => s + (deleting ? -1 : 1)),
+      deleting ? eraseSpeed : typeSpeed
+    );
+    return () => clearTimeout(id);
+  }, [ready, sub, deleting, idx, texts, hold, eraseSpeed, typeSpeed]);
+
+  const shown = texts[idx].slice(0, sub);
 
   return (
-    <span aria-label={text} className="inline-flex items-baseline">
+    <span aria-label={texts.join(" · ")}>
       <span
         style={{
-          fontFamily: "'Cinzel', serif",
+          fontFamily: "'Cinzel', 'Noto Serif Ethiopic', serif",
           background: "linear-gradient(180deg,#fff2b0 0%,#f5c842 40%,#c8901f 74%,#ffe488 100%)",
           WebkitBackgroundClip: "text",
           WebkitTextFillColor: "transparent",
@@ -50,13 +72,12 @@ function Typewriter({ text, speed = 130, startDelay = 900, pauseAfter = 2600 }: 
           filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6)) drop-shadow(0 0 14px rgba(212,168,67,0.35))",
         }}
       >
-        {text.slice(0, count) || " "}
+        {shown || " "}
       </span>
       <span
         className="ml-0.5"
         style={{
           color: "#f5c842",
-          opacity: done ? 0 : 1,
           animation: "blink 1s steps(1) infinite",
           filter: "drop-shadow(0 0 8px rgba(245,200,66,0.7))",
         }}
@@ -67,15 +88,15 @@ function Typewriter({ text, speed = 130, startDelay = 900, pauseAfter = 2600 }: 
   );
 }
 
-// Premium Wolaita welcome — slides in smoothly, then floats gently.
+// Premium Ethiopian welcome — slides in smoothly, then floats gently.
 const TYPE_SPEED = 130;
 const TYPE_START = 900;
 
-function WolaitaWelcome() {
+function CulturalWelcome() {
   // Ignite the moving-light border only once the greeting has finished typing.
   const [lightOn, setLightOn] = useState(false);
   useEffect(() => {
-    const finishMs = TYPE_START + WELCOME_TEXT.length * TYPE_SPEED + 250;
+    const finishMs = TYPE_START + WELCOME_TEXTS[0].length * TYPE_SPEED + 250;
     const id = setTimeout(() => setLightOn(true), finishMs);
     return () => clearTimeout(id);
   }, []);
@@ -95,7 +116,7 @@ function WolaitaWelcome() {
         animate={{ opacity: [0.5, 1, 0.5] }}
         transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut" }}
       />
-      {/* gently floating plate with a Wolaita tri-color light travelling the border */}
+      {/* gently floating plate with a cultural tri-color light travelling the border */}
       <motion.div
         className="relative rounded-2xl p-[2px] overflow-hidden isolate"
         style={{
@@ -105,7 +126,7 @@ function WolaitaWelcome() {
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        {/* rotating Wolaita colours — red · black · yellow — clipped to the border ring */}
+        {/* rotating cultural colours — red · black · yellow — clipped to the border ring */}
         <div
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[200%]"
@@ -128,8 +149,8 @@ function WolaitaWelcome() {
             boxShadow: "inset 0 0 26px rgba(212,168,67,0.12)",
           }}
         >
-          <div className="text-xl lg:text-3xl xl:text-4xl font-bold tracking-[0.06em] sm:tracking-[0.08em] whitespace-nowrap leading-none">
-            <Typewriter text={WELCOME_TEXT} speed={TYPE_SPEED} startDelay={TYPE_START} />
+          <div className="flex items-center justify-center text-center font-bold tracking-[0.05em] sm:tracking-[0.08em] leading-snug text-[13px] sm:text-lg md:text-2xl xl:text-3xl max-w-[78vw] sm:max-w-[22rem] md:max-w-[26rem] min-h-[2.4em] mx-auto">
+            <Typewriter texts={WELCOME_TEXTS} typeSpeed={TYPE_SPEED} startDelay={TYPE_START} />
           </div>
         </div>
       </motion.div>
@@ -212,14 +233,14 @@ export function Hero() {
         />
       </div>
 
-      {/* ── Wolaita welcome — mobile: over the top image ── */}
+      {/* ── Cultural welcome — mobile: over the top image ── */}
       <div className="md:hidden absolute top-0 inset-x-0 h-[55vh] flex items-start justify-center pt-[19%] px-4 z-20 pointer-events-none">
-        <WolaitaWelcome />
+        <CulturalWelcome />
       </div>
 
-      {/* ── Wolaita welcome — desktop: top of the right-side image ── */}
+      {/* ── Cultural welcome — desktop: top of the right-side image ── */}
       <div className="hidden md:flex absolute top-0 right-0 w-[55%] h-full items-start justify-center pt-[7%] px-4 z-20 pointer-events-none">
-        <WolaitaWelcome />
+        <CulturalWelcome />
       </div>
 
       {/* Floating cultural icons */}
@@ -337,12 +358,24 @@ export function Hero() {
 
           {/* Scroll hint */}
           <motion.div
-            className="flex items-center gap-3 mt-6 md:mt-14 text-[#e8dcc8]/35"
+            className="mt-8 md:mt-14 w-full flex flex-col items-center gap-3 md:flex-row md:items-center md:gap-3 text-[#e8dcc8]/45"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
           >
-            <div className="w-8 h-px bg-current" />
+            {/* animated scroll mouse */}
+            <div
+              className="w-[26px] h-[42px] rounded-full flex justify-center pt-2 shrink-0"
+              style={{ border: "2px solid rgba(212,168,67,0.55)" }}
+              aria-hidden
+            >
+              <motion.span
+                className="w-[3px] h-[8px] rounded-full"
+                style={{ background: "#d4a843" }}
+                animate={{ y: [0, 11, 0], opacity: [1, 0.15, 1] }}
+                transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+              />
+            </div>
             <span
               className="text-[10px] tracking-[0.3em] uppercase"
               style={{ fontFamily: "var(--font-lidya-sans)" }}

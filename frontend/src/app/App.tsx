@@ -19,12 +19,12 @@ export default function App() {
       <Navbar />
       <Hero />
       <MenuSection />
+      <Services />
+      <LidyaCoffee />
       <AboutUs />
       <CulturalExperience />
-      <LidyaCoffee />
       <Gallery />
       <Branches />
-      <Services />
       <Testimonials />
       <Reservation />
       <Contact />

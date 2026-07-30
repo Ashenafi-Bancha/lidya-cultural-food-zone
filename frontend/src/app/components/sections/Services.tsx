@@ -24,6 +24,7 @@ const TIERS = [
     ],
     ctaKey: "services.vipCta",
     filled: false,
+    img: null,         // VIP room banner — drop src/imports/services/service-vip-room.jpg
   },
   {
     tier: "VVIP",
@@ -42,16 +43,31 @@ const TIERS = [
     ],
     ctaKey: "services.vvipCta",
     filled: true,
+    img: vipImg,       // VVIP room banner (existing photo — swap for a new one anytime)
   },
 ];
 
-const EVENTS: { titleKey: string; descKey: string; service: EventType }[] = [
-  { titleKey: "services.events.weddingsTitle", descKey: "services.events.weddingsDesc", service: "WEDDING" },
-  { titleKey: "services.events.engagementsTitle", descKey: "services.events.engagementsDesc", service: "ENGAGEMENT" },
-  { titleKey: "services.events.hallTitle", descKey: "services.events.hallDesc", service: "HALL_RENTAL" },
-  { titleKey: "services.events.cateringTitle", descKey: "services.events.cateringDesc", service: "CATERING" },
-  { titleKey: "services.events.corporateTitle", descKey: "services.events.corporateDesc", service: "CORPORATE" },
-  { titleKey: "services.events.birthdaysTitle", descKey: "services.events.birthdaysDesc", service: "BIRTHDAY" },
+// Each service gets a high-quality banner image. Drop the file in
+// src/imports/services/ and swap `img: null` → `img: <imported file>`.
+// Until then an elegant themed placeholder renders in its place.
+type ServiceCard = {
+  titleKey: string;
+  descKey: string;
+  service: EventType;
+  Glyph: React.FC;
+  img: string | null;
+  flagship?: boolean;
+};
+
+const EVENTS: ServiceCard[] = [
+  { titleKey: "services.events.culturalTitle",    descKey: "services.events.culturalDesc",    service: "CATERING",    Glyph: Icon.Utensils, img: null, flagship: true },
+  { titleKey: "services.events.deliveryTitle",    descKey: "services.events.deliveryDesc",    service: "OTHER",       Glyph: Icon.Send,     img: null },
+  { titleKey: "services.events.weddingsTitle",    descKey: "services.events.weddingsDesc",    service: "WEDDING",     Glyph: Icon.Star,     img: null },
+  { titleKey: "services.events.engagementsTitle", descKey: "services.events.engagementsDesc", service: "ENGAGEMENT",  Glyph: Icon.Star,     img: null },
+  { titleKey: "services.events.hallTitle",        descKey: "services.events.hallDesc",        service: "HALL_RENTAL", Glyph: Icon.MapPin,   img: null },
+  { titleKey: "services.events.cateringTitle",    descKey: "services.events.cateringDesc",    service: "CATERING",    Glyph: Icon.Utensils, img: null },
+  { titleKey: "services.events.corporateTitle",   descKey: "services.events.corporateDesc",   service: "CORPORATE",   Glyph: Icon.Users,    img: null },
+  { titleKey: "services.events.birthdaysTitle",   descKey: "services.events.birthdaysDesc",   service: "BIRTHDAY",    Glyph: Icon.Calendar, img: null },
 ];
 
 export function Services() {
@@ -83,19 +99,25 @@ export function Services() {
           {TIERS.map((plan, i) => (
             <Reveal key={plan.tier} delay={i * 0.12}>
               <div
-                className="relative flex flex-col h-full border p-7 sm:p-9 overflow-hidden group"
+                className="relative flex flex-col h-full border overflow-hidden group"
                 style={{
                   borderColor: plan.border,
                   background: `radial-gradient(ellipse at top left,${plan.glow} 0%,transparent 65%),#160b04`,
                 }}
               >
-                {plan.tier === "VVIP" && (
-                  <>
-                    <img src={vipImg} className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500" alt="VIP Service" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#160b04] to-transparent opacity-80" />
-                  </>
-                )}
-                <div className="relative z-10 flex flex-col h-full">
+                {/* room banner image */}
+                <div className="relative aspect-[16/9] overflow-hidden bg-[#1c0f05]">
+                  {plan.img ? (
+                    <img src={plan.img} alt={`${plan.tier} private room at Lidya`} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  ) : (
+                    <div className="w-full h-full flex flex-col items-center justify-center gap-2" style={{ background: "linear-gradient(135deg,#2a1a0d 0%,#160b04 100%)" }} aria-hidden>
+                      <span className="text-3xl" style={{ color: plan.color }}><Icon.Star /></span>
+                      <span className="text-[9px] tracking-[0.25em] uppercase text-[#e8dcc8]/22" style={{ fontFamily: "var(--font-lidya-sans)" }}>Room photo coming soon</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#160b04] via-transparent to-transparent pointer-events-none" />
+                </div>
+                <div className="relative z-10 flex flex-col flex-1 p-7 sm:p-9">
                   <div className="flex items-center gap-3 mb-6">
                   <span className="text-3xl sm:text-4xl font-bold tracking-tight" style={{ fontFamily: "var(--font-lidya-serif)", color: plan.color }}>{plan.tier}</span>
                   <span className="text-[10px] tracking-[0.28em] uppercase px-3 py-1 border" style={{ fontFamily: "var(--font-lidya-sans)", borderColor: plan.border, color: plan.color }}>{t(plan.labelKey)}</span>
@@ -138,22 +160,86 @@ export function Services() {
           </h3>
         </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-px bg-[#d4a843]/8 mb-12 md:mb-14">
-          {EVENTS.map((ev, i) => (
-            <Reveal key={ev.titleKey} delay={i * 0.08}>
+        {/* Flagship service — wide, highlighted, with banner image */}
+        {(() => {
+          const f = EVENTS[0];
+          const FGlyph = f.Glyph;
+          return (
+            <Reveal className="mb-6 md:mb-8">
               <motion.button
                 type="button"
-                onClick={() => openBooking(ev.service)}
-                className="text-left w-full bg-[#120a03] px-6 sm:px-8 py-7 sm:py-8 h-full block group/ev"
-                whileHover={{ backgroundColor: "#1c0f05" }}
+                onClick={() => openBooking(f.service)}
+                className="group/ev w-full text-left grid md:grid-cols-2 overflow-hidden border"
+                style={{
+                  borderColor: "rgba(212,168,67,0.45)",
+                  background: "radial-gradient(ellipse at top left,rgba(212,168,67,0.14) 0%,transparent 60%),#160b04",
+                }}
+                whileHover={{ boxShadow: "0 22px 60px rgba(0,0,0,0.5)" }}
                 transition={{ duration: 0.3 }}
               >
-                <h4 className="text-[#f5efe6] font-semibold text-base mb-2 group-hover/ev:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t(ev.titleKey)}</h4>
-                <p className="text-sm leading-relaxed text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>{t(ev.descKey)}</p>
-                <span className="inline-block mt-3 text-[10px] tracking-[0.2em] uppercase text-[#d4a843]/70" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("common.makeReservation")} →</span>
+                {/* banner image (right on desktop) */}
+                <div className="relative min-h-[220px] md:min-h-[340px] overflow-hidden bg-[#1c0f05] md:order-2">
+                  {f.img ? (
+                    <img src={f.img} alt={t(f.titleKey)} loading="lazy" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover/ev:scale-105" />
+                  ) : (
+                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-2" style={{ background: "linear-gradient(135deg,#2a1a0d 0%,#160b04 100%)" }} aria-hidden>
+                      <span className="text-[#d4a843]/55 text-4xl"><FGlyph /></span>
+                      <span className="text-[9px] tracking-[0.25em] uppercase text-[#e8dcc8]/22" style={{ fontFamily: "var(--font-lidya-sans)" }}>Photo coming soon</span>
+                    </div>
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-l from-[#160b04] via-transparent to-transparent pointer-events-none" />
+                </div>
+                {/* copy */}
+                <div className="p-7 sm:p-10 md:p-12 flex flex-col justify-center md:order-1">
+                  <span className="inline-flex items-center gap-2 self-start text-[10px] tracking-[0.28em] uppercase px-3 py-1 mb-4 border text-[#f5e6b8]" style={{ fontFamily: "var(--font-lidya-sans)", borderColor: "rgba(212,168,67,0.5)", background: "rgba(212,168,67,0.08)" }}>
+                    ★ {t("services.flagshipBadge")}
+                  </span>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#f5efe6] leading-tight mb-4 group-hover/ev:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+                    {t(f.titleKey)}
+                  </h3>
+                  <p className="text-sm sm:text-base leading-relaxed text-[#e8dcc8]/60 mb-6 max-w-xl" style={{ fontFamily: "var(--font-lidya-body)" }}>
+                    {t(f.descKey)}
+                  </p>
+                  <span className="inline-block text-[11px] tracking-[0.22em] uppercase text-[#d4a843]" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("common.makeReservation")} →</span>
+                </div>
               </motion.button>
             </Reveal>
-          ))}
+          );
+        })()}
+
+        {/* Other services — image cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mb-12 md:mb-14">
+          {EVENTS.slice(1).map((ev, i) => {
+            const EvGlyph = ev.Glyph;
+            return (
+              <Reveal key={ev.titleKey} delay={i * 0.06}>
+                <motion.button
+                  type="button"
+                  onClick={() => openBooking(ev.service)}
+                  className="group/ev text-left w-full h-full flex flex-col overflow-hidden border border-[#d4a843]/12 bg-[#160b04]"
+                  whileHover={{ y: -6, borderColor: "rgba(212,168,67,0.4)" }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="relative aspect-[16/10] overflow-hidden bg-[#1c0f05]">
+                    {ev.img ? (
+                      <img src={ev.img} alt={t(ev.titleKey)} loading="lazy" className="w-full h-full object-cover transition-transform duration-700 group-hover/ev:scale-105" />
+                    ) : (
+                      <div className="w-full h-full flex flex-col items-center justify-center gap-2" style={{ background: "linear-gradient(135deg,#2a1a0d 0%,#160b04 100%)" }} aria-hidden>
+                        <span className="text-[#d4a843]/55 text-3xl"><EvGlyph /></span>
+                        <span className="text-[9px] tracking-[0.25em] uppercase text-[#e8dcc8]/22" style={{ fontFamily: "var(--font-lidya-sans)" }}>Photo coming soon</span>
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#160b04] via-transparent to-transparent pointer-events-none" />
+                  </div>
+                  <div className="p-6 flex flex-col flex-1">
+                    <h4 className="text-[#f5efe6] font-semibold text-lg mb-2 group-hover/ev:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t(ev.titleKey)}</h4>
+                    <p className="text-sm leading-relaxed text-[#e8dcc8]/50 flex-1" style={{ fontFamily: "var(--font-lidya-body)" }}>{t(ev.descKey)}</p>
+                    <span className="inline-block mt-4 text-[10px] tracking-[0.2em] uppercase text-[#d4a843]/70" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("common.makeReservation")} →</span>
+                  </div>
+                </motion.button>
+              </Reveal>
+            );
+          })}
         </div>
 
         {/* Bottom CTA */}

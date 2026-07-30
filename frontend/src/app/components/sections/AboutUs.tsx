@@ -86,7 +86,7 @@ export function AboutUs() {
     <section id="about-us" className="bg-[#f5efe6] py-16 md:py-24 lg:py-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
         <Reveal className="mb-16 text-center">
-          <p className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("about.eyebrow")}</p>
+          <p className="text-[#c25e2a] text-sm md:text-base tracking-[0.3em] uppercase mb-3 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("about.eyebrow")}</p>
           <h2 className="text-4xl md:text-5xl font-bold text-[#1e1008] leading-tight mx-auto" style={{ fontFamily: "var(--font-lidya-serif)" }}>
             {t("about.titleTop")}<br /><em>{t("about.titleEm")}</em>
           </h2>

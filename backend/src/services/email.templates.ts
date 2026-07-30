@@ -163,7 +163,7 @@ export function brandedEmail(opts: BrandedEmailOptions): string {
             <!-- Footer -->
             <tr>
               <td class="email-footer" style="background:${BRAND.darker};padding:26px 32px;text-align:center;">
-                <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;color:${BRAND.gold};margin-bottom:10px;">Taste the Heritage of Wolaita</div>
+                <div style="font-family:Georgia,'Times New Roman',serif;font-size:15px;color:${BRAND.gold};margin-bottom:10px;">Taste the Heritage of Ethiopia</div>
                 <div style="font-family:Arial,Helvetica,sans-serif;font-size:13px;line-height:1.7;color:#c9b79a;">
                   <a href="${BRAND.phoneHref}" style="color:${BRAND.gold};text-decoration:none;">${BRAND.phone}</a>
                   &nbsp;&middot;&nbsp;

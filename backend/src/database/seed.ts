@@ -41,39 +41,23 @@ async function main() {
   });
   logger.info(`Manager: ${manager.email}`);
 
-  // ─── 3. Create Branches ───────────────────────────────────────────────────
-  const sodoBranch = await prisma.branch.upsert({
-    where: { id: 'branch-sodo-0001-0000-000000000001' },
-    update: {
-      nameAm: 'ወላይታ ሶዶ',
-      labelAm: 'ዋና ቅርንጫፍ',
-      workingHoursAm: 'ሰኞ–እሁድ፡ 7:00 ጠዋት – 11:00 ማታ',
-      noteAm: 'የመጀመሪያው ልዲያ ካልቸራል ፉድ ዞን',
-    },
-    create: {
-      id: 'branch-sodo-0001-0000-000000000001',
-      name: 'Wolaita Sodo',
-      nameAm: 'ወላይታ ሶዶ',
-      label: 'Flagship',
-      labelAm: 'ዋና ቅርንጫፍ',
-      address: 'Kebele 03, Main Street, Wolaita Sodo, SNNPR, Ethiopia',
-      phone: '+251 46 551 2233',
-      email: 'sodo@lidyafoodzone.com',
-      workingHours: 'Mon-Sun: 7:00 AM - 11:00 PM',
-      workingHoursAm: 'ሰኞ–እሁድ፡ 7:00 ጠዋት – 11:00 ማታ',
-      note: 'The original Lidya Cultural Food Zone',
-      noteAm: 'የመጀመሪያው ልዲያ ካልቸራል ፉድ ዞን',
-      capacity: 100,
-    },
-  });
+  // ─── 3. Create Branches (order: Addis Ababa, Wolaita Sodo 1, Wolaita Sodo 2)─
+  // Branches are listed by createdAt asc, so create Addis first.
+  const addisCreatedAt = new Date('2020-01-01T00:00:00Z');
+  const sodo1CreatedAt = new Date('2020-01-02T00:00:00Z');
+  const sodo2CreatedAt = new Date('2020-01-03T00:00:00Z');
 
   const addisBranch = await prisma.branch.upsert({
     where: { id: 'branch-addis-0001-0000-000000000002' },
     update: {
+      name: 'Addis Ababa',
       nameAm: 'አዲስ አበባ',
+      label: 'Capital Branch',
       labelAm: 'የዋና ከተማ ቅርንጫፍ',
+      address: 'Lebu, Music Sefer, Addis Ababa, Ethiopia',
       workingHoursAm: 'ሰኞ–እሁድ፡ 8:00 ጠዋት – 11:30 ማታ',
-      noteAm: 'የወላይታን ባህል ወደ አዲስ አበባ የሚያመጣ ቅርንጫፋችን።',
+      noteAm: 'የኢትዮጵያን ባህላዊ ምግቦች ወደ አዲስ አበባ የሚያመጣ ቅርንጫፋችን።',
+      createdAt: addisCreatedAt,
     },
     create: {
       id: 'branch-addis-0001-0000-000000000002',
@@ -81,17 +65,75 @@ async function main() {
       nameAm: 'አዲስ አበባ',
       label: 'Capital Branch',
       labelAm: 'የዋና ከተማ ቅርንጫፍ',
-      address: 'Bole Road, Near Friendship Square, Addis Ababa, Ethiopia',
+      address: 'Lebu, Music Sefer, Addis Ababa, Ethiopia',
       phone: '+251 11 663 4455',
       email: 'addis@lidyafoodzone.com',
       workingHours: 'Mon-Sun: 8:00 AM - 11:30 PM',
       workingHoursAm: 'ሰኞ–እሁድ፡ 8:00 ጠዋት – 11:30 ማታ',
-      note: 'Our capital outpost bringing Wolaita culture to Addis.',
-      noteAm: 'የወላይታን ባህል ወደ አዲስ አበባ የሚያመጣ ቅርንጫፋችን።',
+      note: 'Our capital outpost bringing the cultural cuisines of Ethiopia to Addis Ababa.',
+      noteAm: 'የኢትዮጵያን ባህላዊ ምግቦች ወደ አዲስ አበባ የሚያመጣ ቅርንጫፋችን።',
       capacity: 80,
+      createdAt: addisCreatedAt,
     },
   });
-  logger.info(`Branches seeded: ${sodoBranch.name}, ${addisBranch.name}`);
+
+  const sodo1Branch = await prisma.branch.upsert({
+    where: { id: 'branch-sodo-0001-0000-000000000001' },
+    update: {
+      name: 'Wolaita Sodo 1',
+      nameAm: 'ወላይታ ሶዶ 1',
+      label: 'Flagship',
+      labelAm: 'ዋና ቅርንጫፍ',
+      workingHoursAm: 'ሰኞ–እሁድ፡ 7:00 ጠዋት – 11:00 ማታ',
+      noteAm: 'የመጀመሪያው ልዲያ ካልቸራል ፉድ ዞን።',
+      createdAt: sodo1CreatedAt,
+    },
+    create: {
+      id: 'branch-sodo-0001-0000-000000000001',
+      name: 'Wolaita Sodo 1',
+      nameAm: 'ወላይታ ሶዶ 1',
+      label: 'Flagship',
+      labelAm: 'ዋና ቅርንጫፍ',
+      address: 'Green Land Area, Wolaita Sodo, Ethiopia',
+      phone: '+251 46 551 2233',
+      email: 'sodo@lidyafoodzone.com',
+      workingHours: 'Mon-Sun: 7:00 AM - 11:00 PM',
+      workingHoursAm: 'ሰኞ–እሁድ፡ 7:00 ጠዋት – 11:00 ማታ',
+      note: 'The original Lidya Cultural Food Zone.',
+      noteAm: 'የመጀመሪያው ልዲያ ካልቸራል ፉድ ዞን።',
+      capacity: 100,
+      createdAt: sodo1CreatedAt,
+    },
+  });
+
+  const sodo2Branch = await prisma.branch.upsert({
+    where: { id: 'branch-sodo-0002-0000-000000000003' },
+    update: {
+      name: 'Wolaita Sodo 2',
+      nameAm: 'ወላይታ ሶዶ 2',
+      label: 'Wolaita Sodo',
+      labelAm: 'ወላይታ ሶዶ',
+      noteAm: 'ሁለተኛው የወላይታ ሶዶ ቅርንጫፍ።',
+      createdAt: sodo2CreatedAt,
+    },
+    create: {
+      id: 'branch-sodo-0002-0000-000000000003',
+      name: 'Wolaita Sodo 2',
+      nameAm: 'ወላይታ ሶዶ 2',
+      label: 'Wolaita Sodo',
+      labelAm: 'ወላይታ ሶዶ',
+      address: 'Wolaita Sodo, Ethiopia',
+      phone: '+251 46 551 2244',
+      email: 'sodo2@lidyafoodzone.com',
+      workingHours: 'Mon-Sun: 7:00 AM - 11:00 PM',
+      workingHoursAm: 'ሰኞ–እሁድ፡ 7:00 ጠዋት – 11:00 ማታ',
+      note: 'Our second home in Wolaita Sodo.',
+      noteAm: 'ሁለተኛው የወላይታ ሶዶ ቅርንጫፍ።',
+      capacity: 80,
+      createdAt: sodo2CreatedAt,
+    },
+  });
+  logger.info(`Branches seeded: ${addisBranch.name}, ${sodo1Branch.name}, ${sodo2Branch.name}`);
 
   // ─── 4. Create Categories (nested) ────────────────────────────────────────
   const categoryMap = new Map<string, string>();
@@ -198,8 +240,8 @@ async function main() {
       name: 'Jebena Buna',
       nameAm: 'ጀበና ቡና',
       cat: 'Lidya Coffee',
-      desc: 'Three rounds of freshly roasted Wolaita highland coffee prepared tableside with incense and popcorn.',
-      descAm: 'ሦስት ዙር አዲስ የተጠበሰ የወላይታ ደጋ ቡና በጠረጴዛ አጠገብ ከጤስና ፋንዲሻ ጋር ይዘጋጃል።',
+      desc: 'Three rounds of freshly roasted Ethiopian highland coffee prepared tableside with incense and popcorn.',
+      descAm: 'ሦስት ዙር አዲስ የተጠበሰ የኢትዮጵያ ደጋ ቡና በጠረጴዛ አጠገብ ከጤስና ፋንዲሻ ጋር ይዘጋጃል።',
       price: '520 ETB',
       tag: 'Ceremony',
     },
@@ -257,7 +299,7 @@ async function main() {
 
   // ─── 6. Seed Default Website Settings ────────────────────────────────────
   const defaultSettings = [
-    { key: 'hero_tagline', value: 'Taste the Heritage of Wolaita' },
+    { key: 'hero_tagline', value: 'Taste the Heritage of Ethiopia' },
     { key: 'hero_subtitle', value: 'A culinary journey through the rich traditions of Southern Ethiopia' },
     { key: 'contact_phone', value: '+251 46 551 2233' },
     { key: 'contact_email', value: 'hello@lidyafoodzone.com' },
@@ -281,7 +323,7 @@ async function main() {
       name: 'Abebe Girma',
       role: 'Food Writer, Addis Fortune',
       quote:
-        "Lidya doesn't just serve food — it curates an encounter with Wolaita heritage. The kitfo alone is reason enough to drive from Addis.",
+        "Lidya doesn't just serve food — it curates an encounter with Ethiopia's cultural heritage. The kitfo alone is reason enough to keep coming back.",
       order: 0,
     },
     {
@@ -295,7 +337,7 @@ async function main() {
       name: 'Tadesse Woldemariam',
       role: 'Wolaita Sodo resident, regular guest',
       quote:
-        'This is the place that makes us proud of our culture. Lidya represents Wolaita to the world better than any museum could.',
+        'This is the place that makes us proud of our culture. Lidya represents the cultures of Ethiopia to the world better than any museum could.',
       order: 2,
     },
     {
