@@ -122,5 +122,11 @@ export const STATS = [
 ];
 
 export function goto(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  const el = document.getElementById(id);
+  if (!el) return;
+  // Offset by the fixed header height so the section title isn't hidden under it.
+  const header = document.querySelector("header");
+  const offset = (header?.getBoundingClientRect().height ?? 66) + 8;
+  const top = el.getBoundingClientRect().top + window.scrollY - offset;
+  window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
 }

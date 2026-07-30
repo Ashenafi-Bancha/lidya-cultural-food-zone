@@ -141,7 +141,7 @@ function CulturalWelcome() {
         />
         {/* inner dark face holding the welcome text */}
         <div
-          className="relative z-10 px-5 sm:px-7 py-3 sm:py-3.5 rounded-[14px]"
+          className="relative z-10 px-5 sm:px-7 py-1.5 sm:py-3.5 rounded-[14px]"
           style={{
             background: "linear-gradient(180deg, rgba(10,10,10,0.94), rgba(0,0,0,0.92))",
             backdropFilter: "blur(10px)",
@@ -149,7 +149,7 @@ function CulturalWelcome() {
             boxShadow: "inset 0 0 26px rgba(212,168,67,0.12)",
           }}
         >
-          <div className="flex items-center justify-center text-center font-bold tracking-[0.05em] sm:tracking-[0.08em] leading-snug text-[13px] sm:text-lg md:text-2xl xl:text-3xl max-w-[78vw] sm:max-w-[22rem] md:max-w-[26rem] min-h-[2.4em] mx-auto">
+          <div className="flex items-center justify-center text-center font-bold tracking-[0.05em] sm:tracking-[0.08em] leading-tight sm:leading-snug text-[13px] sm:text-lg md:text-2xl xl:text-3xl max-w-[78vw] sm:max-w-[22rem] md:max-w-[26rem] min-h-[1.3em] sm:min-h-[2.4em] mx-auto">
             <Typewriter texts={WELCOME_TEXTS} typeSpeed={TYPE_SPEED} startDelay={TYPE_START} />
           </div>
         </div>
