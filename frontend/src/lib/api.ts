@@ -5,6 +5,22 @@ import axios from 'axios';
 // relative `/api` path which the Vite dev proxy forwards to the local backend.
 const baseURL = import.meta.env.VITE_API_URL || '/api';
 
+/**
+ * Resolve a backend-served asset path (e.g. "/uploads/x.webp") to a full URL.
+ * When the backend runs on a different origin than the frontend (Vercel +
+ * Render), relative /uploads paths must be prefixed with the API origin.
+ * Absolute URLs (Cloudinary) and bundled asset URLs pass through unchanged.
+ */
+export const assetUrl = (path?: string | null): string => {
+  if (!path) return '';
+  if (/^https?:\/\//i.test(path)) return path;
+  if (path.startsWith('/uploads')) {
+    const origin = baseURL.replace(/\/api\/?$/, '');
+    return origin ? `${origin}${path}` : path;
+  }
+  return path;
+};
+
 export const api = axios.create({
   baseURL,
   withCredentials: true, // For cookies (refresh token)

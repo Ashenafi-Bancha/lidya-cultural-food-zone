@@ -4,6 +4,8 @@ import { Reveal } from "../Reveal";
 import { Icon } from "../Icons";
 import { useLang } from "../../../context/LanguageContext";
 import { TESTIMONIALS } from "../../data/testimonials";
+import { useTestimonials } from "../../../hooks/useTestimonials";
+import { assetUrl } from "../../../lib/api";
 
 const initials = (name: string) =>
   name
@@ -15,7 +17,16 @@ const initials = (name: string) =>
 
 export function Testimonials() {
   const { t, tf } = useLang();
-  const items = TESTIMONIALS;
+
+  // Hybrid content source: the admin-managed database wins when the backend is
+  // reachable and has active testimonials; otherwise fall back to the bundled
+  // frontend testimonials so the section always renders (e.g. on Vercel).
+  const { data: apiData } = useTestimonials();
+  const apiItems = (apiData ?? []).filter((x) => x.isActive);
+  const items =
+    apiItems.length > 0
+      ? apiItems.map((x) => ({ ...x, imageUrl: assetUrl(x.imageUrl) }))
+      : TESTIMONIALS;
 
   const [idx, setIdx] = useState(0);
 

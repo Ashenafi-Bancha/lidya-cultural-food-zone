@@ -4,6 +4,8 @@ import { Reveal } from "../Reveal";
 import { Icon } from "../Icons";
 import { OptimizedImage } from "../OptimizedImage";
 import { GALLERY_ITEMS } from "../../data/gallery";
+import { useGallery } from "../../../hooks/useGallery";
+import { assetUrl } from "../../../lib/api";
 import { useLang } from "../../../context/LanguageContext";
 
 // Section order for the public gallery. Items are grouped under these headings.
@@ -138,8 +140,14 @@ export function Gallery() {
 
   const { t, tf } = useLang();
 
-  // Fully frontend-stored — renders with no backend (e.g. on Vercel).
-  const items = GALLERY_ITEMS;
+  // Hybrid content source: when the backend is reachable and has photos, the
+  // admin-managed database wins; otherwise fall back to the bundled frontend
+  // photos so the section always renders (e.g. on Vercel with no backend).
+  const { data: apiItems } = useGallery();
+  const items =
+    apiItems && apiItems.length > 0
+      ? apiItems.map((i) => ({ ...i, imageUrl: assetUrl(i.imageUrl), thumbUrl: assetUrl(i.thumbUrl) }))
+      : GALLERY_ITEMS;
 
   // Allocate the initial quota across the groups in display order, so the
   // first N photos show and "View More" reveals the rest.
