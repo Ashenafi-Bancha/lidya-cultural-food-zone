@@ -1,0 +1,28 @@
+# Render blueprint — deploys the backend as a Node web service.
+# Database: external (Neon Postgres) via DATABASE_URL.
+services:
+  - type: web
+    name: lidya-backend
+    runtime: node
+    rootDir: backend
+    plan: free
+    buildCommand: npm install --include=dev && npm run build
+    startCommand: npx prisma migrate deploy && npm start
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        sync: false # paste the Neon connection string in the Render dashboard
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: FRONTEND_URL
+        sync: false # your Vercel site URL, e.g. https://lidya.vercel.app
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_FROM_EMAIL
+        value: onboarding@resend.dev
+      - key: MANAGER_EMAIL
+        sync: false

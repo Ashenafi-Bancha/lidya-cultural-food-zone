@@ -316,6 +316,169 @@ async function main() {
   }
   logger.info('Default website settings seeded');
 
+  // ─── 6b. Seed Gallery (26 photos; images ship in the repo under /uploads) ─
+  // Mirrors the frontend-bundled gallery so a fresh deploy starts fully
+  // populated and stays admin-manageable. update:{} preserves admin edits.
+  const galleryData: Array<{
+    id: string; file: string; group: string; span: string;
+    title: string; titleAm: string; description: string; descriptionAm: string; alt: string;
+  }> = [
+    { id: 'gallery-orig-1', file: 'gallery_orig-1', group: 'MOMENTS', span: 'col-span-2 row-span-2',
+      title: 'Addis Ababa Branch Opening', titleAm: 'የአዲስ አበባ ቅርንጫፍ ምረቃ',
+      description: "The grand opening of our Addis Ababa branch — carrying the warmth of Ethiopia's cultural cuisine to the capital.",
+      descriptionAm: 'የአዲስ አበባ ቅርንጫፋችን ታላቅ ምረቃ — የኢትዮጵያን ባህላዊ ምግብ ሙቀት ወደ ዋና ከተማ ማምጣት።',
+      alt: 'Addis Ababa branch opening ceremony at Lidya Cultural Food Zone' },
+    { id: 'gallery-orig-2', file: 'gallery_orig-2', group: 'MOMENTS', span: 'col-span-2 row-span-1',
+      title: 'Inside Lidya', titleAm: 'ልዲያ ውስጥ',
+      description: 'A warm, welcoming space wrapped in Ethiopian colour and hospitality.',
+      descriptionAm: 'በኢትዮጵያ ቀለምና እንግዳ ተቀባይነት የተከበበ ሞቅ ያለ ቦታ።',
+      alt: 'Interior dining hall at Lidya Cultural Food Zone' },
+    { id: 'gallery-orig-3', file: 'gallery_orig-3', group: 'MOMENTS', span: 'col-span-1 row-span-1',
+      title: 'A Cultural Setting', titleAm: 'ባህላዊ ድባብ',
+      description: 'Every corner tells a story of Ethiopian heritage and pride.',
+      descriptionAm: 'እያንዳንዱ ጥግ የኢትዮጵያን ቅርስና ኩራት ታሪክ ይተርካል።',
+      alt: 'Cultural decor and setting at Lidya' },
+    { id: 'gallery-orig-4', file: 'gallery_orig-4', group: 'MOMENTS', span: 'col-span-1 row-span-1',
+      title: 'A Warm Welcome', titleAm: 'ሞቅ ያለ አቀባበል',
+      description: 'Genuine Ethiopian hospitality, offered from the heart.',
+      descriptionAm: 'ከልብ የሚቀርብ እውነተኛ የኢትዮጵያ እንግዳ ተቀባይነት።',
+      alt: 'Warm welcome and hospitality at Lidya' },
+    { id: 'gallery-fe-1', file: 'gallery_fe-1', group: 'MOMENTS', span: 'col-span-2 row-span-1',
+      title: 'A Welcome in Woven Colours', titleAm: 'በሽመና ቀለማት የታጀበ አቀባበል',
+      description: 'Guests draped in traditional woven scarves gather at the entrance, roses in hand — the Lidya welcome begins before the first bite.',
+      descriptionAm: 'እንግዶች ባህላዊ የሽመና ሻርፕ ለብሰው በመግቢያው ላይ ተሰብስበዋል — የልዲያ አቀባበል ከመጀመሪያው ጉርሻ በፊት ይጀምራል።',
+      alt: 'Guests wearing traditional woven scarves welcomed at the entrance of Lidya' },
+    { id: 'gallery-fe-2', file: 'gallery_fe-2', group: 'MOMENTS', span: 'col-span-1 row-span-1',
+      title: 'Gathered in Celebration', titleAm: 'ለክብረ በዓል ተሰባስበው',
+      description: 'Friends and guests come together before the hand-painted cultural mural — every visit becomes a celebration.',
+      descriptionAm: 'ወዳጆችና እንግዶች በእጅ በተሳለው ባህላዊ ሥዕል ፊት ተሰባስበዋል — እያንዳንዱ ጉብኝት ክብረ በዓል ይሆናል።',
+      alt: 'Group of guests posing before the cultural mural at Lidya' },
+    { id: 'gallery-fe-3', file: 'gallery_fe-3', group: 'MOMENTS', span: 'col-span-1 row-span-2',
+      title: 'Honoured in Tradition', titleAm: 'በባህል የተከበሩ',
+      description: 'Honoured guests wrapped in vivid hand-woven shawls beneath woven basket lanterns — tradition worn with pride.',
+      descriptionAm: 'የተከበሩ እንግዶች ደማቅ የእጅ ሽመና ጋቢ ለብሰው በተሸመኑ የቅርጫት መብራቶች ስር — ባህል በኩራት ይለበሳል።',
+      alt: 'Two guests draped in vivid traditional woven shawls at Lidya' },
+    { id: 'gallery-fe-6', file: 'gallery_fe-6', group: 'MOMENTS', span: 'col-span-2 row-span-1',
+      title: 'Welcomed at the Door', titleAm: 'በበሩ ላይ የተደረገ አቀባበል',
+      description: 'Guests received beneath the welcome banner, with woven mesobs and traditional displays lining the entrance.',
+      descriptionAm: 'እንግዶች በእንኳን ደህና መጡ ባነር ስር ተቀብለዋል፣ የተሸመኑ መሶቦችና ባህላዊ ማሳያዎች መግቢያውን አስውበዋል።',
+      alt: 'Guests standing at the decorated entrance of Lidya under the welcome banner' },
+    { id: 'gallery-fe-8', file: 'gallery_fe-8', group: 'MOMENTS', span: 'col-span-1 row-span-1',
+      title: 'The Sound of the Horns', titleAm: 'የቀንደ መለከቱ ድምፅ',
+      description: 'Traditional horn players in embroidered vests sound the long bamboo trumpets — music that has welcomed guests for generations.',
+      descriptionAm: 'ባህላዊ የመለከት ተጫዋቾች የተጠለፈ ሸሚዝ ለብሰው ረጃጅም የቀርከሃ መለከቶችን ይነፋሉ — ለትውልዶች እንግዶችን የተቀበለ ሙዚቃ።',
+      alt: 'Musicians playing long traditional bamboo horns at Lidya' },
+    { id: 'gallery-fe-9', file: 'gallery_fe-9', group: 'MOMENTS', span: 'col-span-1 row-span-1',
+      title: 'Applause of Welcome', titleAm: 'የአቀባበል ጭብጨባ',
+      description: 'Clapping hands and warm smiles in the street — the neighbourhood joins the celebration.',
+      descriptionAm: 'ጭብጨባና ሞቅ ያለ ፈገግታ በመንገዱ ላይ — ሰፈሩ ከክብረ በዓሉ ጋር ይቀላቀላል።',
+      alt: 'Guests clapping in welcome outside Lidya' },
+    { id: 'gallery-fe-10', file: 'gallery_fe-10', group: 'MOMENTS', span: 'col-span-1 row-span-2',
+      title: 'Dressed for the Occasion', titleAm: 'ለበዓሉ የተዋቡ',
+      description: 'A couple on the red carpet — she in a hand-embroidered habesha kemis, welcomed beneath the Lidya banner.',
+      descriptionAm: 'ጥንዶች በቀይ ምንጣፍ ላይ — እሷ በእጅ የተጠለፈ የሀበሻ ቀሚስ ለብሳ፣ በልዲያ ባነር ስር ተቀብለዋል።',
+      alt: 'Couple in elegant traditional dress on the red carpet at Lidya' },
+    { id: 'gallery-fe-12', file: 'gallery_fe-12', group: 'MOMENTS', span: 'col-span-1 row-span-2',
+      title: 'Guests of Honour', titleAm: 'የክብር እንግዶች',
+      description: 'Elegant guests before the welcome wall — every arrival at Lidya is received like family.',
+      descriptionAm: 'የተዋቡ እንግዶች በእንኳን ደህና መጡ ግድግዳ ፊት — በልዲያ እያንዳንዱ መምጣት እንደ ቤተሰብ ይቀበላል።',
+      alt: 'Three elegantly dressed guests before the welcome banner at Lidya' },
+    { id: 'gallery-fe-14', file: 'gallery_fe-14', group: 'MOMENTS', span: 'col-span-2 row-span-2',
+      title: 'A Grand Cultural Welcome', titleAm: 'ታላቅ ባህላዊ አቀባበል',
+      description: 'Dancers in fringed traditional dress, flute players, and a flower-crowned tent before the thatched entrance — a full ceremonial welcome at Lidya.',
+      descriptionAm: 'የተንዘረዘረ ባህላዊ ልብስ የለበሱ ጨፋሪዎች፣ የዋሽንት ተጫዋቾችና በአበባ የተጌጠ ድንኳን በሳር ክዳን መግቢያው ፊት — በልዲያ የተሟላ ባህላዊ አቀባበል።',
+      alt: 'Traditional dancers and musicians performing a ceremonial welcome outside Lidya' },
+    { id: 'gallery-fe-15', file: 'gallery_fe-15', group: 'MOMENTS', span: 'col-span-1 row-span-1',
+      title: 'The Embrace of Friendship', titleAm: 'የወዳጅነት እቅፍ',
+      description: 'Old friends reunite with an embrace before the cultural mural — Lidya is where people find each other again.',
+      descriptionAm: 'የቆዩ ወዳጆች በባህላዊው ሥዕል ፊት በእቅፍ ተገናኙ — ልዲያ ሰዎች እርስ በርስ የሚገናኙበት ስፍራ ነው።',
+      alt: 'Guests embracing in greeting inside Lidya' },
+    { id: 'gallery-fe-16', file: 'gallery_fe-16', group: 'MOMENTS', span: 'col-span-1 row-span-2',
+      title: 'Roses at the Door', titleAm: 'ጽጌረዳዎች በበሩ ላይ',
+      description: 'A hostess in white cultural dress offers a woven basket of roses beneath the blossom wall — beauty in every detail of the welcome.',
+      descriptionAm: 'ነጭ ባህላዊ ቀሚስ የለበሰች አስተናጋጅ ከአበባ ግድግዳው ስር የጽጌረዳ ቅርጫት ታቀርባለች — በአቀባበሉ እያንዳንዱ ዝርዝር ውስጥ ውበት።',
+      alt: 'Hostess in traditional dress holding a basket of roses at Lidya' },
+    { id: 'gallery-fe-17', file: 'gallery_fe-17', group: 'MOMENTS', span: 'col-span-2 row-span-1',
+      title: 'An Evening of Elegance', titleAm: 'የውበት ምሽት',
+      description: 'Guests dressed for a special evening arrive along the red carpet — celebrations at Lidya always begin in style.',
+      descriptionAm: 'ለልዩ ምሽት የተዋቡ እንግዶች በቀይ ምንጣፍ ላይ ይደርሳሉ — በልዲያ ክብረ በዓላት ሁሌም በውበት ይጀምራሉ።',
+      alt: 'Elegantly dressed guests arriving at Lidya' },
+    { id: 'gallery-orig-5', file: 'gallery_orig-5', group: 'LIFE', span: 'col-span-2 row-span-1',
+      title: 'Gathered as Guests', titleAm: 'እንደ እንግዳ ተሰብስበው',
+      description: 'Friends and family sharing food, story, and the joy of the table.',
+      descriptionAm: 'ጓደኞችና ቤተሰብ ምግብ፣ ወግና የማዕድ ደስታ ሲጋሩ።',
+      alt: 'Guests sharing a meal at Lidya' },
+    { id: 'gallery-orig-6', file: 'gallery_orig-6', group: 'LIFE', span: 'col-span-2 row-span-1',
+      title: 'Life in the VIP Lounge', titleAm: 'በVIP ማረፊያ ውስጥ ያለ ሕይወት',
+      description: 'Premium comfort and celebration in our VIP experience.',
+      descriptionAm: 'በVIP ተሞክሮአችን ውስጥ ልዩ ምቾትና ደስታ።',
+      alt: 'Life at Lidya VIP lounge' },
+    { id: 'gallery-fe-4', file: 'gallery_fe-4', group: 'LIFE', span: 'col-span-1 row-span-2',
+      title: 'Friendship at Lidya', titleAm: 'ወዳጅነት በልዲያ',
+      description: 'Smiles beside modern Ethiopian art — the dining room where friendships are made and renewed.',
+      descriptionAm: 'ከዘመናዊ የኢትዮጵያ ሥዕል አጠገብ ፈገግታ — ወዳጅነት የሚፈጠርበትና የሚታደስበት የመመገቢያ አዳራሽ።',
+      alt: 'Two smiling friends beside modern Ethiopian artwork inside Lidya' },
+    { id: 'gallery-fe-5', file: 'gallery_fe-5', group: 'LIFE', span: 'col-span-1 row-span-1',
+      title: 'Conversations in the Lounge', titleAm: 'በእንግዳ ማረፊያው ውስጥ ጭውውት',
+      description: 'Unhurried conversation in the lounge — hospitality at Lidya means time is always on the menu.',
+      descriptionAm: 'በእንግዳ ማረፊያው ያልተቸኮለ ጭውውት — በልዲያ እንግዳ ተቀባይነት ማለት ጊዜ ሁሌም ከምናሌው ላይ ነው።',
+      alt: 'Guests in relaxed conversation in the lounge at Lidya' },
+    { id: 'gallery-fe-7', file: 'gallery_fe-7', group: 'LIFE', span: 'col-span-2 row-span-1',
+      title: 'Style Meets Heritage', titleAm: 'ዘመናዊነት ከቅርስ ጋር',
+      description: 'Modern style and woven heritage side by side — at Lidya, every generation finds its place.',
+      descriptionAm: 'ዘመናዊ ስልትና የሽመና ቅርስ ጎን ለጎን — በልዲያ እያንዳንዱ ትውልድ ቦታውን ያገኛል።',
+      alt: 'Guests in modern and traditional dress before the mural at Lidya' },
+    { id: 'gallery-fe-11', file: 'gallery_fe-11', group: 'LIFE', span: 'col-span-1 row-span-2',
+      title: 'Smiles of the House', titleAm: 'የቤቱ ፈገግታዎች',
+      description: 'Woven scarves, embroidered jackets, and easy laughter — the everyday joy of an evening at Lidya.',
+      descriptionAm: 'የሽመና ሻርፕ፣ የተጠለፉ ጃኬቶችና ቀላል ሳቅ — በልዲያ ምሽት ያለው የየቀኑ ደስታ።',
+      alt: 'Two smiling guests in traditional attire inside Lidya' },
+    { id: 'gallery-fe-13', file: 'gallery_fe-13', group: 'LIFE', span: 'col-span-1 row-span-2',
+      title: 'An Evening at Lidya', titleAm: 'ምሽት በልዲያ',
+      description: 'Under handwoven lanterns, a guest pauses between courses — quiet style in a warm cultural room.',
+      descriptionAm: 'በእጅ በተሸመኑ መብራቶች ስር አንድ እንግዳ በምግቦች መካከል ቆም ብሏል — በሞቃት ባህላዊ አዳራሽ ውስጥ ጸጥ ያለ ውበት።',
+      alt: 'Guest with cultural scarf standing in the warm dining room of Lidya' },
+    { id: 'gallery-fe-18', file: 'gallery_fe-18', group: 'LIFE', span: 'col-span-1 row-span-2',
+      title: 'A Table of Ethiopia', titleAm: 'የኢትዮጵያ ገበታ',
+      description: 'Hostesses in cultural dress present clay bowls of traditional dishes beside the jebena — the flavours of Ethiopia laid out in colour.',
+      descriptionAm: 'ባህላዊ ልብስ የለበሱ አስተናጋጆች ከጀበናው አጠገብ የሸክላ ሳህኖችን በባህላዊ ምግቦች ሞልተው ያቀርባሉ — የኢትዮጵያ ጣዕሞች በቀለም ተዘርግተዋል።',
+      alt: 'Hostesses presenting traditional Ethiopian dishes in clay bowls at Lidya' },
+    { id: 'gallery-fe-19', file: 'gallery_fe-19', group: 'LIFE', span: 'col-span-2 row-span-2',
+      title: 'Sisters Around the Mesob', titleAm: 'እህቶች በመሶቡ ዙሪያ',
+      description: 'Four friends in traditional dress share injera from a bright woven mesob beneath the thatched hut — dining as Ethiopia has always known it: together.',
+      descriptionAm: 'አራት ወዳጆች ባህላዊ ልብስ ለብሰው ከሳር ጎጆው ስር ከደማቅ የተሸመነ መሶብ እንጀራ ይጋራሉ — ኢትዮጵያ ሁሌም እንደምታውቀው አመጋገብ፦ በአንድነት።',
+      alt: 'Four women in traditional dress sharing food from a woven mesob at Lidya' },
+    { id: 'gallery-fe-20', file: 'gallery_fe-20', group: 'LIFE', span: 'col-span-1 row-span-1',
+      title: 'Honoured Guests at Home', titleAm: 'የክብር እንግዶች እንደ ቤታቸው',
+      description: 'Honoured guests share a quiet moment together — at Lidya, every guest is received as family.',
+      descriptionAm: 'የክብር እንግዶች ጸጥ ያለ ጊዜ አብረው ያሳልፋሉ — በልዲያ እያንዳንዱ እንግዳ እንደ ቤተሰብ ይቀበላል።',
+      alt: 'Honoured guests seated together at Lidya' },
+  ];
+
+  // Public gallery sorts createdAt desc — stamp descending so the array order
+  // above is the display order.
+  const galleryBase = new Date('2020-02-01T00:00:00Z').getTime();
+  for (let i = 0; i < galleryData.length; i++) {
+    const g = galleryData[i];
+    const createdAt = new Date(galleryBase + (galleryData.length - i) * 60_000);
+    await prisma.galleryItem.upsert({
+      where: { id: g.id },
+      update: {}, // preserve admin edits on re-seed
+      create: {
+        id: g.id, title: g.title, titleAm: g.titleAm,
+        description: g.description, descriptionAm: g.descriptionAm,
+        imageUrl: `/uploads/${g.file}.webp`, thumbUrl: `/uploads/${g.file}_thumb.webp`,
+        span: g.span, group: g.group, alt: g.alt, createdAt,
+      },
+    });
+  }
+  // Retire the legacy locally-imported rows superseded by gallery-orig-*.
+  await prisma.galleryItem.updateMany({
+    where: { id: { startsWith: 'gallery-import-' }, deletedAt: null },
+    data: { deletedAt: new Date() },
+  });
+  logger.info(`Gallery seeded: ${galleryData.length} photos`);
+
   // ─── 7. Seed Starter Testimonials ────────────────────────────────────────
   // These are editable/replaceable in the admin dashboard once real guests are added.
   const testimonialsData = [
@@ -333,11 +496,19 @@ async function main() {
       quote: "From the moment we walked in, we felt welcomed with genuine warmth. The food was exceptional, the cultural ambiance was beautiful, and every dish was prepared with care. Lidya is a destination everyone should experience at least once." },
   ];
 
+  // Photos for the first four guests ship in the repo under /uploads.
+  const testimonialPhotos: Record<string, string> = {
+    'ts-guest-1': '/uploads/testimonial_ts-guest-1.webp',
+    'ts-guest-2': '/uploads/testimonial_ts-guest-2.webp',
+    'ts-guest-3': '/uploads/testimonial_ts-guest-3.webp',
+    'ts-guest-4': '/uploads/testimonial_ts-guest-4.webp',
+  };
+
   for (const { id, ...rest } of testimonialsData) {
     await prisma.testimonial.upsert({
       where: { id },
       update: {}, // preserve any admin edits / uploaded photos on re-seed
-      create: { id, ...rest, rating: 5, isActive: true },
+      create: { id, ...rest, rating: 5, isActive: true, imageUrl: testimonialPhotos[id] ?? null },
     });
   }
   logger.info('Starter testimonials seeded');
