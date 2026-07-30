@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Reveal } from "../Reveal";
 import { Icon } from "../Icons";
 import { useLang } from "../../../context/LanguageContext";
-import { useTestimonials } from "../../../hooks/useTestimonials";
+import { TESTIMONIALS } from "../../data/testimonials";
 
 const initials = (name: string) =>
   name
@@ -15,8 +15,7 @@ const initials = (name: string) =>
 
 export function Testimonials() {
   const { t, tf } = useLang();
-  const { data, isLoading } = useTestimonials();
-  const items = (data ?? []).filter((x) => x.isActive);
+  const items = TESTIMONIALS;
 
   const [idx, setIdx] = useState(0);
 
@@ -31,8 +30,8 @@ export function Testimonials() {
     if (idx >= items.length) setIdx(0);
   }, [items.length, idx]);
 
-  // Hide the whole section when there are no active testimonials.
-  if (!isLoading && items.length === 0) return null;
+  // Hide the whole section when there are no testimonials.
+  if (items.length === 0) return null;
 
   const current = items[idx % Math.max(items.length, 1)];
 
@@ -46,14 +45,7 @@ export function Testimonials() {
         </Reveal>
 
         <div className="min-h-[240px] flex items-center justify-center">
-          {isLoading || !current ? (
-            <div className="w-full max-w-2xl mx-auto animate-pulse">
-              <div className="h-4 bg-[#f5efe6]/10 rounded w-1/3 mx-auto mb-6" />
-              <div className="h-5 bg-[#f5efe6]/10 rounded w-full mb-3" />
-              <div className="h-5 bg-[#f5efe6]/10 rounded w-4/5 mx-auto mb-8" />
-              <div className="w-10 h-10 bg-[#f5efe6]/10 rounded-full mx-auto" />
-            </div>
-          ) : (
+          {!current ? null : (
             <AnimatePresence mode="wait">
               <motion.div
                 key={current.id}

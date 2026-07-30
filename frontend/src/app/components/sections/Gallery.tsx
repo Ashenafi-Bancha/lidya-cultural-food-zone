@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Reveal } from "../Reveal";
 import { Icon } from "../Icons";
 import { OptimizedImage } from "../OptimizedImage";
-import { useGallery } from "../../../hooks/useGallery";
+import { GALLERY_ITEMS } from "../../data/gallery";
 import { useLang } from "../../../context/LanguageContext";
 
 // Section order for the public gallery. Items are grouped under these headings.
@@ -137,10 +137,9 @@ export function Gallery() {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const { t, tf } = useLang();
-  const { data: galleryData, isLoading, isError } = useGallery();
 
-  // API is the source of truth — no fabricated fallback content.
-  const items = galleryData ?? [];
+  // Fully frontend-stored — renders with no backend (e.g. on Vercel).
+  const items = GALLERY_ITEMS;
 
   // Allocate the initial quota across the groups in display order, so the
   // first N photos show and "View More" reveals the rest.
@@ -190,18 +189,9 @@ export function Gallery() {
           </p>
         </Reveal>
 
-        {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 auto-rows-[140px] sm:auto-rows-[180px] md:auto-rows-[210px]">
-            {[1, 2, 3, 4, 5, 6].map((n, i) => (
-              <div 
-                key={n} 
-                className={`${i === 0 ? 'col-span-2 row-span-2' : ''} bg-[#2e1a0c] animate-pulse rounded-sm`} 
-              />
-            ))}
-          </div>
-        ) : items.length === 0 ? (
+        {items.length === 0 ? (
           <div className="py-16 text-center text-white/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
-            {isError ? t("gallery.emptyError") : t("gallery.emptyComingSoon")}
+            {t("gallery.emptyComingSoon")}
           </div>
         ) : (
           <div className="space-y-14 md:space-y-20">
