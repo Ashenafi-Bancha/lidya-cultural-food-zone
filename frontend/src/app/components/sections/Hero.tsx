@@ -7,12 +7,15 @@ import { goto } from "../../data/constants";
 import { useLang } from "../../../context/LanguageContext";
 
 // Welcome greeting cycles through three languages, in order:
-// Wolaytta → Amharic → English, then loops.
+// Wolaytta → Amharic → English, then loops. Each phrase has a white leading
+// part and an optional brand-name part rendered in the golden brand colour.
 const WELCOME_TEXTS = [
-  "Hashshu Saro Yeeta!",                  // Wolaytta
-  "እንኳን ደህና መጡ!",                          // Amharic
-  "Welcome to Lidya Cultural Food Zone",  // English
+  { pre: "Hashshu Saro Yeeta! ", brand: "Liidya Wogaa Quma Keettaa!", post: "" }, // Wolaytta
+  { pre: "እንኳን ወደ ", brand: "ሊዲያ ባህላዊ ምግብ ቤት", post: " በደህና መጡ!" },              // Amharic
+  { pre: "Welcome to ", brand: "Lidya Cultural Food Zone", post: "" },            // English
 ];
+
+type WelcomePhrase = { pre: string; brand: string; post: string };
 
 // Types the phrase one letter at a time until complete, then keeps it.
 // Loops forever so the animation keeps drawing attention like a sign.
@@ -23,7 +26,7 @@ function Typewriter({
   hold = 1700,
   startDelay = 800,
 }: {
-  texts: string[];
+  texts: WelcomePhrase[];
   typeSpeed?: number;
   eraseSpeed?: number;
   hold?: number;
@@ -41,7 +44,7 @@ function Typewriter({
 
   useEffect(() => {
     if (!ready) return;
-    const current = texts[idx];
+    const current = texts[idx].pre + texts[idx].brand + texts[idx].post;
     if (!deleting && sub === current.length) {
       const id = setTimeout(() => setDeleting(true), hold);
       return () => clearTimeout(id);
@@ -58,10 +61,14 @@ function Typewriter({
     return () => clearTimeout(id);
   }, [ready, sub, deleting, idx, texts, hold, eraseSpeed, typeSpeed]);
 
-  const shown = texts[idx].slice(0, sub);
+  const { pre, brand, post } = texts[idx];
+  const shown = (pre + brand + post).slice(0, sub);
+  const preShown = shown.slice(0, pre.length);
+  const brandShown = shown.slice(pre.length, pre.length + brand.length);
+  const postShown = shown.slice(pre.length + brand.length);
 
   return (
-    <span aria-label={texts.join(" · ")}>
+    <span aria-label={texts.map((t) => t.pre + t.brand + t.post).join(" · ")}>
       <span
         style={{
           fontFamily: "'Cinzel', 'Noto Serif Ethiopic', serif",
@@ -69,8 +76,33 @@ function Typewriter({
           filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.65))",
         }}
       >
-        {shown || " "}
+        {preShown || " "}
       </span>
+      {brandShown && (
+        <span
+          style={{
+            fontFamily: "'Cinzel', 'Noto Serif Ethiopic', serif",
+            background: "linear-gradient(180deg,#ffe98a 0%,#f5c842 40%,#c8901f 74%,#ffe488 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(212,168,67,0.35))",
+          }}
+        >
+          {brandShown}
+        </span>
+      )}
+      {postShown && (
+        <span
+          style={{
+            fontFamily: "'Cinzel', 'Noto Serif Ethiopic', serif",
+            color: "#ffffff",
+            filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.65))",
+          }}
+        >
+          {postShown}
+        </span>
+      )}
       <span
         className="ml-0.5"
         style={{
@@ -93,7 +125,8 @@ function CulturalWelcome() {
   // Ignite the moving-light border only once the greeting has finished typing.
   const [lightOn, setLightOn] = useState(false);
   useEffect(() => {
-    const finishMs = TYPE_START + WELCOME_TEXTS[0].length * TYPE_SPEED + 250;
+    const first = WELCOME_TEXTS[0].pre + WELCOME_TEXTS[0].brand + WELCOME_TEXTS[0].post;
+    const finishMs = TYPE_START + first.length * TYPE_SPEED + 250;
     const id = setTimeout(() => setLightOn(true), finishMs);
     return () => clearTimeout(id);
   }, []);

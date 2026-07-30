@@ -108,7 +108,7 @@ export function Branches() {
                         href={mapsUrl(b.address)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="mt-6 inline-flex items-center gap-2 text-[11px] tracking-[0.15em] uppercase bg-[#c25e2a] text-[#faf5ee] px-5 py-3 shadow-sm hover:shadow-md transition-shadow justify-center"
+                        className="mt-6 inline-flex items-center gap-2 text-[11px] tracking-[0.15em] uppercase bg-[#c25e2a] text-[#faf5ee] px-5 py-3 rounded-xl shadow-sm hover:shadow-md transition-shadow justify-center"
                         style={{ fontFamily: "var(--font-lidya-sans)" }}
                         whileHover={{ scale: 1.03 }}
                         whileTap={{ scale: 0.97 }}

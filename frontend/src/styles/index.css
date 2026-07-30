@@ -1,3 +1,11 @@
 @import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
+
+/* Premium rounded corners for every button across the site (mobile + desktop).
+   Tailwind utility classes (e.g. rounded-full, rounded-none) still override. */
+@layer base {
+  button {
+    border-radius: 0.75rem;
+  }
+}

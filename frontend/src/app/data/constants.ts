@@ -127,6 +127,18 @@ export function goto(id: string) {
   // Offset by the fixed header height so the section title isn't hidden under it.
   const header = document.querySelector("header");
   const offset = (header?.getBoundingClientRect().height ?? 66) + 8;
-  const top = el.getBoundingClientRect().top + window.scrollY - offset;
-  window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+  const targetTop = () => el.getBoundingClientRect().top + window.scrollY - offset;
+
+  window.scrollTo({ top: Math.max(0, targetTop()), behavior: "smooth" });
+
+  // Async content (menu, gallery, testimonials) can finish loading during the
+  // scroll and shift the layout, leaving us in the wrong place. Re-check a few
+  // times and correct any drift so we always land at the section's start.
+  const correct = (behavior: ScrollBehavior) => {
+    const drift = el.getBoundingClientRect().top - offset;
+    if (Math.abs(drift) > 10) window.scrollTo({ top: Math.max(0, targetTop()), behavior });
+  };
+  setTimeout(() => correct("smooth"), 800);
+  setTimeout(() => correct("smooth"), 1700);
+  setTimeout(() => correct("smooth"), 2600);
 }

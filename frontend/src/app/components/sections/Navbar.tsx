@@ -27,14 +27,14 @@ export function Navbar({ onOpenChange }: NavbarProps) {
       >
         <button
           onClick={() => setLang("en")}
-          className={`${size} ${pad} leading-none transition-colors ${lang === "en" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#e8dcc8]/70 hover:text-[#d4a843]"}`}
+          className={`${size} ${pad} rounded-none leading-none transition-colors ${lang === "en" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#e8dcc8]/70 hover:text-[#d4a843]"}`}
           aria-pressed={lang === "en"}
         >
           EN
         </button>
         <button
           onClick={() => setLang("am")}
-          className={`${size} ${pad} leading-none transition-colors ${lang === "am" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#e8dcc8]/70 hover:text-[#d4a843]"}`}
+          className={`${size} ${pad} rounded-none leading-none transition-colors ${lang === "am" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#e8dcc8]/70 hover:text-[#d4a843]"}`}
           aria-pressed={lang === "am"}
         >
           አማ

@@ -269,7 +269,7 @@ export function Services() {
               </motion.button>
               <motion.a
                 href="tel:+251920994499"
-                className="px-7 py-4 border text-[11px] tracking-[0.2em] uppercase flex items-center justify-center gap-2 w-full sm:w-auto"
+                className="px-7 py-4 rounded-xl border text-[11px] tracking-[0.2em] uppercase flex items-center justify-center gap-2 w-full sm:w-auto"
                 style={{ fontFamily: "var(--font-lidya-sans)", borderColor: "rgba(232,220,200,0.18)", color: "rgba(232,220,200,0.58)" }}
                 whileHover={{ borderColor: "#d4a843", color: "#d4a843" }}
                 transition={{ duration: 0.2 }}
