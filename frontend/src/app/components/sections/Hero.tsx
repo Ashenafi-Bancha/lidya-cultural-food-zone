@@ -65,11 +65,8 @@ function Typewriter({
       <span
         style={{
           fontFamily: "'Cinzel', 'Noto Serif Ethiopic', serif",
-          background: "linear-gradient(180deg,#fff2b0 0%,#f5c842 40%,#c8901f 74%,#ffe488 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          backgroundClip: "text",
-          filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.6)) drop-shadow(0 0 14px rgba(212,168,67,0.35))",
+          color: "#ffffff",
+          filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.65))",
         }}
       >
         {shown || " "}
@@ -77,9 +74,9 @@ function Typewriter({
       <span
         className="ml-0.5"
         style={{
-          color: "#f5c842",
+          color: "#ffffff",
           animation: "blink 1s steps(1) infinite",
-          filter: "drop-shadow(0 0 8px rgba(245,200,66,0.7))",
+          filter: "drop-shadow(0 0 8px rgba(255,255,255,0.55))",
         }}
       >
         |
@@ -234,7 +231,7 @@ export function Hero() {
       </div>
 
       {/* ── Cultural welcome — mobile: over the top image ── */}
-      <div className="md:hidden absolute top-0 inset-x-0 h-[55vh] flex items-start justify-center pt-[19%] px-4 z-20 pointer-events-none">
+      <div className="md:hidden absolute top-0 inset-x-0 h-[55vh] flex items-start justify-center pt-[30%] px-4 z-20 pointer-events-none">
         <CulturalWelcome />
       </div>
 

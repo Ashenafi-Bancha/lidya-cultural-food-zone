@@ -3,7 +3,7 @@ import { ApiResponse, GalleryItem } from '../types/api';
 
 export const galleryService = {
   getItems: async () => {
-    const response = await api.get<ApiResponse<GalleryItem[]>>('/gallery');
+    const response = await api.get<ApiResponse<GalleryItem[]>>('/gallery?limit=100');
     return response.data.data;
   },
   // Admin functions

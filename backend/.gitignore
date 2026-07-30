@@ -4,5 +4,5 @@ node_modules
 
 /generated/prisma
 
-# User-uploaded images (local fallback storage) — not source, and ephemeral in prod
-uploads/
+# Optimized site images (gallery, testimonials) are tracked in git so they
+# survive fresh clones and deploys — the raw multi-MB originals are never committed.

@@ -127,8 +127,13 @@ function GalleryCard({
 }
 
 /* ─── Section ──────────────────────────────────────────────────────────── */
+
+// How many photos are visible before the "View More" CTA expands the rest.
+const INITIAL_VISIBLE = 10;
+
 export function Gallery() {
   const [selected, setSelected] = useState<any | null>(null);
+  const [showAll, setShowAll] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const { t, tf } = useLang();
@@ -136,6 +141,18 @@ export function Gallery() {
 
   // API is the source of truth — no fabricated fallback content.
   const items = galleryData ?? [];
+
+  // Allocate the initial quota across the groups in display order, so the
+  // first N photos show and "View More" reveals the rest.
+  const hiddenCount = Math.max(0, items.length - INITIAL_VISIBLE);
+  let quota = showAll ? Infinity : INITIAL_VISIBLE;
+  const visibleByGroup: Record<string, any[]> = {};
+  for (const group of GALLERY_GROUPS) {
+    const groupItems = items.filter((it) => (it.group || "MOMENTS") === group);
+    const take = Math.max(0, Math.min(groupItems.length, quota));
+    visibleByGroup[group] = groupItems.slice(0, take);
+    quota -= take;
+  }
 
   useEffect(() => {
     if (selected) document.body.style.overflow = "hidden";
@@ -189,7 +206,7 @@ export function Gallery() {
         ) : (
           <div className="space-y-14 md:space-y-20">
             {GALLERY_GROUPS.map((group) => {
-              const groupItems = items.filter((it) => (it.group || "MOMENTS") === group);
+              const groupItems = visibleByGroup[group] ?? [];
               if (groupItems.length === 0) return null;
               return (
                 <div key={group}>
@@ -216,6 +233,54 @@ export function Gallery() {
                 </div>
               );
             })}
+
+            {/* ── View More / Show Less CTA ── */}
+            {hiddenCount > 0 && (
+              <Reveal className="text-center !mt-10 md:!mt-14">
+                <motion.button
+                  type="button"
+                  onClick={() => setShowAll((v) => !v)}
+                  className="group/cta relative inline-flex items-center gap-3 px-9 py-4 text-[11px] tracking-[0.24em] uppercase font-semibold overflow-hidden"
+                  style={{
+                    fontFamily: "var(--font-lidya-sans)",
+                    color: "#d4a843",
+                    border: "1px solid rgba(212,168,67,0.5)",
+                    background: "linear-gradient(135deg, rgba(212,168,67,0.10) 0%, rgba(194,94,42,0.08) 100%)",
+                    boxShadow: "0 0 18px rgba(212,168,67,0.15)",
+                  }}
+                  whileHover={{
+                    backgroundColor: "#d4a843",
+                    color: "#1e1008",
+                    boxShadow: "0 0 28px rgba(212,168,67,0.45)",
+                  }}
+                  whileTap={{ scale: 0.96 }}
+                  transition={{ duration: 0.25 }}
+                  aria-expanded={showAll}
+                >
+                  {showAll ? (
+                    <>{t("gallery.showLess")}</>
+                  ) : (
+                    <>
+                      {t("gallery.viewMore")}
+                      <span
+                        className="inline-flex items-center justify-center min-w-[24px] h-6 px-1.5 rounded-full text-[10px] font-bold"
+                        style={{ background: "rgba(212,168,67,0.2)", border: "1px solid rgba(212,168,67,0.4)" }}
+                      >
+                        +{hiddenCount}
+                      </span>
+                    </>
+                  )}
+                  <motion.span
+                    aria-hidden
+                    animate={{ rotate: showAll ? -90 : 90 }}
+                    transition={{ duration: 0.3 }}
+                    className="inline-flex"
+                  >
+                    <Icon.ArrowRight />
+                  </motion.span>
+                </motion.button>
+              </Reveal>
+            )}
           </div>
         )}
       </div>

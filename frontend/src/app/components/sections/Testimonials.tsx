@@ -42,6 +42,7 @@ export function Testimonials() {
         <Reveal className="text-center mb-14">
           <p className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("testimonials.eyebrow")}</p>
           <h2 className="text-4xl md:text-5xl font-bold text-[#f5efe6] leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("testimonials.title")}</h2>
+          <p className="text-base md:text-lg text-[#e8dcc8]/60 max-w-2xl mx-auto mt-5 leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>{t("testimonials.subtitle")}</p>
         </Reveal>
 
         <div className="min-h-[240px] flex items-center justify-center">
@@ -78,12 +79,12 @@ export function Testimonials() {
                     <img
                       src={current.imageUrl}
                       alt={current.name}
-                      className="w-11 h-11 rounded-full object-cover border border-[#d4a843]/40"
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border-2 border-[#d4a843]/45"
                       loading="lazy"
                     />
                   ) : (
                     <div
-                      className="w-11 h-11 bg-[#c25e2a] rounded-full flex items-center justify-center text-[#faf5ee] text-sm font-bold"
+                      className="w-16 h-16 sm:w-20 sm:h-20 bg-[#c25e2a] rounded-full flex items-center justify-center text-[#faf5ee] text-lg font-bold"
                       style={{ fontFamily: "var(--font-lidya-sans)" }}
                     >
                       {initials(current.name)}

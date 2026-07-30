@@ -238,6 +238,9 @@ export const translations: Record<Lang, any> = {
         MOMENTS: 'Moments at Lidya',
         LIFE: 'Life at Lidya',
       },
+      viewMore: 'View More',
+      showLess: 'Show Less',
+      morePhotos: 'more photos',
     },
     branches: {
       eyebrow: 'Find Us',
@@ -250,6 +253,7 @@ export const translations: Record<Lang, any> = {
     testimonials: {
       eyebrow: 'Guest Words',
       title: 'What Our Guests Say',
+      subtitle: "Every smile, every meal, and every visit creates a story. Here's what our valued guests have shared about their experience at Lidya Cultural Food Zone.",
     },
     coffee: {
       eyebrow: "Ethiopia's Living Tradition",
@@ -534,6 +538,9 @@ export const translations: Record<Lang, any> = {
         MOMENTS: 'የልዲያ ቅጽበቶች',
         LIFE: 'ልዲያ ውስጥ ያለ ሕይወት',
       },
+      viewMore: 'ተጨማሪ ይመልከቱ',
+      showLess: 'በትንሹ ይመልከቱ',
+      morePhotos: 'ተጨማሪ ፎቶዎች',
     },
     branches: {
       eyebrow: 'የት እንገኛለን',
@@ -546,6 +553,7 @@ export const translations: Record<Lang, any> = {
     testimonials: {
       eyebrow: 'የእንግዶች አስተያየት',
       title: 'እንግዶቻችን ምን ይላሉ',
+      subtitle: 'እያንዳንዱ ፈገግታ፣ እያንዳንዱ ምግብ፣ እያንዳንዱ ጉብኝት ታሪክ ይፈጥራል። የተከበሩ እንግዶቻችን በልዲያ ካልቸራል ፉድ ዞን ስላሳለፉት ተሞክሮ ያካፈሉት ይኸውና።',
     },
     coffee: {
       eyebrow: 'የኢትዮጵያ ሕያው ባህል',

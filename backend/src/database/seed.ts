@@ -319,42 +319,25 @@ async function main() {
   // ─── 7. Seed Starter Testimonials ────────────────────────────────────────
   // These are editable/replaceable in the admin dashboard once real guests are added.
   const testimonialsData = [
-    {
-      name: 'Abebe Girma',
-      role: 'Food Writer, Addis Fortune',
-      quote:
-        "Lidya doesn't just serve food — it curates an encounter with Ethiopia's cultural heritage. The kitfo alone is reason enough to keep coming back.",
-      order: 0,
-    },
-    {
-      name: 'Sara Bekele',
-      role: 'Travel Blogger, @sara_wanderseth',
-      quote:
-        "I've traveled across Ethiopia and nothing compares to the warmth of Lidya's coffee ceremony. The mesob seating, the incense — pure magic.",
-      order: 1,
-    },
-    {
-      name: 'Tadesse Woldemariam',
-      role: 'Wolaita Sodo resident, regular guest',
-      quote:
-        'This is the place that makes us proud of our culture. Lidya represents the cultures of Ethiopia to the world better than any museum could.',
-      order: 2,
-    },
-    {
-      name: 'Dr. Meron Haile',
-      role: 'Researcher, Addis Ababa University',
-      quote:
-        'For my students visiting from abroad, Lidya is the first place I take them. Authentic, dignified, and absolutely delicious.',
-      order: 3,
-    },
+    { id: 'ts-guest-1', name: 'Haile Gebreselassie', order: 0,
+      quote: "Dining at Lidya Cultural Food Zone was an unforgettable experience. The traditional Ethiopian dishes were incredibly delicious, the atmosphere was warm and authentic, and the hospitality made us feel like family. I can't wait to visit again!" },
+    { id: 'ts-guest-2', name: 'Adonay Berhane (Mada)', order: 1,
+      quote: "Every meal at Lidya tells a story of Ethiopian culture and tradition. The flavors are rich, the service is exceptional, and the cultural atmosphere makes every visit truly special. I highly recommend it to anyone looking for an authentic dining experience." },
+    { id: 'ts-guest-3', name: 'Gildo Kassa', order: 2,
+      quote: "Lidya Cultural Food Zone exceeded all my expectations. From the beautifully prepared food to the welcoming staff and vibrant cultural setting, everything was perfect. It's the first place I recommend to friends and visitors." },
+    { id: 'ts-guest-4', name: 'Bereket Geberewa', order: 3,
+      quote: "The food was absolutely amazing, the traditional coffee ceremony was unforgettable, and every detail reflected genuine Ethiopian hospitality. Lidya is more than a restaurant — it's a cultural experience worth sharing." },
+    { id: 'ts-guest-5', name: 'Master Abinet', order: 4,
+      quote: "If you want to experience the true taste of Ethiopia, Lidya Cultural Food Zone is the place to be. The fresh ingredients, authentic recipes, and friendly service make every visit memorable. I will definitely be coming back." },
+    { id: 'ts-guest-6', name: 'K Money', order: 5,
+      quote: "From the moment we walked in, we felt welcomed with genuine warmth. The food was exceptional, the cultural ambiance was beautiful, and every dish was prepared with care. Lidya is a destination everyone should experience at least once." },
   ];
 
-  for (const testimonial of testimonialsData) {
-    const id = `testimonial-${testimonial.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '')}-seed`;
+  for (const { id, ...rest } of testimonialsData) {
     await prisma.testimonial.upsert({
       where: { id },
-      update: {},
-      create: { id, ...testimonial, rating: 5, isActive: true },
+      update: {}, // preserve any admin edits / uploaded photos on re-seed
+      create: { id, ...rest, rating: 5, isActive: true },
     });
   }
   logger.info('Starter testimonials seeded');
