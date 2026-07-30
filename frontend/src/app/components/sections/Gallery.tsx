@@ -76,10 +76,9 @@ function GalleryCard({
             {tf(item, "title")}
           </p>
 
-          {/* Description — hidden on desktop until hover; always shown on mobile */}
-          {/* Desktop: animated fade in/out */}
+          {/* Description — only revealed on hover (full text lives in the lightbox) */}
           <motion.p
-            className="hidden md:block text-white/80 text-xs leading-relaxed mt-1 drop-shadow line-clamp-3"
+            className="text-white/80 text-xs leading-relaxed mt-1 drop-shadow line-clamp-3"
             style={{ fontFamily: "var(--font-lidya-sans)" }}
             initial={false}
             animate={{
@@ -90,14 +89,6 @@ function GalleryCard({
           >
             {tf(item, "description")}
           </motion.p>
-
-          {/* Mobile: always visible, static */}
-          <p
-            className="block md:hidden text-white/70 text-[10px] leading-relaxed mt-1 drop-shadow line-clamp-2"
-            style={{ fontFamily: "var(--font-lidya-sans)" }}
-          >
-            {item.description}
-          </p>
         </div>
       </div>
 

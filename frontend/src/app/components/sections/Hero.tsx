@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import heroBg from "@/imports/lidya-life1.jpg";
+import heroBg from "@/imports/lidya-life1.webp";
 import { Icon } from "../Icons";
 import { HeroDecoration } from "../HeroDecoration";
 import { goto } from "../../data/constants";

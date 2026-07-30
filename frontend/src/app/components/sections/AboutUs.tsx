@@ -1,7 +1,7 @@
 import React from "react";
-import aboutHero from "@/imports/team/about-us-hero.png";
-import founderLeta from "@/imports/team/founder-leta.png";
-import socialManager from "@/imports/team/social-media-manager.png";
+import aboutHero from "@/imports/team/about-us-hero.webp";
+import founderLeta from "@/imports/team/founder-leta.webp";
+import socialManager from "@/imports/team/social-media-manager.webp";
 import { motion } from "motion/react";
 import { Reveal } from "../Reveal";
 import { Icon } from "../Icons";

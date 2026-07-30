@@ -6,7 +6,7 @@ import { authService } from '../services/auth.service';
 import { useNoIndex } from '../hooks/useNoIndex';
 import { toast } from 'sonner';
 import { Eye, EyeOff, Loader2, AlertCircle } from 'lucide-react';
-import logoImg from '../imports/lidya-logo2.PNG';
+import logoImg from '../imports/lidya-logo2.webp';
 
 export function Login() {
   useNoIndex();

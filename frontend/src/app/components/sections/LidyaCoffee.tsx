@@ -1,7 +1,7 @@
 import React from "react";
 import { Reveal } from "../Reveal";
 import { useLang } from "../../../context/LanguageContext";
-import lidyaCoffee2 from "../../../imports/ldiyacoffee2.png";
+import lidyaCoffee2 from "../../../imports/ldiyacoffee2.webp";
 
 const OFFERINGS = [
   { name: "Abol Buna",     price: "50 ETB" },

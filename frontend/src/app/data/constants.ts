@@ -1,13 +1,13 @@
-import photo1   from "@/imports/image-1.png";
-import photo2   from "@/imports/image-2.png";
-import photo3   from "@/imports/image-3.png";
-import photo4   from "@/imports/image-4.png";
-import menu1    from "@/imports/lidya-menu1.jpg";
-import menu2    from "@/imports/lidya-menu2.jpg";
-import menu3    from "@/imports/lidya-menu3.jpg";
-import menu4    from "@/imports/lidya-menu4.jpg";
-import life1    from "@/imports/lidya-life1.jpg";
-import life2    from "@/imports/lidya-life2.jpg";
+import photo1   from "@/imports/image-1.webp";
+import photo2   from "@/imports/image-2.webp";
+import photo3   from "@/imports/image-3.webp";
+import photo4   from "@/imports/image-4.webp";
+import menu1    from "@/imports/lidya-menu1.webp";
+import menu2    from "@/imports/lidya-menu2.webp";
+import menu3    from "@/imports/lidya-menu3.webp";
+import menu4    from "@/imports/lidya-menu4.webp";
+import life1    from "@/imports/lidya-life1.webp";
+import life2    from "@/imports/lidya-life2.webp";
 import { Icon } from "../components/Icons";
 import {
   type GalleryItem,
@@ -124,9 +124,10 @@ export const STATS = [
 export function goto(id: string) {
   const el = document.getElementById(id);
   if (!el) return;
-  // Offset by the fixed header height so the section title isn't hidden under it.
+  // Offset by exactly the fixed header height so the section's very top sits
+  // flush at the top of the viewport on both mobile and desktop.
   const header = document.querySelector("header");
-  const offset = (header?.getBoundingClientRect().height ?? 66) + 8;
+  const offset = header?.getBoundingClientRect().height ?? 66;
   const targetTop = () => el.getBoundingClientRect().top + window.scrollY - offset;
 
   window.scrollTo({ top: Math.max(0, targetTop()), behavior: "smooth" });

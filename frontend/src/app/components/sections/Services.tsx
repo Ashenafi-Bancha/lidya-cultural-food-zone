@@ -5,7 +5,7 @@ import { Icon } from "../Icons";
 import { useLang } from "../../../context/LanguageContext";
 import { EventBookingModal } from "../EventBookingModal";
 import { EventType } from "../../../types/api";
-import vipImg from "../../../imports/lidya-vip.jpg";
+import vipImg from "../../../imports/lidya-vip.webp";
 
 const TIERS = [
   {
