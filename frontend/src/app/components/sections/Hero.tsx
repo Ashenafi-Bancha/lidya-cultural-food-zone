@@ -214,6 +214,7 @@ export function Hero() {
           alt="Everyday life and hospitality at Lidya"
           className="w-full h-full object-cover object-center"
           loading="eager"
+          {...({ fetchpriority: "high" } as any)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut", delay: 0.1 }}
@@ -239,6 +240,7 @@ export function Hero() {
           alt="Everyday life and hospitality at Lidya"
           className="w-full h-full object-cover object-center"
           loading="eager"
+          {...({ fetchpriority: "high" } as any)}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.4, ease: "easeOut", delay: 0.2 }}
