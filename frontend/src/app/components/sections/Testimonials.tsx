@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Reveal } from "../Reveal";
 import { Icon } from "../Icons";
 import { useLang } from "../../../context/LanguageContext";
-import { TESTIMONIALS } from "../../data/testimonials";
+import { useTestimonials } from "../../../hooks/useTestimonials";
 
 const initials = (name: string) =>
   name
@@ -15,7 +15,8 @@ const initials = (name: string) =>
 
 export function Testimonials() {
   const { t, tf } = useLang();
-  const items = TESTIMONIALS;
+  const { data, isLoading } = useTestimonials();
+  const items = (data ?? []).filter((x) => x.isActive);
 
   const [idx, setIdx] = useState(0);
 
@@ -30,13 +31,13 @@ export function Testimonials() {
     if (idx >= items.length) setIdx(0);
   }, [items.length, idx]);
 
-  // Hide the whole section when there are no testimonials.
-  if (items.length === 0) return null;
+  // Hide the whole section when there are no active testimonials.
+  if (!isLoading && items.length === 0) return null;
 
   const current = items[idx % Math.max(items.length, 1)];
 
   return (
-    <section className="bg-[#2c1508] py-16 md:py-24 lg:py-32">
+    <section id="testimonials" className="bg-[#2c1508] py-16 md:py-24 lg:py-32">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10">
         <Reveal className="text-center mb-14">
           <p className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("testimonials.eyebrow")}</p>
@@ -44,7 +45,14 @@ export function Testimonials() {
         </Reveal>
 
         <div className="min-h-[240px] flex items-center justify-center">
-          {!current ? null : (
+          {isLoading || !current ? (
+            <div className="w-full max-w-2xl mx-auto animate-pulse">
+              <div className="h-4 bg-[#f5efe6]/10 rounded w-1/3 mx-auto mb-6" />
+              <div className="h-5 bg-[#f5efe6]/10 rounded w-full mb-3" />
+              <div className="h-5 bg-[#f5efe6]/10 rounded w-4/5 mx-auto mb-8" />
+              <div className="w-10 h-10 bg-[#f5efe6]/10 rounded-full mx-auto" />
+            </div>
+          ) : (
             <AnimatePresence mode="wait">
               <motion.div
                 key={current.id}
@@ -66,9 +74,9 @@ export function Testimonials() {
                   "{tf(current, "quote")}"
                 </blockquote>
                 <div className="flex items-center justify-center gap-3">
-                  {current.img ? (
+                  {current.imageUrl ? (
                     <img
-                      src={current.img}
+                      src={current.imageUrl}
                       alt={current.name}
                       className="w-11 h-11 rounded-full object-cover border border-[#d4a843]/40"
                       loading="lazy"

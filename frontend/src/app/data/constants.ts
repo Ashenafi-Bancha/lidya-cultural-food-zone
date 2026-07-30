@@ -28,6 +28,7 @@ export const NAV_LINKS = [
   { label: "Experience",   id: "experience"  },
   { label: "Gallery",      id: "gallery"     },
   { label: "Branches",    id: "branches"    },
+  { label: "Testimonials", id: "testimonials" },
   { label: "Reservation", id: "reservation" },
   { label: "Contact",     id: "contact"     },
 ];
