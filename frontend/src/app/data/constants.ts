@@ -121,25 +121,64 @@ export const STATS = [
   { value: "3+",   label: "Branches",            Icon: Icon.MapPin   },
 ];
 
+// Cancels the previous goto's pinning loop when a new link is clicked.
+let cancelActiveGoto: (() => void) | null = null;
+
 export function goto(id: string) {
   const el = document.getElementById(id);
   if (!el) return;
+  cancelActiveGoto?.();
+
   // Offset by exactly the fixed header height so the section's very top sits
   // flush at the top of the viewport on both mobile and desktop.
   const header = document.querySelector("header");
   const offset = header?.getBoundingClientRect().height ?? 66;
-  const targetTop = () => el.getBoundingClientRect().top + window.scrollY - offset;
+  const targetTop = () => Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset);
+  const drift = () => el.getBoundingClientRect().top - offset;
 
-  window.scrollTo({ top: Math.max(0, targetTop()), behavior: "smooth" });
+  window.scrollTo({ top: targetTop(), behavior: "smooth" });
 
-  // Async content (menu, gallery, testimonials) can finish loading during the
-  // scroll and shift the layout, leaving us in the wrong place. Re-check a few
-  // times and correct any drift so we always land at the section's start.
-  const correct = (behavior: ScrollBehavior) => {
-    const drift = el.getBoundingClientRect().top - offset;
-    if (Math.abs(drift) > 10) window.scrollTo({ top: Math.max(0, targetTop()), behavior });
+  // Images and data keep streaming in after the click, growing the content
+  // above the target and silently pushing it down — which used to leave the
+  // previous section at the top of the screen. So after the smooth scroll
+  // finishes, keep the section PINNED to the top with instant micro-
+  // corrections until the layout settles (max 10s), and stop immediately if
+  // the user scrolls on their own.
+  const startedAt = Date.now();
+  let userScrolled = false;
+  let lastY = -1;
+  let settlingSince = 0;
+
+  const markUserScroll = () => { userScrolled = true; };
+  window.addEventListener("wheel", markUserScroll, { passive: true });
+  window.addEventListener("touchmove", markUserScroll, { passive: true });
+
+  const iv = window.setInterval(() => {
+    if (userScrolled || Date.now() - startedAt > 10_000) { cleanup(); return; }
+
+    const y = window.scrollY;
+    const animating = y !== lastY;
+    lastY = y;
+
+    // Phase 1 — let the initial smooth scroll play out untouched.
+    if (animating && Date.now() - startedAt < 1800) return;
+
+    // Phase 2 — pin: snap out any layout-shift drift instantly (imperceptible).
+    if (Math.abs(drift()) > 4) {
+      window.scrollTo({ top: targetTop(), behavior: "auto" });
+      settlingSince = 0;
+    } else if (!settlingSince) {
+      settlingSince = Date.now();
+    } else if (Date.now() - settlingSince > 3000) {
+      cleanup(); // stable for 3s — layout has settled
+    }
+  }, 200);
+
+  const cleanup = () => {
+    window.clearInterval(iv);
+    window.removeEventListener("wheel", markUserScroll);
+    window.removeEventListener("touchmove", markUserScroll);
+    if (cancelActiveGoto === cleanup) cancelActiveGoto = null;
   };
-  setTimeout(() => correct("smooth"), 800);
-  setTimeout(() => correct("smooth"), 1700);
-  setTimeout(() => correct("smooth"), 2600);
+  cancelActiveGoto = cleanup;
 }
