@@ -131,8 +131,12 @@ export function goto(id: string) {
 
   // Offset by exactly the fixed header height so the section's very top sits
   // flush at the top of the viewport on both mobile and desktop.
-  const header = document.querySelector("header");
-  const offset = header?.getBoundingClientRect().height ?? 66;
+  // IMPORTANT: measure the header's top nav row only — on mobile the link is
+  // clicked while the hamburger drawer (inside <header>) is still open, and
+  // measuring the whole header would include the drawer's height, landing the
+  // scroll far above the section.
+  const headerRow = document.querySelector("header nav") ?? document.querySelector("header");
+  const offset = headerRow?.getBoundingClientRect().height ?? 66;
   const targetTop = () => Math.max(0, el.getBoundingClientRect().top + window.scrollY - offset);
   const drift = () => el.getBoundingClientRect().top - offset;
 
