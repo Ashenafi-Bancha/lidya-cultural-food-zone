@@ -59,6 +59,8 @@ export const translations: Record<Lang, any> = {
       emptyError: 'Our menu is temporarily unavailable. Please check back soon.',
       emptyComingSoon: 'Our menu is being prepared — check back soon.',
       noneInCategory: 'No items found in this category.',
+      heroTitle: 'Our Menu',
+      heroSubtitle: 'Every dish is prepared the traditional way, with fresh ingredients and recipes carried through generations across Ethiopia.',
     },
     services: {
       eyebrow: 'Premium & Event Services',
@@ -368,6 +370,8 @@ export const translations: Record<Lang, any> = {
       emptyError: 'ምናሌያችን ለጊዜው አይገኝም። እባክዎ በኋላ ይመለሱ።',
       emptyComingSoon: 'ምናሌያችን በዝግጅት ላይ ነው — በቅርቡ ይመለሱ።',
       noneInCategory: 'በዚህ ምድብ ውስጥ ምንም ንጥል አልተገኘም።',
+      heroTitle: 'Our Menu',
+      heroSubtitle: 'እያንዳንዱ ምግብ በባህላዊ መንገድ፣ በትኩስ ግብዓቶችና በኢትዮጵያ ለትውልዶች በተላለፉ አዘገጃጀቶች ይዘጋጃል።',
     },
     services: {
       eyebrow: 'ልዩ እና የዝግጅት አገልግሎቶች',
