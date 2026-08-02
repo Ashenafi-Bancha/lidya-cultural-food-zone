@@ -279,7 +279,7 @@ export function Hero() {
       <HeroDecoration />
 
       {/* ── Main content wrapper ── */}
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pb-12 flex flex-col md:flex-row md:items-center gap-0 md:gap-10 min-h-screen">
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-10 pb-5 md:pb-12 flex flex-col md:flex-row md:items-center gap-0 md:gap-10 min-h-screen">
 
         {/* Mobile spacer — pushes text below the image area */}
         <div className="block md:hidden h-[25vh] flex-shrink-0" />
@@ -390,30 +390,46 @@ export function Hero() {
 
           {/* Scroll hint */}
           <motion.div
-            className="mt-8 md:mt-14 w-full flex flex-col items-center gap-3 md:flex-row md:items-center md:gap-3 text-[#e8dcc8]/45"
+            className="mt-8 md:mt-14 w-full flex flex-col items-center gap-3 md:flex-row md:items-center md:gap-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
           >
-            {/* animated scroll mouse */}
-            <div
+            {/* animated scroll mouse — glowing gold */}
+            <motion.div
               className="w-[26px] h-[42px] rounded-full flex justify-center pt-2 shrink-0"
-              style={{ border: "2px solid rgba(212,168,67,0.55)" }}
+              style={{ border: "2px solid #f5c842" }}
+              animate={{
+                boxShadow: [
+                  "0 0 8px rgba(245,200,66,0.45), inset 0 0 6px rgba(245,200,66,0.20)",
+                  "0 0 20px rgba(245,200,66,0.90), inset 0 0 10px rgba(245,200,66,0.40)",
+                  "0 0 8px rgba(245,200,66,0.45), inset 0 0 6px rgba(245,200,66,0.20)",
+                ],
+              }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
               aria-hidden
             >
               <motion.span
                 className="w-[3px] h-[8px] rounded-full"
-                style={{ background: "#d4a843" }}
+                style={{ background: "#ffe488", boxShadow: "0 0 8px rgba(245,200,66,0.95)" }}
                 animate={{ y: [0, 11, 0], opacity: [1, 0.15, 1] }}
                 transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
               />
-            </div>
-            <span
-              className="text-[10px] tracking-[0.3em] uppercase"
-              style={{ fontFamily: "var(--font-lidya-sans)" }}
+            </motion.div>
+            <motion.span
+              className="text-[11px] tracking-[0.3em] uppercase font-semibold"
+              style={{ fontFamily: "var(--font-lidya-sans)", color: "#f5c842" }}
+              animate={{
+                textShadow: [
+                  "0 0 6px rgba(245,200,66,0.45)",
+                  "0 0 16px rgba(245,200,66,0.95)",
+                  "0 0 6px rgba(245,200,66,0.45)",
+                ],
+              }}
+              transition={{ duration: 2.2, repeat: Infinity, ease: "easeInOut" }}
             >
               {t("hero.scrollHint")}
-            </span>
+            </motion.span>
           </motion.div>
         </motion.div>
 

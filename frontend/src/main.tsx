@@ -45,7 +45,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/" element={<HomePage />} />
               <Route path="/menu" element={<MenuPage />} />
               <Route path="/services" element={<ServicesPage />} />
-              <Route path="/experience" element={<ExperiencePage />} />
+              <Route path="/gallery" element={<ExperiencePage />} />
               <Route path="/about" element={<AboutPage />} />
             </Route>
             <Route path="/admin/login" element={<Login />} />

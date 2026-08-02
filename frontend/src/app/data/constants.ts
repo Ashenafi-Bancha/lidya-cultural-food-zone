@@ -35,7 +35,7 @@ export const NAV_LINKS: NavLink[] = [
   { id: "menu",         path: "/menu" },
   { id: "services",     path: "/services" },
   { id: "coffee",       path: "/", hash: "coffee" },
-  { id: "experience",   path: "/experience" },
+  { id: "gallery",      path: "/gallery" },
   { id: "about-us",     path: "/about" },
   { id: "branches",     path: "/", hash: "branches" },
   { id: "testimonials", path: "/", hash: "testimonials" },

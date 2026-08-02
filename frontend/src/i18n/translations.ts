@@ -43,11 +43,8 @@ export const translations: Record<Lang, any> = {
     quickLinks: {
       eyebrow: 'Explore Lidya',
       title: 'Where would you like to begin?',
-      menuCaption: 'Signature dishes, coffee & drinks',
-      servicesCaption: 'Weddings, catering, VIP & delivery',
-      experienceCaption: 'Culture, ceremonies & photo gallery',
-      aboutCaption: 'Our story, values & the family',
-      cta: 'Explore',
+      gallery: 'Gallery & Life inside Lidya',
+      reservation: 'Reserve a Table',
     },
     common2: {
       viewFullMenu: 'View Full Menu',
@@ -354,11 +351,8 @@ export const translations: Record<Lang, any> = {
     quickLinks: {
       eyebrow: 'ልዲያን ያስሱ',
       title: 'ከየት ልንጀምር?',
-      menuCaption: 'ልዩ ምግቦች፣ ቡናና መጠጦች',
-      servicesCaption: 'ሰርግ፣ የምግብ አቅርቦት፣ VIP እና ዴሊቨሪ',
-      experienceCaption: 'ባህል፣ ሥነ-ሥርዓቶችና የፎቶ ማዕከል',
-      aboutCaption: 'ታሪካችን፣ እሴቶቻችንና ቤተሰባችን',
-      cta: 'ይመልከቱ',
+      gallery: 'ፎቶዎችና በልዲያ ውስጥ ያለ ሕይወት',
+      reservation: 'ጠረጴዛ ያስይዙ',
     },
     common2: {
       viewFullMenu: 'ሙሉ ምናሌ ይመልከቱ',
