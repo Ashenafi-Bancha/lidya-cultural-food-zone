@@ -6,8 +6,15 @@ import { queryClient } from "./lib/queryClient";
 import { AuthProvider } from "./context/AuthContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { Toaster } from "sonner";
-import App from "./app/App.tsx";
+import { PublicLayout } from "./app/PublicLayout.tsx";
+import { HomePage } from "./app/pages/HomePage.tsx";
 import "./styles/index.css";
+
+// Secondary public pages are code-split so the homepage stays light.
+const MenuPage = lazy(() => import("./app/pages/MenuPage.tsx").then(m => ({ default: m.MenuPage })));
+const ServicesPage = lazy(() => import("./app/pages/ServicesPage.tsx").then(m => ({ default: m.ServicesPage })));
+const ExperiencePage = lazy(() => import("./app/pages/ExperiencePage.tsx").then(m => ({ default: m.ExperiencePage })));
+const AboutPage = lazy(() => import("./app/pages/AboutPage.tsx").then(m => ({ default: m.AboutPage })));
 
 // Lazy-load the admin area so public visitors don't download the admin UI and
 // charting library (recharts) as part of the initial marketing-page bundle.
@@ -34,7 +41,13 @@ createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <Suspense fallback={<AdminFallback />}>
           <Routes>
-            <Route path="/" element={<App />} />
+            <Route element={<PublicLayout />}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/menu" element={<MenuPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/experience" element={<ExperiencePage />} />
+              <Route path="/about" element={<AboutPage />} />
+            </Route>
             <Route path="/admin/login" element={<Login />} />
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />

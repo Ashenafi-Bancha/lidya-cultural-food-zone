@@ -40,6 +40,19 @@ export const translations: Record<Lang, any> = {
       tagline: '✦ Wolaita Sodo · Addis Ababa ✦',
       scrollHint: 'Scroll to explore',
     },
+    quickLinks: {
+      eyebrow: 'Explore Lidya',
+      title: 'Where would you like to begin?',
+      menuCaption: 'Signature dishes, coffee & drinks',
+      servicesCaption: 'Weddings, catering, VIP & delivery',
+      experienceCaption: 'Culture, ceremonies & photo gallery',
+      aboutCaption: 'Our story, values & the family',
+      cta: 'Explore',
+    },
+    common2: {
+      viewFullMenu: 'View Full Menu',
+      viewMoreServices: 'View More Services',
+    },
     menu: {
       eyebrow: 'Lidya Cultural Food Zone',
       titlePre: 'Our',
@@ -337,6 +350,19 @@ export const translations: Record<Lang, any> = {
       body: 'ጥንታዊ የኢትዮጵያ የምግብ አዘገጃጀት ከልባዊ እንግዳ ተቀባይነት ጋር የሚገናኝበት ቦታ። ልዲያ ካልቸራል ፉድ ዞን የኢትዮጵያን የተለያዩ ባህሎች ሕያው የምግብ ወግ በእያንዳንዱ የማይረሳ ምግብ ወደ አንድ ጠረጴዛ ያመጣል።',
       tagline: '✦ ወላይታ ሶዶ · አዲስ አበባ ✦',
       scrollHint: 'ለማሰስ ወደታች ይሸብልሉ',
+    },
+    quickLinks: {
+      eyebrow: 'ልዲያን ያስሱ',
+      title: 'ከየት ልንጀምር?',
+      menuCaption: 'ልዩ ምግቦች፣ ቡናና መጠጦች',
+      servicesCaption: 'ሰርግ፣ የምግብ አቅርቦት፣ VIP እና ዴሊቨሪ',
+      experienceCaption: 'ባህል፣ ሥነ-ሥርዓቶችና የፎቶ ማዕከል',
+      aboutCaption: 'ታሪካችን፣ እሴቶቻችንና ቤተሰባችን',
+      cta: 'ይመልከቱ',
+    },
+    common2: {
+      viewFullMenu: 'ሙሉ ምናሌ ይመልከቱ',
+      viewMoreServices: 'ተጨማሪ አገልግሎቶች',
     },
     menu: {
       eyebrow: 'ልዲያ ካልቸራል ፉድ ዞን',

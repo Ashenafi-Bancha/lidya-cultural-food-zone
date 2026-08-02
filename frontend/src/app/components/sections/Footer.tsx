@@ -3,8 +3,9 @@ import { motion } from "motion/react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import logoImg from "@/imports/lidya-logo2.webp";
 import { Icon } from "../Icons";
-import { NAV_LINKS, goto } from "../../data/constants";
+import { NAV_LINKS } from "../../data/constants";
 import { useLang } from "../../../context/LanguageContext";
+import { useNavGo } from "../../hooks/useNavGo";
 
 const SOCIALS = [
   {
@@ -79,6 +80,7 @@ function FollowUs({ label }: { label: string }) {
 
 export function Footer() {
   const { t } = useLang();
+  const navGo = useNavGo();
   const [email, setEmail] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
@@ -123,9 +125,9 @@ export function Footer() {
           <div>
             <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.navigate")}</h4>
             <ul className="space-y-3">
-              {NAV_LINKS.map(({ id }) => (
-                <li key={id}>
-                  <button onClick={() => goto(id)} className="text-sm hover:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t(`nav.${id}`)}</button>
+              {NAV_LINKS.map((link) => (
+                <li key={link.id}>
+                  <button onClick={() => navGo(link)} className="text-sm hover:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t(`nav.${link.id}`)}</button>
                 </li>
               ))}
             </ul>

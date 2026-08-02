@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from "motion/react";
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import logoImg from "@/imports/lidya-logo2.webp";
 import { Icon } from "../Icons";
-import { NAV_LINKS, goto } from "../../data/constants";
+import { NAV_LINKS } from "../../data/constants";
 import { useLang } from "../../../context/LanguageContext";
+import { useNavGo } from "../../hooks/useNavGo";
 
 interface NavbarProps {
   onOpenChange?: (open: boolean) => void;
@@ -12,6 +13,7 @@ interface NavbarProps {
 
 export function Navbar({ onOpenChange }: NavbarProps) {
   const { t, lang, setLang } = useLang();
+  const navGo = useNavGo();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -106,7 +108,7 @@ export function Navbar({ onOpenChange }: NavbarProps) {
       <nav className="max-w-[1400px] mx-auto px-4 sm:px-6 xl:px-10 flex items-center justify-between gap-3 h-[64px] lg:h-[66px]">
         {/* Logo */}
         <button
-          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          onClick={() => navGo({ id: "home", path: "/" })}
           className="flex items-center gap-3 shrink-0"
         >
           <div className="w-10 h-10 rounded-full overflow-hidden shrink-0 ring-2 ring-[#d4a843]/40">
@@ -139,14 +141,14 @@ export function Navbar({ onOpenChange }: NavbarProps) {
 
         {/* Desktop nav links — fill & center the middle (balanced in EN & AM) */}
         <ul className="hidden lg:flex flex-1 items-center justify-center gap-3 xl:gap-5">
-          {NAV_LINKS.map(({ id }) => (
-            <li key={id}>
+          {NAV_LINKS.map((link) => (
+            <li key={link.id}>
               <button
-                onClick={() => goto(id)}
+                onClick={() => navGo(link)}
                 className="text-[9px] xl:text-[11px] tracking-widest uppercase text-[#e8dcc8]/70 hover:text-[#d4a843] transition-colors duration-200 whitespace-nowrap"
                 style={{ fontFamily: "var(--font-lidya-sans)" }}
               >
-                {t(`nav.${id}`)}
+                {t(`nav.${link.id}`)}
               </button>
             </li>
           ))}
@@ -183,14 +185,14 @@ export function Navbar({ onOpenChange }: NavbarProps) {
             transition={{ duration: 0.3, ease: "easeInOut" }}
           >
             <ul className="flex flex-col gap-1 pt-4">
-              {NAV_LINKS.map(({ id }) => (
-                <li key={id}>
+              {NAV_LINKS.map((link) => (
+                <li key={link.id}>
                   <button
-                    onClick={() => { goto(id); toggleMenu(false); }}
+                    onClick={() => { toggleMenu(false); navGo(link); }}
                     className="w-full text-left py-3 text-base text-[#e8dcc8]/75 hover:text-[#d4a843] transition-colors"
                     style={{ fontFamily: "var(--font-lidya-sans)" }}
                   >
-                    {t(`nav.${id}`)}
+                    {t(`nav.${link.id}`)}
                   </button>
                 </li>
               ))}

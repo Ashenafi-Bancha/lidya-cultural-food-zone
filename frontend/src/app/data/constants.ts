@@ -19,18 +19,28 @@ import {
   menuPhoto,
 } from "./media";
 
-export const NAV_LINKS = [
-  { label: "Home",        id: "home"        },
-  { label: "Menu",        id: "menu"        },
-  { label: "Services",     id: "services"    },
-  { label: "Lidya Coffee", id: "coffee"      },
-  { label: "About Us",     id: "about-us"    },
-  { label: "Experience",   id: "experience"  },
-  { label: "Gallery",      id: "gallery"     },
-  { label: "Branches",    id: "branches"    },
-  { label: "Testimonials", id: "testimonials" },
-  { label: "Reservation", id: "reservation" },
-  { label: "Contact",     id: "contact"     },
+/**
+ * Site navigation. `path` is the route; `hash` (when present) is a section on
+ * that route to scroll to. Full pages have no hash and open at the top.
+ * `id` doubles as the i18n key (`nav.<id>`).
+ */
+export interface NavLink {
+  id: string;
+  path: string;
+  hash?: string;
+}
+
+export const NAV_LINKS: NavLink[] = [
+  { id: "home",         path: "/" },
+  { id: "menu",         path: "/menu" },
+  { id: "services",     path: "/services" },
+  { id: "coffee",       path: "/", hash: "coffee" },
+  { id: "experience",   path: "/experience" },
+  { id: "about-us",     path: "/about" },
+  { id: "branches",     path: "/", hash: "branches" },
+  { id: "testimonials", path: "/", hash: "testimonials" },
+  { id: "reservation",  path: "/", hash: "reservation" },
+  { id: "contact",      path: "/", hash: "contact" },
 ];
 
 export const MENU_CATEGORIES = ["All", "Traditional Mains", "Coffee Ceremony", "Vegetarian & Fasting", "Drinks"];

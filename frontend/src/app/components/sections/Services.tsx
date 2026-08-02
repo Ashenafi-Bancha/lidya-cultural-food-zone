@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { Reveal } from "../Reveal";
 import { Icon } from "../Icons";
 import { useLang } from "../../../context/LanguageContext";
+import { useNavGo } from "../../hooks/useNavGo";
 import { EventBookingModal } from "../EventBookingModal";
 import { EventType } from "../../../types/api";
 import vipImg from "../../../imports/lidya-vip.webp";
@@ -70,8 +71,14 @@ const EVENTS: ServiceCard[] = [
   { titleKey: "services.events.birthdaysTitle",   descKey: "services.events.birthdaysDesc",   service: "BIRTHDAY",    Glyph: Icon.Calendar, img: null },
 ];
 
-export function Services() {
+/**
+ * @param preview  Homepage mode: the flagship service plus three cards, then a
+ *                 "View More Services" CTA linking to /services. VIP/VVIP tiers
+ *                 and the bottom CTA block live on the full page only.
+ */
+export function Services({ preview = false }: { preview?: boolean } = {}) {
   const { t } = useLang();
+  const navGo = useNavGo();
   const [bookingOpen, setBookingOpen] = useState(false);
   const [bookingService, setBookingService] = useState<EventType>("OTHER");
 
@@ -94,8 +101,8 @@ export function Services() {
           </p>
         </Reveal>
 
-        {/* VIP / VVIP tiers */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 mb-14 md:mb-20">
+        {/* VIP / VVIP tiers — full page only */}
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 mb-14 md:mb-20 ${preview ? "hidden" : ""}`}>
           {TIERS.map((plan, i) => (
             <Reveal key={plan.tier} delay={i * 0.12}>
               <div
@@ -209,7 +216,7 @@ export function Services() {
 
         {/* Other services — image cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mb-12 md:mb-14">
-          {EVENTS.slice(1).map((ev, i) => {
+          {(preview ? EVENTS.slice(1, 4) : EVENTS.slice(1)).map((ev, i) => {
             const EvGlyph = ev.Glyph;
             return (
               <Reveal key={ev.titleKey} delay={i * 0.06}>
@@ -242,8 +249,33 @@ export function Services() {
           })}
         </div>
 
-        {/* Bottom CTA */}
-        <Reveal>
+        {/* Homepage: send visitors to the full services page */}
+        {preview && (
+          <Reveal className="text-center">
+            <motion.button
+              type="button"
+              onClick={() => navGo({ id: "services", path: "/services" })}
+              className="group/cta inline-flex items-center gap-3 px-9 py-4 rounded-xl text-[11px] tracking-[0.24em] uppercase font-semibold"
+              style={{
+                fontFamily: "var(--font-lidya-sans)",
+                color: "#d4a843",
+                border: "1px solid rgba(212,168,67,0.5)",
+                background: "linear-gradient(135deg, rgba(212,168,67,0.10) 0%, rgba(194,94,42,0.08) 100%)",
+              }}
+              whileHover={{ backgroundColor: "#d4a843", color: "#1e1008", boxShadow: "0 0 28px rgba(212,168,67,0.45)" }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ duration: 0.25 }}
+            >
+              {t("common2.viewMoreServices")}
+              <span aria-hidden className="inline-flex transition-transform duration-300 group-hover/cta:translate-x-1">
+                <Icon.ArrowRight />
+              </span>
+            </motion.button>
+          </Reveal>
+        )}
+
+        {/* Bottom CTA — full page only */}
+        <Reveal className={preview ? "hidden" : ""}>
           <div
             className="relative overflow-hidden border flex flex-col sm:flex-row items-center justify-between gap-6 px-6 sm:px-10 py-8 md:py-10"
             style={{ borderColor: "rgba(212,168,67,0.2)", background: "linear-gradient(135deg,rgba(194,94,42,0.12) 0%,rgba(212,168,67,0.06) 100%)" }}

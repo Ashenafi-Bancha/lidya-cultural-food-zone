@@ -4,6 +4,8 @@ import { Reveal } from "../Reveal";
 import { OptimizedImage } from "../OptimizedImage";
 import { useMenu, useCategories } from "../../../hooks/useMenu";
 import { useLang } from "../../../context/LanguageContext";
+import { useNavGo } from "../../hooks/useNavGo";
+import { Icon } from "../Icons";
 
 const TAG_BG: Record<string, string> = {
   Signature: "#c25e2a",
@@ -14,10 +16,15 @@ const TAG_BG: Record<string, string> = {
   New: "#2a5c8a"
 };
 
-export function MenuSection() {
+/**
+ * @param preview  Homepage mode: a few signature dishes with no category tabs,
+ *                 followed by a "View Full Menu" CTA linking to /menu.
+ */
+export function MenuSection({ preview = false }: { preview?: boolean } = {}) {
   // Two-level category state: a top-level tab (e.g. "Drinks") and an optional
   // sub-category (e.g. "Hot Drinks") shown only for parents that have children.
   const { t, tf } = useLang();
+  const navGo = useNavGo();
   const [activeTop, setActiveTop] = useState("All");
   const [activeSub, setActiveSub] = useState<string | null>(null);
 
@@ -40,7 +47,12 @@ export function MenuSection() {
   };
 
   let filtered = items;
-  if (activeTop !== "All") {
+  if (preview) {
+    // Signature dishes first, then fill to four.
+    const signature = items.filter((i: any) => i.tag);
+    const rest = items.filter((i: any) => !i.tag);
+    filtered = [...signature, ...rest].slice(0, 4);
+  } else if (activeTop !== "All") {
     if (activeSub) {
       // A specific sub-category is selected.
       filtered = items.filter(i => catNameOf(i) === activeSub);
@@ -68,7 +80,7 @@ export function MenuSection() {
           </h2>
         </Reveal>
 
-        {isLoadingCats ? (
+        {preview ? null : isLoadingCats ? (
           <div className="flex justify-center gap-2 mb-10">
             {[1, 2, 3, 4].map(n => (
               <div key={n} className="h-8 w-24 bg-[#3e2615] rounded animate-pulse" />
@@ -204,6 +216,30 @@ export function MenuSection() {
             </div>
           )}
         </AnimatePresence>
+
+        {preview && filtered.length > 0 && (
+          <Reveal className="text-center mt-10 md:mt-12">
+            <motion.button
+              type="button"
+              onClick={() => navGo({ id: "menu", path: "/menu" })}
+              className="group/cta inline-flex items-center gap-3 px-9 py-4 rounded-xl text-[11px] tracking-[0.24em] uppercase font-semibold"
+              style={{
+                fontFamily: "var(--font-lidya-sans)",
+                color: "#d4a843",
+                border: "1px solid rgba(212,168,67,0.5)",
+                background: "linear-gradient(135deg, rgba(212,168,67,0.10) 0%, rgba(194,94,42,0.08) 100%)",
+              }}
+              whileHover={{ backgroundColor: "#d4a843", color: "#1e1008", boxShadow: "0 0 28px rgba(212,168,67,0.45)" }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ duration: 0.25 }}
+            >
+              {t("common2.viewFullMenu")}
+              <span aria-hidden className="inline-flex transition-transform duration-300 group-hover/cta:translate-x-1">
+                <Icon.ArrowRight />
+              </span>
+            </motion.button>
+          </Reveal>
+        )}
       </div>
     </section>
   );
