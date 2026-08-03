@@ -4,6 +4,7 @@ import sharp from 'sharp';
 import path from 'path';
 import fs from 'fs';
 import { v2 as cloudinary } from 'cloudinary';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { authenticate, authorize } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 import { env } from '../config/env';
@@ -37,6 +38,27 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
+// ─── S3-compatible object storage (preferred in production) ────────────────
+const s3Ready = () =>
+  !!(env.S3_ENDPOINT && env.S3_BUCKET && env.S3_ACCESS_KEY_ID && env.S3_SECRET_ACCESS_KEY);
+
+let s3: S3Client | null = null;
+const getS3 = () => {
+  if (!s3) {
+    s3 = new S3Client({
+      endpoint: env.S3_ENDPOINT,
+      region: env.S3_REGION,
+      // Required by most S3-compatible providers (non-AWS).
+      forcePathStyle: true,
+      credentials: {
+        accessKeyId: env.S3_ACCESS_KEY_ID!,
+        secretAccessKey: env.S3_SECRET_ACCESS_KEY!,
+      },
+    });
+  }
+  return s3;
+};
+
 router.post('/', authenticate, authorize(['OWNER', 'MANAGER']), upload.single('image'), async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.file) {
@@ -51,7 +73,23 @@ router.post('/', authenticate, authorize(['OWNER', 'MANAGER']), upload.single('i
 
     let imageUrl = '';
 
-    if (env.CLOUDINARY_CLOUD_NAME && env.CLOUDINARY_API_KEY && env.CLOUDINARY_API_SECRET) {
+    if (s3Ready()) {
+      // S3-compatible object storage (AletCloud Object Storage, AWS S3, …).
+      // Preferred in production: container disks are wiped on every redeploy,
+      // object storage is not.
+      const filename = `lidya/img_${Date.now()}_${Math.round(Math.random() * 1e9)}.webp`;
+      await getS3().send(
+        new PutObjectCommand({
+          Bucket: env.S3_BUCKET!,
+          Key: filename,
+          Body: imageBuffer,
+          ContentType: 'image/webp',
+          CacheControl: 'public, max-age=2592000',
+        })
+      );
+      const base = (env.S3_PUBLIC_URL || `${env.S3_ENDPOINT}/${env.S3_BUCKET}`).replace(/\/+$/, '');
+      imageUrl = `${base}/${filename}`;
+    } else if (env.CLOUDINARY_CLOUD_NAME && env.CLOUDINARY_API_KEY && env.CLOUDINARY_API_SECRET) {
       // Upload to Cloudinary using stream
       const uploadPromise = new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(

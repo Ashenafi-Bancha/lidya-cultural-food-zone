@@ -184,14 +184,11 @@ export function MenuSection({
                   className="group h-full flex flex-col items-center text-center"
                   whileHover={{ y: -8 }}
                 >
-                  {/* Domed dish photo — soft top corners, half-circle sweep at
-                      the bottom, framed in gold. */}
+                  {/* Circular dish photo — echoes the plate, framed in gold. */}
                   <div
-                    className="relative w-full overflow-hidden bg-[#3e2615]"
+                    className="relative w-full aspect-square overflow-hidden rounded-full bg-[#3e2615]"
                     style={{
-                      aspectRatio: "4 / 5",
-                      borderRadius: "1.75rem 1.75rem 50% 50% / 1.75rem 1.75rem 34% 34%",
-                      border: "1px solid rgba(212,168,67,0.3)",
+                      border: "2px solid rgba(212,168,67,0.35)",
                       boxShadow: "0 16px 38px rgba(0,0,0,0.45)",
                     }}
                   >
@@ -220,19 +217,19 @@ export function MenuSection({
                         </span>
                       </div>
                     )}
-                    {/* base shading so the dome edge reads against the page */}
+                    {/* subtle base shading inside the circle */}
                     <div
-                      className="absolute inset-0 pointer-events-none"
-                      style={{ background: "linear-gradient(to top, rgba(14,7,3,0.55) 0%, transparent 45%)" }}
+                      className="absolute inset-0 pointer-events-none rounded-full"
+                      style={{ background: "linear-gradient(to top, rgba(14,7,3,0.45) 0%, transparent 50%)" }}
                     />
                     {/* warm gold bloom on hover */}
                     <div
-                      className="absolute inset-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                      style={{ background: "radial-gradient(ellipse at bottom, rgba(212,168,67,0.32), transparent 65%)" }}
+                      className="absolute inset-0 pointer-events-none rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{ background: "radial-gradient(circle at center, transparent 45%, rgba(212,168,67,0.35) 100%)" }}
                     />
                     {item.tag && (
                       <span
-                        className="absolute top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[9px] tracking-[0.2em] uppercase text-[#faf5ee] whitespace-nowrap"
+                        className="absolute bottom-2 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full text-[9px] tracking-[0.2em] uppercase text-[#faf5ee] whitespace-nowrap"
                         style={{
                           fontFamily: "var(--font-lidya-sans)",
                           background: TAG_BG[item.tag] ?? "#c25e2a",

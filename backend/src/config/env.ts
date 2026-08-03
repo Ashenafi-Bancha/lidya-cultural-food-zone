@@ -13,6 +13,15 @@ const envSchema = z.object({
   CLOUDINARY_CLOUD_NAME: z.string().optional(),
   CLOUDINARY_API_KEY: z.string().optional(),
   CLOUDINARY_API_SECRET: z.string().optional(),
+  // S3-compatible object storage (AletCloud injects these automatically when a
+  // bucket is attached to the app). Required in production so uploaded photos
+  // survive redeploys — container disks are ephemeral.
+  S3_ENDPOINT: z.string().optional(),
+  S3_REGION: z.string().optional().default('us-east-1'),
+  S3_BUCKET: z.string().optional(),
+  S3_ACCESS_KEY_ID: z.string().optional(),
+  S3_SECRET_ACCESS_KEY: z.string().optional(),
+  S3_PUBLIC_URL: z.string().optional(), // CDN/public base URL, if different from the endpoint
   RESEND_API_KEY: z.string().optional(),
   RESEND_FROM_EMAIL: z.string().optional().default('noreply@lidyafoodzone.com'),
   MANAGER_EMAIL: z.string().optional(),
