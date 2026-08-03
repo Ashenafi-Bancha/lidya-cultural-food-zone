@@ -7,10 +7,12 @@ backend/node_modules
 frontend/dist
 backend/dist
 
-# Environment files
+# Environment files — every .env variant and backup, anywhere in the repo.
+# `.env.example` files are the only ones that may be committed.
 .env
-frontend/.env
-backend/.env
+**/.env
+**/.env.*
+!**/.env.example
 
 # Logs
 *.log

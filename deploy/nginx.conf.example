@@ -1,0 +1,78 @@
+# Nginx site config for lidyaculturalfood.com
+#
+# Install on the server as:
+#   /etc/nginx/sites-available/lidyaculturalfood
+# then enable:
+#   sudo ln -s /etc/nginx/sites-available/lidyaculturalfood /etc/nginx/sites-enabled/
+#   sudo nginx -t && sudo systemctl reload nginx
+#
+# Serving the site and the API from ONE domain means the browser never makes a
+# cross-origin request — no CORS setup, and the frontend can call plain "/api".
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name lidyaculturalfood.com www.lidyaculturalfood.com;
+
+    # Certbot writes its challenge files here; everything else goes to HTTPS.
+    location /.well-known/acme-challenge/ { root /var/www/html; }
+    location / { return 301 https://$host$request_uri; }
+}
+
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name lidyaculturalfood.com www.lidyaculturalfood.com;
+
+    # Certbot fills these in automatically (see the guide, step 9).
+    ssl_certificate     /etc/letsencrypt/live/lidyaculturalfood.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/lidyaculturalfood.com/privkey.pem;
+
+    # Uploaded photos can be large; menu/gallery images are already optimised.
+    client_max_body_size 12M;
+
+    # ── Compression ────────────────────────────────────────────────────────
+    gzip on;
+    gzip_types text/css application/javascript application/json image/svg+xml;
+    gzip_min_length 1024;
+
+    # ── Frontend: the built React site ─────────────────────────────────────
+    root /var/www/lidya/frontend/dist;
+    index index.html;
+
+    # Hashed assets never change — cache them hard.
+    location /assets/ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+        try_files $uri =404;
+    }
+
+    # ── Uploaded images, served straight from disk (fast, no Node hop) ─────
+    location /uploads/ {
+        alias /var/www/lidya/backend/uploads/;
+        expires 30d;
+        add_header Cache-Control "public";
+        access_log off;
+    }
+
+    # ── API: proxied to the Node backend on localhost ──────────────────────
+    location /api/ {
+        proxy_pass         http://127.0.0.1:5000;
+        proxy_http_version 1.1;
+        proxy_set_header   Host              $host;
+        proxy_set_header   X-Real-IP         $remote_addr;
+        proxy_set_header   X-Forwarded-For   $proxy_add_x_forwarded_for;
+        proxy_set_header   X-Forwarded-Proto $scheme;
+        proxy_set_header   Upgrade           $http_upgrade;
+        proxy_set_header   Connection        'upgrade';
+        proxy_read_timeout 60s;
+    }
+
+    location = /health { proxy_pass http://127.0.0.1:5000/health; access_log off; }
+
+    # ── SPA fallback: /menu, /gallery, /admin… must all serve index.html ───
+    # Without this, refreshing on /menu returns 404.
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
