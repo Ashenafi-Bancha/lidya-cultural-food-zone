@@ -37,14 +37,17 @@ app.use('/uploads', express.static('uploads'));
 
 // Health check — verifies the database is reachable, not just that the process
 // is up, so orchestrators don't route traffic to an instance with a dead DB.
-app.get('/health', async (req, res) => {
+const healthCheck = async (_req: express.Request, res: express.Response) => {
   try {
     await prisma.$queryRaw`SELECT 1`;
     res.status(200).json({ status: 'ok', database: 'connected', timestamp: new Date() });
   } catch {
     res.status(503).json({ status: 'error', database: 'unavailable', timestamp: new Date() });
   }
-});
+};
+
+// Served at the container root for the platform's internal probe.
+app.get('/health', healthCheck);
 
 import authRoutes from './routes/auth.routes';
 import branchRoutes from './routes/branch.routes';
@@ -61,6 +64,8 @@ import { apiLimiter } from './middleware/rateLimiter';
 
 // Routes
 const api = express.Router();
+// Registered before the rate limiter so uptime monitoring can poll it freely.
+api.get('/health', healthCheck);
 api.use(apiLimiter);
 api.use('/auth', authRoutes);
 api.use('/branches', branchRoutes);
@@ -74,10 +79,10 @@ api.use('/contact', contactRoutes);
 api.use('/event-bookings', eventRoutes);
 api.use('/testimonials', testimonialRoutes);
 
-// Mounted twice on purpose. Locally (and behind pass-through proxies) requests
-// arrive as `/api/menus`. AletCloud routes this service at the `/api` path
-// prefix but strips it before forwarding, so the container sees `/menus`.
-// Serving both keeps one build working in either environment.
+// Mounted twice on purpose. Locally, requests arrive as `/api/menus`. In
+// production the service sits behind a path-prefix proxy whose forwarding has
+// been observed both ways — passing `/api/menus` through and stripping it to
+// `/menus`. Serving both keeps one build working either way.
 app.use('/api', api);
 app.use(api);
 
