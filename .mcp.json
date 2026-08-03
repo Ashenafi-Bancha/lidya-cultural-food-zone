@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "aletcloud": {
-      "type": "http",
-      "url": "https://mcp.aletcloud.com/mcp"
-    }
-  }
-}
