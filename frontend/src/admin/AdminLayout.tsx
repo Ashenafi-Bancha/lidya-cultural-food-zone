@@ -8,6 +8,7 @@ import { useNoIndex } from '../hooks/useNoIndex';
 const links = [
   { to: '/admin', label: 'Dashboard' },
   { to: '/admin/menu', label: 'Menu Management' },
+  { to: '/admin/menu/print', label: 'Print Menu & QR' },
   { to: '/admin/reservations', label: 'Reservations' },
   { to: '/admin/events', label: 'Event Bookings' },
   { to: '/admin/branches', label: 'Branches' },

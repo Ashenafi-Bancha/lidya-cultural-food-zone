@@ -21,6 +21,7 @@ const AboutPage = lazy(() => import("./app/pages/AboutPage.tsx").then(m => ({ de
 const AdminLayout = lazy(() => import("./admin/AdminLayout.tsx").then(m => ({ default: m.AdminLayout })));
 const Dashboard = lazy(() => import("./admin/Dashboard.tsx").then(m => ({ default: m.Dashboard })));
 const MenuManagement = lazy(() => import("./admin/MenuManagement.tsx").then(m => ({ default: m.MenuManagement })));
+const MenuPrint = lazy(() => import("./admin/MenuPrint.tsx").then(m => ({ default: m.MenuPrint })));
 const ReservationManagement = lazy(() => import("./admin/ReservationManagement.tsx").then(m => ({ default: m.ReservationManagement })));
 const EventBookingManagement = lazy(() => import("./admin/EventBookingManagement.tsx").then(m => ({ default: m.EventBookingManagement })));
 const BranchManagement = lazy(() => import("./admin/BranchManagement.tsx").then(m => ({ default: m.BranchManagement })));
@@ -52,6 +53,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<Dashboard />} />
               <Route path="menu" element={<MenuManagement />} />
+              <Route path="menu/print" element={<MenuPrint />} />
               <Route path="reservations" element={<ReservationManagement />} />
               <Route path="events" element={<EventBookingManagement />} />
               <Route path="branches" element={<BranchManagement />} />
