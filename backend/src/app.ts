@@ -60,18 +60,26 @@ import testimonialRoutes from './routes/testimonial.routes';
 import { apiLimiter } from './middleware/rateLimiter';
 
 // Routes
-app.use('/api', apiLimiter);
-app.use('/api/auth', authRoutes);
-app.use('/api/branches', branchRoutes);
-app.use('/api/categories', categoryRoutes);
-app.use('/api/menus', menuRoutes);
-app.use('/api/upload', uploadRoutes);
-app.use('/api/gallery', galleryRoutes);
-app.use('/api/settings', settingsRoutes);
-app.use('/api/reservations', reservationRoutes);
-app.use('/api/contact', contactRoutes);
-app.use('/api/event-bookings', eventRoutes);
-app.use('/api/testimonials', testimonialRoutes);
+const api = express.Router();
+api.use(apiLimiter);
+api.use('/auth', authRoutes);
+api.use('/branches', branchRoutes);
+api.use('/categories', categoryRoutes);
+api.use('/menus', menuRoutes);
+api.use('/upload', uploadRoutes);
+api.use('/gallery', galleryRoutes);
+api.use('/settings', settingsRoutes);
+api.use('/reservations', reservationRoutes);
+api.use('/contact', contactRoutes);
+api.use('/event-bookings', eventRoutes);
+api.use('/testimonials', testimonialRoutes);
+
+// Mounted twice on purpose. Locally (and behind pass-through proxies) requests
+// arrive as `/api/menus`. AletCloud routes this service at the `/api` path
+// prefix but strips it before forwarding, so the container sees `/menus`.
+// Serving both keeps one build working in either environment.
+app.use('/api', api);
+app.use(api);
 
 // Error Handler
 app.use(errorHandler);
