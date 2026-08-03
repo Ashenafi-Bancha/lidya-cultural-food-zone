@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "aletcloud": {
+      "url": "https://mcp.mcp.aletcloud.com/sse",
+      "headers": {
+        "Authorization": "Bearer ${ALETCLOUD_TOKEN}"
+      }
+    }
+  }
+}
