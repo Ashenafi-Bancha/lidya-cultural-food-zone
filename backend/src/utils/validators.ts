@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+// Record IDs are opaque strings. Rows created at runtime get UUIDs from Prisma,
+// but seeded reference data uses readable slugs (`menu-kitfo-seed`,
+// `branch-addis-0001-0000-000000000002`). Enforcing UUID format here rejected
+// every seeded row before it reached the database — which silently broke table
+// reservations and admin price edits in production. Existence is the thing that
+// actually matters, and the database enforces it (P2025 -> 404).
+const idField = (message: string) => z.string().min(1, message);
+
 export const loginSchema = z.object({
   body: z.object({
     email: z.string().email('Invalid email address'),
@@ -8,7 +16,7 @@ export const loginSchema = z.object({
 });
 
 export const updateContactStatusSchema = z.object({
-  params: z.object({ id: z.string().uuid('Invalid contact message ID') }),
+  params: z.object({ id: idField('Invalid contact message ID') }),
   body: z.object({
     status: z.enum(['UNREAD', 'READ', 'REPLIED']),
   }),
@@ -31,13 +39,13 @@ export const createReservationSchema = z.object({
     date: z.string().refine((val) => !isNaN(Date.parse(val)), { message: "Invalid date format" }),
     time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Time must be HH:MM'),
     partySize: z.number().int().min(1).max(50),
-    branchId: z.string().uuid('Invalid branch ID'),
+    branchId: idField('Invalid branch ID'),
     specialRequest: z.string().max(500).optional().nullable(),
   }),
 });
 
 export const updateReservationStatusSchema = z.object({
-  params: z.object({ id: z.string().uuid('Invalid reservation ID') }),
+  params: z.object({ id: idField('Invalid reservation ID') }),
   body: z.object({
     status: z.enum(['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED', 'NO_SHOW']),
   }),
@@ -50,8 +58,8 @@ const menuItemBody = z.object({
   descriptionAm: z.string().optional().nullable(),
   price: z.string().min(1, 'Price is required'),
   tag: z.string().optional().nullable(),
-  categoryId: z.string().uuid('Invalid category ID'),
-  branchId: z.string().uuid().optional().nullable(),
+  categoryId: idField('Invalid category ID'),
+  branchId: idField('Invalid branch ID').optional().nullable(),
   isAvailable: z.boolean().optional(),
   imageUrl: z.union([z.literal(''), z.string()]).optional().nullable(),
 });
@@ -74,13 +82,13 @@ export const createEventBookingSchema = z.object({
     ]),
     eventDate: z.string().refine((val) => !isNaN(Date.parse(val)), { message: 'Invalid date format' }),
     guestCount: z.number().int().min(1).max(5000).optional().nullable(),
-    branchId: z.string().uuid('Invalid branch ID').optional().nullable(),
+    branchId: idField('Invalid branch ID').optional().nullable(),
     message: z.string().max(1000).optional().nullable(),
   }),
 });
 
 export const updateEventBookingStatusSchema = z.object({
-  params: z.object({ id: z.string().uuid('Invalid booking ID') }),
+  params: z.object({ id: idField('Invalid booking ID') }),
   body: z.object({
     status: z.enum(['PENDING', 'CONFIRMED', 'CANCELLED', 'COMPLETED', 'NO_SHOW']),
   }),
@@ -92,7 +100,7 @@ export const createMenuItemSchema = z.object({
 
 // PUT edits are partial — only the changed fields need to be sent.
 export const updateMenuItemSchema = z.object({
-  params: z.object({ id: z.string().uuid('Invalid menu item ID') }),
+  params: z.object({ id: idField('Invalid menu item ID') }),
   body: menuItemBody.partial(),
 });
 
@@ -117,7 +125,7 @@ export const createBranchSchema = z.object({
 
 // PUT edits are partial — only the changed fields need to be sent.
 export const updateBranchSchema = z.object({
-  params: z.object({ id: z.string().uuid('Invalid branch ID') }),
+  params: z.object({ id: idField('Invalid branch ID') }),
   body: branchBody.partial(),
 });
 
@@ -128,17 +136,17 @@ export const createCategorySchema = z.object({
     name: z.string().min(2, 'Category name is required').max(100),
     nameAm: z.string().max(100).optional().nullable(),
     order: z.number().int().min(0).optional(),
-    parentId: z.string().uuid('Invalid parent category ID').optional().nullable(),
+    parentId: idField('Invalid parent category ID').optional().nullable(),
   }),
 });
 
 export const updateCategorySchema = z.object({
-  params: z.object({ id: z.string().uuid('Invalid category ID') }),
+  params: z.object({ id: idField('Invalid category ID') }),
   body: z.object({
     name: z.string().min(2, 'Category name is required').max(100).optional(),
     nameAm: z.string().max(100).optional().nullable(),
     order: z.number().int().min(0).optional(),
-    parentId: z.string().uuid('Invalid parent category ID').optional().nullable(),
+    parentId: idField('Invalid parent category ID').optional().nullable(),
   }),
 });
 
@@ -159,7 +167,7 @@ export const createGalleryItemSchema = z.object({
 });
 
 export const updateGalleryItemSchema = z.object({
-  params: z.object({ id: z.string().uuid('Invalid gallery item ID') }),
+  params: z.object({ id: idField('Invalid gallery item ID') }),
   body: z.object({
     imageUrl: z.string().min(1, 'An image URL is required').optional(),
     title: z.string().max(200).optional().nullable(),
@@ -192,7 +200,7 @@ export const createTestimonialSchema = z.object({
 });
 
 export const updateTestimonialSchema = z.object({
-  params: z.object({ id: z.string().uuid('Invalid testimonial ID') }),
+  params: z.object({ id: idField('Invalid testimonial ID') }),
   body: testimonialBody.partial(),
 });
 
