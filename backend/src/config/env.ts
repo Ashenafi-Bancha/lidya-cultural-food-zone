@@ -17,11 +17,17 @@ const envSchema = z.object({
   // bucket is attached to the app). Required in production so uploaded photos
   // survive redeploys — container disks are ephemeral.
   S3_ENDPOINT: z.string().optional(),
-  S3_REGION: z.string().optional().default('us-east-1'),
+  S3_REGION: z.string().optional(),
   S3_BUCKET: z.string().optional(),
   S3_ACCESS_KEY_ID: z.string().optional(),
   S3_SECRET_ACCESS_KEY: z.string().optional(),
   S3_PUBLIC_URL: z.string().optional(), // CDN/public base URL, if different from the endpoint
+  // AletCloud injects bucket credentials under the AWS_* names when a bucket is
+  // attached to an app. Accept both spellings so no manual copying is needed.
+  AWS_ACCESS_KEY_ID: z.string().optional(),
+  AWS_SECRET_ACCESS_KEY: z.string().optional(),
+  AWS_ENDPOINT_URL_S3: z.string().optional(),
+  AWS_REGION: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
   RESEND_FROM_EMAIL: z.string().optional().default('noreply@lidyafoodzone.com'),
   MANAGER_EMAIL: z.string().optional(),
@@ -41,4 +47,13 @@ if (!_env.success) {
   process.exit(1);
 }
 
-export const env = _env.data;
+const parsed = _env.data;
+
+export const env = {
+  ...parsed,
+  // Prefer explicit S3_* values; fall back to the AWS_* names the host injects.
+  S3_ENDPOINT: parsed.S3_ENDPOINT || parsed.AWS_ENDPOINT_URL_S3,
+  S3_REGION: parsed.S3_REGION || parsed.AWS_REGION || 'us-east-1',
+  S3_ACCESS_KEY_ID: parsed.S3_ACCESS_KEY_ID || parsed.AWS_ACCESS_KEY_ID,
+  S3_SECRET_ACCESS_KEY: parsed.S3_SECRET_ACCESS_KEY || parsed.AWS_SECRET_ACCESS_KEY,
+};
