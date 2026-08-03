@@ -12,7 +12,20 @@ export const getMenuItems = async (req: Request, res: Response, next: NextFuncti
     const filter: any = { deletedAt: null };
 
     if (branchId) filter.branchId = branchId;
-    if (categoryId) filter.categoryId = categoryId;
+
+    if (categoryId) {
+      // Dishes are attached to leaf categories ("Lunch and Dinner"), never to a
+      // top-level one ("Food"). Matching the id exactly therefore returned an
+      // empty list for every parent category, so filtering by "Food" showed
+      // nothing. Include the category's children alongside it.
+      const children = await prisma.category.findMany({
+        where: { parentId: categoryId as string, deletedAt: null },
+        select: { id: true },
+      });
+      filter.categoryId = children.length
+        ? { in: [categoryId as string, ...children.map((c) => c.id)] }
+        : categoryId;
+    }
 
     const items = await prisma.menuItem.findMany({
       where: filter,

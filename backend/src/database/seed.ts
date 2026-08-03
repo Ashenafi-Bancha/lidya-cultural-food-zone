@@ -300,11 +300,11 @@ async function main() {
   // ─── 6. Seed Default Website Settings ────────────────────────────────────
   const defaultSettings = [
     { key: 'hero_tagline', value: 'Taste the Heritage of Ethiopia' },
-    { key: 'hero_subtitle', value: 'A culinary journey through the rich traditions of Southern Ethiopia' },
-    { key: 'contact_phone', value: '+251 46 551 2233' },
-    { key: 'contact_email', value: 'hello@lidyafoodzone.com' },
+    { key: 'hero_subtitle', value: 'A culinary journey through the rich traditions of Ethiopia' },
+    { key: 'contact_phone', value: '+251 92 099 4499' },
+    { key: 'contact_email', value: 'info@lidyaculturalfood.com' },
     { key: 'social_instagram', value: '' },
-    { key: 'social_facebook', value: '' },
+    { key: 'social_facebook', value: 'https://web.facebook.com/leta.lemma.1' },
   ];
 
   for (const setting of defaultSettings) {

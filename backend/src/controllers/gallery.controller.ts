@@ -7,16 +7,22 @@ export const getGalleryItems = async (req: Request, res: Response, next: NextFun
     const limit = parseInt(req.query.limit as string) || 20;
     const skip = (page - 1) * limit;
 
+    // Optional `?group=MOMENTS|LIFE` filter. An unrecognised value is ignored
+    // rather than treated as a match on nothing, so a typo returns the full
+    // gallery instead of a silently empty page.
+    const groupParam = (req.query.group as string)?.toUpperCase();
+    const group = groupParam === 'MOMENTS' || groupParam === 'LIFE' ? groupParam : undefined;
+
+    const where = { deletedAt: null, ...(group ? { group: group as any } : {}) };
+
     const items = await prisma.galleryItem.findMany({
-      where: { deletedAt: null },
+      where,
       orderBy: { createdAt: 'desc' },
       skip,
       take: limit,
     });
 
-    const total = await prisma.galleryItem.count({
-      where: { deletedAt: null },
-    });
+    const total = await prisma.galleryItem.count({ where });
 
     res.status(200).json({
       status: 'success',
