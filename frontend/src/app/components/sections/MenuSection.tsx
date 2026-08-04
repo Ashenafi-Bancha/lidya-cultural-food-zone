@@ -6,6 +6,7 @@ import { useMenu, useCategories } from "../../../hooks/useMenu";
 import { useLang } from "../../../context/LanguageContext";
 import { useNavGo } from "../../hooks/useNavGo";
 import { Icon } from "../Icons";
+import { formatPrice } from "../../../lib/price";
 
 const TAG_BG: Record<string, string> = {
   Signature: "#c25e2a",
@@ -256,7 +257,7 @@ export function MenuSection({
                         className="text-[#d4a843] text-sm font-bold tracking-wide shrink-0"
                         style={{ fontFamily: "var(--font-lidya-sans)" }}
                       >
-                        {item.price}
+                        {formatPrice(item.price)}
                       </span>
                       <span className="flex-1 h-px bg-gradient-to-l from-transparent to-[#d4a843]/40" />
                     </div>

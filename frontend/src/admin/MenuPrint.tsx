@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { useMenu, useCategories } from '../hooks/useMenu';
 import logoImg from '@/imports/lidya-logo2.webp';
+import { formatPrice } from "../lib/price";
 
 /**
  * Print-ready A4 menu + digital-menu QR code.
@@ -204,7 +205,7 @@ export function MenuPrint() {
                     {showAmharic && d.nameAm ? <span className="font-normal" style={{ color: '#6b5336' }}> · {d.nameAm}</span> : null}
                   </span>
                   <span className="flex-1 border-b border-dotted" style={{ borderColor: 'rgba(35,21,8,0.3)', transform: 'translateY(-3px)' }} />
-                  <span className="text-[13px] font-bold whitespace-nowrap" style={{ color: GOLD }}>{d.price}</span>
+                  <span className="text-[13px] font-bold whitespace-nowrap" style={{ color: GOLD }}>{formatPrice(d.price)}</span>
                 </div>
                 {d.description && (
                   <p className="text-[10px] leading-snug mt-0.5 pr-16" style={{ color: '#6b5336' }}>{d.description}</p>
