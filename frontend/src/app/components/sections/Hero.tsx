@@ -451,10 +451,14 @@ export function Hero() {
 
           {/* Scroll hint */}
           <motion.div
-            /* Centred on desktop too: the hero column is left-aligned, which
-               left the scroll cue hugging the left edge instead of sitting
-               under the middle of the viewport where the eye looks for it. */
-            className="mt-8 md:mt-14 w-full flex flex-col items-center gap-3 md:flex-row md:justify-center md:items-center md:gap-3"
+            /* On desktop this leaves the left-hand text column and pins to the
+               bottom centre of the hero. Centring it inside the column only
+               moved it to the middle of that column — still well left of the
+               screen, which is not where the eye looks for a scroll cue.
+               Mobile keeps it inline, where the layout is already centred. */
+            className="mt-8 w-full flex flex-col items-center gap-3
+                       md:absolute md:left-1/2 md:-translate-x-1/2 md:bottom-10
+                       md:mt-0 md:w-auto md:flex-row md:items-center md:gap-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
