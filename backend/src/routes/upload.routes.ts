@@ -8,6 +8,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { authenticate, authorize } from '../middleware/auth';
 import { AppError } from '../middleware/errorHandler';
 import { env } from '../config/env';
+import { logger } from '../utils/logger';
 
 const router = Router();
 
@@ -86,8 +87,24 @@ router.post('/', authenticate, authorize(['OWNER', 'MANAGER']), upload.single('i
         .resize({ width: 1600, withoutEnlargement: true })
         .webp({ quality: 82 })
         .toBuffer();
-    } catch {
-      return next(new AppError(400, 'That image could not be read. Please try a JPG, PNG, or HEIC file.'));
+    } catch (err: any) {
+      // Log the underlying reason — swallowing it once made a decode failure
+      // impossible to diagnose from the server side.
+      logger.warn(
+        { err: err?.message, filename: req.file.originalname, mimetype: req.file.mimetype, bytes: req.file.size },
+        'Image could not be decoded'
+      );
+      // Sharp's prebuilt libvips has no HEVC decoder, which is what iPhones use
+      // inside .heic. Say so plainly instead of a generic failure.
+      const looksHeic = /\.(heic|heif)$/i.test(req.file.originalname || '');
+      return next(
+        new AppError(
+          400,
+          looksHeic
+            ? 'iPhone HEIC photos cannot be processed yet. Please convert to JPG first, or set iPhone Camera > Formats to "Most Compatible".'
+            : 'That image could not be read. Please try a JPG, PNG, or WebP file.'
+        )
+      );
     }
 
     let imageUrl = '';
