@@ -75,7 +75,7 @@ export function MenuSection({
   }
 
   return (
-    <section id="menu" className={`bg-[#1e1008] ${hideHeading ? "pt-10 pb-16 md:pt-14 md:pb-24" : "py-16 md:py-24 lg:py-32"}`}>
+    <section id="menu" className={`bg-[#1e1008] ${hideHeading ? "pt-3 pb-16 md:pt-5 md:pb-24" : "py-16 md:py-24 lg:py-32"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
         <Reveal className={`mb-12 text-center ${hideHeading ? "hidden" : ""}`}>
           <p className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("menu.eyebrow")}</p>
@@ -91,7 +91,7 @@ export function MenuSection({
             ))}
           </div>
         ) : (
-          <div className="mb-10">
+          <div className="mb-7">
             {/* Top-level category tabs */}
             <div className="flex flex-wrap justify-center gap-2">
               {topTabs.map(cat => (
@@ -173,7 +173,7 @@ export function MenuSection({
               {isErrorMenu ? t("menu.emptyError") : t("menu.emptyComingSoon")}
             </div>
           ) : (
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10 sm:gap-x-6 sm:gap-y-12">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10">
               {filtered.map((item, i) => (
                 <motion.div
                   key={item.id}
@@ -185,12 +185,16 @@ export function MenuSection({
                   className="group h-full flex flex-col items-center text-center"
                   whileHover={{ y: -8 }}
                 >
-                  {/* Circular dish photo — echoes the plate, framed in gold. */}
+                  {/* Circular dish photo — echoes the plate, framed in gold.
+                      Capped well below the column width: at full width the
+                      plates dominated the page and pushed the names apart. The
+                      outer halo keeps the smaller circle feeling deliberate. */}
                   <div
-                    className="relative w-full aspect-square overflow-hidden rounded-full bg-[#3e2615]"
+                    className="relative w-full max-w-[132px] sm:max-w-[150px] lg:max-w-[164px] mx-auto aspect-square overflow-hidden rounded-full bg-[#3e2615] transition-shadow duration-500"
                     style={{
                       border: "2px solid rgba(212,168,67,0.35)",
-                      boxShadow: "0 16px 38px rgba(0,0,0,0.45)",
+                      boxShadow:
+                        "0 0 0 1px rgba(212,168,67,0.14), 0 0 0 7px rgba(212,168,67,0.05), 0 12px 26px rgba(0,0,0,0.45)",
                     }}
                   >
                     {item.imageUrl || (item as any).img ? (

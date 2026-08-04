@@ -28,7 +28,7 @@ export function MenuHero() {
         />
       </div>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-16 sm:py-20 md:py-28 text-center">
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 md:px-10 py-9 sm:py-12 md:py-16 text-center">
         <motion.p
           className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-4"
           style={{ fontFamily: "var(--font-lidya-sans)" }}
@@ -40,7 +40,7 @@ export function MenuHero() {
         </motion.p>
 
         <motion.h1
-          className="text-4xl sm:text-5xl md:text-6xl font-bold text-[#f5efe6] leading-[1.1]"
+          className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#f5efe6] leading-[1.1]"
           style={{ fontFamily: "var(--font-lidya-serif)", textShadow: "0 3px 18px rgba(0,0,0,0.6)" }}
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
