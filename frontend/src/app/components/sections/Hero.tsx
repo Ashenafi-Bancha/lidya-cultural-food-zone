@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
 import heroBg from "@/imports/lidya-life1.webp";
 import { Icon } from "../Icons";
@@ -6,16 +6,31 @@ import { HeroDecoration } from "../HeroDecoration";
 import { goto } from "../../data/constants";
 import { useLang } from "../../../context/LanguageContext";
 
-// Welcome greeting cycles through three languages, in order:
-// Wolaytta → Amharic → English, then loops. Each phrase has a white leading
-// part and an optional brand-name part rendered in the golden brand colour.
+// Welcome greeting cycles through four languages, in order:
+// Wolaytta → Amharic → Afaan Oromoo → English, then loops. Each phrase has a
+// white leading part and an optional brand-name part in the golden brand colour.
+//
+// `ring` is the trio of colours the light travelling the border cycles through
+// while that phrase is on screen, so the frame carries the culture of whichever
+// language is being spoken.
+const RED = "#e11d2a";
+const YELLOW = "#f5c842";
+const BLACK = "#0a0a0a";
+const GREEN = "#1f8a3b";
+const WHITE = "#f7f7f7";
+
 const WELCOME_TEXTS = [
-  { pre: "Hashshu Saro Yeeta! ", brand: "Liidya Wogaa Quma Keettaa!", post: "" }, // Wolaytta
-  { pre: "እንኳን ወደ ", brand: "ሊዲያ ባህላዊ ምግብ ቤት", post: " በደህና መጡ!" },              // Amharic
-  { pre: "Welcome to ", brand: "Lidya Cultural Food Zone", post: "" },            // English
+  // Wolaytta — red · yellow · black
+  { pre: "Hashshu Saro Yeeta! ", brand: "Liidya Wogaa Quma Keettaa!", post: "", ring: [RED, YELLOW, BLACK] },
+  // Amharic — green · red · yellow
+  { pre: "እንኳን ወደ ", brand: "ሊዲያ ባህላዊ ምግብ ቤት", post: " በደህና መጡ!", ring: [GREEN, RED, YELLOW] },
+  // Afaan Oromoo — red · white · black
+  { pre: "Baga gara ", brand: "Lidya Mana Nyaataa Aadaa", post: " nagaan dhuftan!", ring: [RED, WHITE, BLACK] },
+  // English — the original trio
+  { pre: "Welcome to ", brand: "Lidya Cultural Food Zone", post: "", ring: [RED, YELLOW, BLACK] },
 ];
 
-type WelcomePhrase = { pre: string; brand: string; post: string };
+type WelcomePhrase = { pre: string; brand: string; post: string; ring: string[] };
 
 // Types the phrase one letter at a time until complete, then keeps it.
 // Loops forever so the animation keeps drawing attention like a sign.
@@ -25,12 +40,15 @@ function Typewriter({
   eraseSpeed = 45,
   hold = 1700,
   startDelay = 800,
+  onPhraseChange,
 }: {
   texts: WelcomePhrase[];
   typeSpeed?: number;
   eraseSpeed?: number;
   hold?: number;
   startDelay?: number;
+  /** Fires when the active phrase changes, so the border can match its colours. */
+  onPhraseChange?: (index: number) => void;
 }) {
   const [ready, setReady] = useState(false);
   const [idx, setIdx] = useState(0);
@@ -41,6 +59,10 @@ function Typewriter({
     const id = setTimeout(() => setReady(true), startDelay);
     return () => clearTimeout(id);
   }, [startDelay]);
+
+  useEffect(() => {
+    onPhraseChange?.(idx);
+  }, [idx, onPhraseChange]);
 
   useEffect(() => {
     if (!ready) return;
@@ -124,6 +146,13 @@ const TYPE_START = 900;
 function CulturalWelcome() {
   // Ignite the moving-light border only once the greeting has finished typing.
   const [lightOn, setLightOn] = useState(false);
+  // Which greeting is showing, so the travelling light can carry that
+  // language's colours. Memoised so the callback identity stays stable and the
+  // typewriter effect does not re-fire on every render.
+  const [phrase, setPhrase] = useState(0);
+  const handlePhraseChange = useCallback((i: number) => setPhrase(i), []);
+  const [c1, c2, c3] = WELCOME_TEXTS[phrase]?.ring ?? WELCOME_TEXTS[0].ring;
+
   useEffect(() => {
     const first = WELCOME_TEXTS[0].pre + WELCOME_TEXTS[0].brand + WELCOME_TEXTS[0].post;
     const finishMs = TYPE_START + first.length * TYPE_SPEED + 250;
@@ -156,16 +185,17 @@ function CulturalWelcome() {
         animate={{ y: [0, -6, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
-        {/* rotating cultural colours — red · black · yellow — clipped to the border ring */}
+        {/* Rotating cultural colours, clipped to the border ring. The trio
+            follows the language currently being typed — Wolaytta red·yellow·
+            black, Amharic green·red·yellow, Afaan Oromoo red·white·black. */}
         <div
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[200%]"
           style={{
-            background:
-              "repeating-conic-gradient(from 0deg, #e11d2a 0deg, #f5c842 20deg, #0a0a0a 40deg, #e11d2a 60deg)",
+            background: `repeating-conic-gradient(from 0deg, ${c1} 0deg, ${c2} 20deg, ${c3} 40deg, ${c1} 60deg)`,
             transform: "translate(-50%,-50%)",
             opacity: lightOn ? 1 : 0,
-            transition: "opacity 0.6s ease",
+            transition: "opacity 0.6s ease, background 0.8s ease",
             animation: lightOn ? "ctaspin 6s linear infinite" : "none",
           }}
         />
@@ -180,7 +210,7 @@ function CulturalWelcome() {
           }}
         >
           <div className="flex items-center justify-center text-center font-bold tracking-[0.05em] sm:tracking-[0.08em] leading-tight sm:leading-snug text-[13px] sm:text-lg md:text-2xl xl:text-3xl max-w-[78vw] sm:max-w-[22rem] md:max-w-[26rem] min-h-[1.3em] sm:min-h-[2.4em] mx-auto">
-            <Typewriter texts={WELCOME_TEXTS} typeSpeed={TYPE_SPEED} startDelay={TYPE_START} />
+            <Typewriter texts={WELCOME_TEXTS} typeSpeed={TYPE_SPEED} startDelay={TYPE_START} onPhraseChange={handlePhraseChange} />
           </div>
         </div>
       </motion.div>
