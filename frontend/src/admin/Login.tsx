@@ -17,8 +17,13 @@ export function Login() {
   const [rememberMe, setRememberMe] = useState(false);
   
   const [loading, setLoading] = useState(false);
-  const [errors, setErrors] = useState<{ email?: string; password?: string; form?: string }>({});
-  
+  const [errors, setErrors] = useState<{ email?: string; password?: string; code?: string; form?: string }>({});
+
+  // Second step: shown only after the server confirms the password is right and
+  // the account has an authenticator enrolled.
+  const [needsCode, setNeedsCode] = useState(false);
+  const [code, setCode] = useState('');
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -29,11 +34,15 @@ export function Login() {
     } else if (!/\S+@\S+\.\S+/.test(email)) {
       newErrors.email = 'Please enter a valid email address.';
     }
-    
+
     if (!password) {
       newErrors.password = 'Password is required.';
     }
-    
+
+    if (needsCode && !/^\d{6}$/.test(code.replace(/\s/g, ''))) {
+      newErrors.code = 'Enter the 6-digit code from your authenticator app.';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -41,19 +50,34 @@ export function Login() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
-    
+
     setLoading(true);
     setErrors({});
-    
+
     try {
-      const data = await authService.login(email, password);
-      if (data) {
+      const data = await authService.login(email, password, needsCode ? code.replace(/\s/g, '') : undefined);
+
+      if (data?.twoFactorRequired) {
+        setNeedsCode(true);
+        setLoading(false);
+        return;
+      }
+
+      if (data?.accessToken && data.user) {
         login(data.accessToken, data.user);
         toast.success(`Welcome back, ${data.user.name}!`);
         navigate('/admin');
       }
     } catch (error: any) {
-      setErrors({ form: 'Incorrect email or password. Please try again.' });
+      const message = error?.response?.data?.message ?? '';
+      if (needsCode && /code/i.test(message)) {
+        setErrors({ code: 'That code was not accepted. Try the current one.' });
+      } else if (error?.response?.status === 429) {
+        setErrors({ form: 'Too many attempts. Please wait a few minutes and try again.' });
+      } else {
+        setErrors({ form: 'Incorrect email or password. Please try again.' });
+        setNeedsCode(false);
+      }
     } finally {
       setLoading(false);
     }
@@ -189,6 +213,45 @@ export function Login() {
                 </AnimatePresence>
               </div>
 
+              {/* Two-Factor Code — second step only */}
+              <AnimatePresence>
+                {needsCode && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="space-y-1.5 overflow-hidden"
+                  >
+                    <label className="block text-[10px] font-semibold text-[#e8dcc8]/60 uppercase tracking-[0.15em]" htmlFor="code">
+                      Authentication Code
+                    </label>
+                    <input
+                      id="code"
+                      type="text"
+                      inputMode="numeric"
+                      autoComplete="one-time-code"
+                      autoFocus
+                      maxLength={7}
+                      value={code}
+                      onChange={(e) => {
+                        setCode(e.target.value);
+                        if (errors.code) setErrors({ ...errors, code: undefined });
+                      }}
+                      disabled={loading}
+                      className={`w-full px-4 py-3 rounded-lg border text-center text-lg tracking-[0.5em] focus:outline-none focus:ring-2 focus:ring-[#d4a843]/50 focus:border-[#d4a843] transition-all disabled:opacity-60 ${errors.code ? 'border-red-500/80' : 'border-[#d4a843]/30 hover:border-[#d4a843]/60'}`}
+                      style={{ background: 'rgba(20,10,5,0.6)', color: '#f5efe6' }}
+                      placeholder="000000"
+                    />
+                    <p className="text-xs text-[#e8dcc8]/50 pt-1">
+                      Open your authenticator app and enter the current 6-digit code.
+                    </p>
+                    {errors.code && (
+                      <p className="text-xs text-red-400 font-medium">{errors.code}</p>
+                    )}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {/* Remember Me & Forgot Password */}
               <div className="flex items-center justify-between pt-1">
                 <label className="flex items-center gap-2 cursor-pointer group">
@@ -227,10 +290,10 @@ export function Login() {
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>Signing in...</span>
+                    <span>{needsCode ? 'Verifying...' : 'Signing in...'}</span>
                   </>
                 ) : (
-                  <span>Sign In</span>
+                  <span>{needsCode ? 'Verify & Sign In' : 'Sign In'}</span>
                 )}
               </motion.button>
             </form>

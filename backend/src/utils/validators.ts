@@ -12,6 +12,43 @@ export const loginSchema = z.object({
   body: z.object({
     email: z.string().email('Invalid email address'),
     password: z.string().min(6, 'Password must be at least 6 characters'),
+    // Only sent on the second step, once the server reports 2FA is required.
+    twoFactorCode: z.string().optional(),
+  }),
+});
+
+// A TOTP code is six digits; accept spaces since authenticator apps display
+// them grouped ("123 456").
+const totpCode = z.string().transform((v) => v.replace(/\s/g, '')).pipe(z.string().regex(/^\d{6}$/, 'Enter the 6-digit code'));
+
+export const changePasswordSchema = z.object({
+  body: z.object({
+    currentPassword: z.string().min(1, 'Current password is required'),
+    newPassword: z
+      .string()
+      .min(6, 'New password must be at least 6 characters')
+      .max(200)
+      .refine((v) => /[a-z]/.test(v) && /[A-Z]/.test(v) && /\d/.test(v), {
+        message: 'Use upper and lower case letters and at least one number',
+      }),
+  }),
+});
+
+export const changeEmailSchema = z.object({
+  body: z.object({
+    currentPassword: z.string().min(1, 'Current password is required'),
+    newEmail: z.string().email('Enter a valid email address'),
+  }),
+});
+
+export const twoFactorEnableSchema = z.object({
+  body: z.object({ code: totpCode }),
+});
+
+export const twoFactorDisableSchema = z.object({
+  body: z.object({
+    currentPassword: z.string().min(1, 'Current password is required'),
+    code: totpCode,
   }),
 });
 

@@ -27,6 +27,7 @@ const EventBookingManagement = lazy(() => import("./admin/EventBookingManagement
 const BranchManagement = lazy(() => import("./admin/BranchManagement.tsx").then(m => ({ default: m.BranchManagement })));
 const GalleryManagement = lazy(() => import("./admin/GalleryManagement.tsx").then(m => ({ default: m.GalleryManagement })));
 const TestimonialManagement = lazy(() => import("./admin/TestimonialManagement.tsx").then(m => ({ default: m.TestimonialManagement })));
+const Account = lazy(() => import("./admin/Account.tsx").then(m => ({ default: m.Account })));
 const Login = lazy(() => import("./admin/Login.tsx").then(m => ({ default: m.Login })));
 
 const AdminFallback = () => (
@@ -59,6 +60,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="branches" element={<BranchManagement />} />
               <Route path="gallery" element={<GalleryManagement />} />
               <Route path="testimonials" element={<TestimonialManagement />} />
+              <Route path="account" element={<Account />} />
             </Route>
           </Routes>
         </Suspense>

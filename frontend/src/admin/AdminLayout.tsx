@@ -14,6 +14,7 @@ const links = [
   { to: '/admin/branches', label: 'Branches' },
   { to: '/admin/gallery', label: 'Media & Gallery' },
   { to: '/admin/testimonials', label: 'Testimonials' },
+  { to: '/admin/account', label: 'Account & Security' },
 ];
 
 export function AdminLayout() {

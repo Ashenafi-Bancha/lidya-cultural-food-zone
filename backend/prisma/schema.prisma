@@ -20,6 +20,12 @@ model User {
   role     Role    @default(MANAGER)
   isActive Boolean @default(true)
 
+  // Time-based one-time password (authenticator app) second factor.
+  // The secret is only meaningful once twoFactorEnabled is true — setup stores
+  // it first so the user can scan the QR, then enabling proves they can read it.
+  twoFactorSecret  String?
+  twoFactorEnabled Boolean @default(false)
+
   refreshTokens RefreshToken[]
   activityLogs  ActivityLog[]
 
