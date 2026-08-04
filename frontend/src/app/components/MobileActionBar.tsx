@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { Icon } from "./Icons";
 import { useLang } from "../../context/LanguageContext";
 
-const FACEBOOK_URL = "https://web.facebook.com/leta.lemma.1";
+const FACEBOOK_URL = "https://web.facebook.com/Lidyaculturalfoodzoneandcatering";
 const PHONE_NUMBER  = "0920994499";
 const PHONE_HREF    = "tel:+251920994499";
 

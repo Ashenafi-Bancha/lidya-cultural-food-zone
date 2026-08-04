@@ -63,7 +63,7 @@ export function Navbar({ onOpenChange }: NavbarProps) {
         0920994499
       </motion.a>
       <motion.a
-        href="https://web.facebook.com/leta.lemma.1"
+        href="https://web.facebook.com/Lidyaculturalfoodzoneandcatering"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Follow us on Facebook"
@@ -207,7 +207,7 @@ export function Navbar({ onOpenChange }: NavbarProps) {
           re-anchors these fixed buttons to the top. They always float bottom-right. */}
       <div className="lg:hidden fixed bottom-4 right-3 z-50 flex flex-col gap-2.5 pointer-events-none">
         <motion.a
-          href="https://web.facebook.com/leta.lemma.1"
+          href="https://web.facebook.com/Lidyaculturalfoodzoneandcatering"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="Follow us on Facebook"

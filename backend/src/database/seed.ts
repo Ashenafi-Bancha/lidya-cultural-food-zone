@@ -304,7 +304,7 @@ async function main() {
     { key: 'contact_phone', value: '+251 92 099 4499' },
     { key: 'contact_email', value: 'info@lidyaculturalfood.com' },
     { key: 'social_instagram', value: '' },
-    { key: 'social_facebook', value: 'https://web.facebook.com/leta.lemma.1' },
+    { key: 'social_facebook', value: 'https://web.facebook.com/Lidyaculturalfoodzoneandcatering' },
   ];
 
   for (const setting of defaultSettings) {
