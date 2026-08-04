@@ -19,6 +19,9 @@ const YELLOW = "#f5c842";
 const BLACK = "#0a0a0a";
 const GREEN = "#1f8a3b";
 const WHITE = "#f7f7f7";
+const GOLD_LIGHT = "#ffe488";
+const GOLD = "#f5c842";
+const GOLD_PALE = "#fff3c4";
 
 const WELCOME_TEXTS = [
   // Wolaytta — red · yellow · black
@@ -27,8 +30,10 @@ const WELCOME_TEXTS = [
   { pre: "እንኳን ወደ ", brand: "ሊዲያ ባህላዊ ምግብ ቤት", post: " በደህና መጡ!", ring: [GREEN, RED, YELLOW] },
   // Afaan Oromoo — red · white · black
   { pre: "Baga gara ", brand: "Lidya Mana Nyaataa Aadaa", post: " nagaan dhuftan!", ring: [RED, WHITE, BLACK] },
-  // English — the original trio
-  { pre: "Welcome to ", brand: "Lidya Cultural Food Zone", post: "", ring: [RED, YELLOW, BLACK] },
+  // English — no national colours to carry, so the light stays brand gold.
+  // Three close shades rather than one flat colour, otherwise the rotation
+  // becomes invisible and the border just looks statically lit.
+  { pre: "Welcome to ", brand: "Lidya Cultural Food Zone", post: "", ring: [GOLD_LIGHT, GOLD, GOLD_PALE] },
 ];
 
 type WelcomePhrase = { pre: string; brand: string; post: string; ring: string[] };
@@ -367,9 +372,13 @@ export function Hero() {
             {t("hero.tagline")}
           </motion.p>
 
-          {/* CTA buttons */}
+          {/* CTA group — the three buttons, with the scroll cue centred beneath
+              them. `md:w-fit` shrinks this wrapper to the width of the button
+              row, so `md:items-center` lands the cue directly under the middle
+              (Call) button rather than under the middle of the whole column. */}
+          <div className="flex flex-col md:w-fit md:items-center">
           <motion.div
-            className="flex flex-col sm:flex-row gap-3 sm:gap-4"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-3.5"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.72 }}
@@ -377,7 +386,7 @@ export function Hero() {
             <style>{`@keyframes ctaspin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}`}</style>
             <motion.button
               onClick={() => goto("reservation")}
-              className="w-full sm:w-auto px-8 py-4 sm:py-3.5 rounded-xl bg-[#c25e2a] text-[#faf5ee] text-[12px] sm:text-[11px] tracking-[0.18em] uppercase"
+              className="w-full sm:w-auto whitespace-nowrap px-8 sm:px-6 py-4 sm:py-3.5 rounded-xl bg-[#c25e2a] text-[#faf5ee] text-[12px] sm:text-[11px] tracking-[0.14em] uppercase"
               style={{ fontFamily: "var(--font-lidya-sans)" }}
               whileHover={{ backgroundColor: "#d4a843", color: "#1e1008" }}
               whileTap={{ scale: 0.97 }}
@@ -412,7 +421,7 @@ export function Hero() {
               />
               {/* inner face */}
               <span
-                className="relative z-10 flex items-center justify-center gap-2 rounded-[10px] px-8 py-4 sm:py-3.5 text-[12px] sm:text-[11px] tracking-[0.18em] uppercase text-[#e8dcc8]/85"
+                className="relative z-10 flex items-center justify-center gap-2 whitespace-nowrap rounded-[10px] px-8 sm:px-6 py-4 sm:py-3.5 text-[12px] sm:text-[11px] tracking-[0.14em] uppercase text-[#e8dcc8]/85"
                 style={{ fontFamily: "var(--font-lidya-sans)", background: "#1e1008" }}
               >
                 <Icon.Phone /> {t("common.callUsNow")}
@@ -427,7 +436,7 @@ export function Hero() {
                 competes with the travelling light beside it. */}
             <motion.button
               onClick={() => navGo({ id: "services", path: "/services" })}
-              className="hidden sm:inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-[11px] tracking-[0.18em] uppercase font-semibold"
+              className="hidden sm:inline-flex items-center justify-center gap-2 whitespace-nowrap px-6 py-3.5 rounded-xl text-[11px] tracking-[0.14em] uppercase font-semibold"
               style={{
                 fontFamily: "var(--font-lidya-sans)",
                 background: "linear-gradient(135deg,#f5c842 0%,#d4a843 55%,#c8901f 100%)",
@@ -449,16 +458,10 @@ export function Hero() {
             </motion.button>
           </motion.div>
 
-          {/* Scroll hint */}
+          {/* Scroll hint — sits directly beneath the button row, centred on it
+              by the wrapper above, so it lines up with the middle button. */}
           <motion.div
-            /* On desktop this leaves the left-hand text column and pins to the
-               bottom centre of the hero. Centring it inside the column only
-               moved it to the middle of that column — still well left of the
-               screen, which is not where the eye looks for a scroll cue.
-               Mobile keeps it inline, where the layout is already centred. */
-            className="mt-8 w-full flex flex-col items-center gap-3
-                       md:absolute md:left-1/2 md:-translate-x-1/2 md:bottom-10
-                       md:mt-0 md:w-auto md:flex-row md:items-center md:gap-3"
+            className="mt-8 md:mt-10 w-full md:w-auto flex flex-col items-center gap-3 md:flex-row md:items-center md:gap-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}
@@ -499,6 +502,7 @@ export function Hero() {
               {t("hero.scrollHint")}
             </motion.span>
           </motion.div>
+          </div>
         </motion.div>
 
       </div>
