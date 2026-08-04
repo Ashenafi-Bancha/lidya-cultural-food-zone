@@ -14,6 +14,11 @@ backend/dist
 **/.env.*
 !**/.env.example
 
+# Client-supplied originals (HEIC/large photos). These are converted and pushed
+# to object storage, never bundled or committed.
+incoming/*
+!incoming/README.txt
+
 # Logs
 *.log
 npm-debug.log*

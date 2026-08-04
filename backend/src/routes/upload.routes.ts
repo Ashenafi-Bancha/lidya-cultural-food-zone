@@ -21,11 +21,21 @@ if (env.CLOUDINARY_CLOUD_NAME) {
 }
 
 const storage = multer.memoryStorage();
+
+// Photos arrive straight from phones, and iPhones shoot HEIC. Browsers on
+// Windows frequently report those as `application/octet-stream` rather than
+// `image/heic`, so a MIME check alone rejects a file Sharp can decode perfectly
+// well. Fall back to the extension for the formats we know libvips handles.
+const EXTRA_IMAGE_EXTENSIONS = /\.(heic|heif|avif)$/i;
+
+const isSupportedImage = (file: Express.Multer.File) =>
+  file.mimetype.startsWith('image/') || EXTRA_IMAGE_EXTENSIONS.test(file.originalname || '');
+
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  limits: { fileSize: 15 * 1024 * 1024 }, // 15MB — HEIC originals from phones run large
   fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
+    if (isSupportedImage(file)) {
       cb(null, true);
     } else {
       cb(new AppError(400, 'Only images are allowed'));
@@ -65,11 +75,20 @@ router.post('/', authenticate, authorize(['OWNER', 'MANAGER']), upload.single('i
       return next(new AppError(400, 'No image file provided'));
     }
 
-    // Optimize image with Sharp first
-    const imageBuffer = await sharp(req.file.buffer)
-      .resize({ width: 1200, withoutEnlargement: true })
-      .webp({ quality: 80 })
-      .toBuffer();
+    // Normalize and optimize. `.rotate()` with no argument applies the EXIF
+    // orientation flag and then drops it — without this, portrait photos taken
+    // on a phone render sideways. Sharp discards the rest of the metadata by
+    // default, which also strips the GPS coordinates phones embed.
+    let imageBuffer: Buffer;
+    try {
+      imageBuffer = await sharp(req.file.buffer)
+        .rotate()
+        .resize({ width: 1600, withoutEnlargement: true })
+        .webp({ quality: 82 })
+        .toBuffer();
+    } catch {
+      return next(new AppError(400, 'That image could not be read. Please try a JPG, PNG, or HEIC file.'));
+    }
 
     let imageUrl = '';
 
