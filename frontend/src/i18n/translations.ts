@@ -44,7 +44,7 @@ export const translations: Record<Lang, any> = {
     quickLinks: {
       eyebrow: 'Explore Lidya',
       title: 'Where would you like to begin?',
-      gallery: 'Gallery & Life inside Lidya',
+      gallery: 'Gallery',
       reservation: 'Reserve a Table',
     },
     common2: {
@@ -355,7 +355,7 @@ export const translations: Record<Lang, any> = {
     quickLinks: {
       eyebrow: 'ልዲያን ያስሱ',
       title: 'ከየት ልንጀምር?',
-      gallery: 'ፎቶዎችና በልዲያ ውስጥ ያለ ሕይወት',
+      gallery: 'ፎቶዎች',
       reservation: 'ጠረጴዛ ያስይዙ',
     },
     common2: {

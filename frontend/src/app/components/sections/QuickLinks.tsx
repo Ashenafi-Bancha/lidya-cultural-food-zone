@@ -52,8 +52,22 @@ export function QuickLinks() {
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
           {LINKS.map((link, i) => {
             const Glyph = link.Glyph;
+            // With an odd number of tiles the last one is left alone in the
+            // first column on mobile's 2-up grid, reading as a mistake. Let it
+            // span the row and centre it at the same width as its neighbours
+            // (half the row minus half the 0.75rem gap). Computed from the
+            // count so adding or removing a link keeps this correct.
+            const isOrphanOnMobile = LINKS.length % 2 === 1 && i === LINKS.length - 1;
             return (
-              <Reveal key={link.id} delay={i * 0.05}>
+              <Reveal
+                key={link.id}
+                delay={i * 0.05}
+                className={
+                  isOrphanOnMobile
+                    ? "col-span-2 justify-self-center w-[calc(50%-0.375rem)] sm:col-span-1 sm:w-auto"
+                    : undefined
+                }
+              >
                 <motion.button
                   type="button"
                   onClick={() => go({ id: link.id, path: link.path, hash: link.hash })}
