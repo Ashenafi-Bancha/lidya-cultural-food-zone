@@ -1,4 +1,6 @@
 import { Server } from 'http';
+import path from 'path';
+import { execFileSync } from 'child_process';
 import { app } from './app';
 import { env } from './config/env';
 import { logger } from './utils/logger';
@@ -7,8 +9,38 @@ import { initializeCronJobs, runInitialCronCheck } from './services/cron.service
 
 let server: Server;
 
+// Apply pending migrations here rather than in the `start` script. The host
+// launches `node dist/index.js` directly, so anything chained onto npm start is
+// silently skipped — which shipped a build whose Prisma client expected columns
+// the database did not have, and every login 500'd. Doing it in-process means
+// schema and code can never again go live out of step.
+//
+// `migrate deploy` only applies committed migrations and is a no-op when there
+// is nothing pending, so it is safe on every boot and every replica.
+const applyMigrations = () => {
+  if (env.NODE_ENV !== 'production') return;
+  try {
+    const prismaBin = path.join(process.cwd(), 'node_modules', '.bin', 'prisma');
+    const output = execFileSync(prismaBin, ['migrate', 'deploy'], {
+      encoding: 'utf8',
+      stdio: 'pipe',
+    });
+    logger.info({ output: output.trim() }, 'Migrations applied');
+  } catch (err: any) {
+    // Fail loudly and refuse to serve. A half-migrated database behind a running
+    // server is worse than a container that visibly will not start.
+    logger.error(
+      { stderr: err?.stderr?.toString?.(), stdout: err?.stdout?.toString?.() },
+      'Migration failed — refusing to start'
+    );
+    process.exit(1);
+  }
+};
+
 const startServer = async () => {
   try {
+    applyMigrations();
+
     await prisma.$connect();
     logger.info('Connected to database successfully');
 
