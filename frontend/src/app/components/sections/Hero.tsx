@@ -5,6 +5,7 @@ import { Icon } from "../Icons";
 import { HeroDecoration } from "../HeroDecoration";
 import { goto } from "../../data/constants";
 import { useLang } from "../../../context/LanguageContext";
+import { useNavGo } from "../../hooks/useNavGo";
 
 // Welcome greeting cycles through four languages, in order:
 // Wolaytta → Amharic → Afaan Oromoo → English, then loops. Each phrase has a
@@ -220,6 +221,7 @@ function CulturalWelcome() {
 
 export function Hero() {
   const { t } = useLang();
+  const navGo = useNavGo();
   const { scrollY } = useScroll();
   const fade = useTransform(scrollY, [0, 500], [1, 0]);
 
@@ -416,11 +418,43 @@ export function Hero() {
                 <Icon.Phone /> {t("common.callUsNow")}
               </span>
             </motion.a>
+
+            {/* Explore Services — desktop only. Mobile already carries two
+                full-width CTAs plus the quick-link tiles further down; a third
+                there would push the scroll hint off the first screen. Gold fill
+                sets it apart from the solid-orange Reserve and the dark Call,
+                and the breathing glow gives it the pull without motion that
+                competes with the travelling light beside it. */}
+            <motion.button
+              onClick={() => navGo({ id: "services", path: "/services" })}
+              className="hidden sm:inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl text-[11px] tracking-[0.18em] uppercase font-semibold"
+              style={{
+                fontFamily: "var(--font-lidya-sans)",
+                background: "linear-gradient(135deg,#f5c842 0%,#d4a843 55%,#c8901f 100%)",
+                color: "#1e1008",
+              }}
+              animate={{
+                boxShadow: [
+                  "0 0 0 0 rgba(245,200,66,0.55), 0 6px 18px rgba(0,0,0,0.35)",
+                  "0 0 22px 6px rgba(245,200,66,0.28), 0 6px 18px rgba(0,0,0,0.35)",
+                  "0 0 0 0 rgba(245,200,66,0.55), 0 6px 18px rgba(0,0,0,0.35)",
+                ],
+              }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.97 }}
+            >
+              {t("common.exploreServices")}
+              <Icon.ArrowRight />
+            </motion.button>
           </motion.div>
 
           {/* Scroll hint */}
           <motion.div
-            className="mt-8 md:mt-14 w-full flex flex-col items-center gap-3 md:flex-row md:items-center md:gap-3"
+            /* Centred on desktop too: the hero column is left-aligned, which
+               left the scroll cue hugging the left edge instead of sitting
+               under the middle of the viewport where the eye looks for it. */
+            className="mt-8 md:mt-14 w-full flex flex-col items-center gap-3 md:flex-row md:justify-center md:items-center md:gap-3"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.3 }}

@@ -13,6 +13,7 @@ export const translations: Record<Lang, any> = {
     common: {
       reserveTable: 'Reserve a Table',
       callUsNow: 'Call Us Now',
+      exploreServices: 'Explore Services',
       makeReservation: 'Make a Reservation',
       callToDiscuss: 'Call to Discuss',
       brandLine1: 'Lidya Cultural',
@@ -323,6 +324,7 @@ export const translations: Record<Lang, any> = {
     common: {
       reserveTable: 'ጠረጴዛ ያስይዙ',
       callUsNow: 'አሁን ይደውሉልን',
+      exploreServices: 'አገልግሎቶችን ይመልከቱ',
       makeReservation: 'ማስያዣ ያድርጉ',
       callToDiscuss: 'ለመወያየት ይደውሉ',
       brandLine1: 'ሊዲያ ባህላዊ',
