@@ -73,6 +73,14 @@ export const createReservationSchema = z.object({
   body: z.object({
     customerName: z.string().min(2, 'Name is required'),
     phone: z.string().min(10, 'Valid phone number is required'),
+    // Optional on purpose — plenty of guests book by phone alone, and a missing
+    // email must never block a booking. When present it is the only way to send
+    // the confirmation, so it is validated properly rather than stored loosely.
+    email: z
+      .union([z.literal(''), z.string().email('Enter a valid email address')])
+      .optional()
+      .nullable()
+      .transform((v) => (v ? v.trim().toLowerCase() : null)),
     date: z.string().refine((val) => !isNaN(Date.parse(val)), { message: "Invalid date format" }),
     time: z.string().regex(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Time must be HH:MM'),
     partySize: z.number().int().min(1).max(50),

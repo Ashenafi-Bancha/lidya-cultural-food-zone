@@ -3,6 +3,7 @@ import { Prisma, ReservationStatus } from '@prisma/client';
 import { prisma } from '../database/prisma';
 import { notificationService } from '../services/notification.service';
 import { AppError } from '../middleware/errorHandler';
+import { logger } from '../utils/logger';
 
 // Prisma transaction client (interactive transaction) or the base client.
 type PrismaTx = Prisma.TransactionClient;
@@ -80,7 +81,20 @@ export const getReservations = async (req: Request, res: Response, next: NextFun
 
 export const createReservation = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = req.body;
+    // Whitelist rather than handing req.body straight to Prisma: an unexpected
+    // key in the payload made `create` throw an "Unknown argument" error, which
+    // surfaced to the guest as a 500 on an otherwise valid booking.
+    const body = req.body;
+    const data = {
+      customerName: body.customerName,
+      phone: body.phone,
+      email: body.email || null,
+      date: body.date,
+      time: body.time,
+      partySize: body.partySize,
+      branchId: body.branchId,
+      specialRequest: body.specialRequest || null,
+    };
 
     // Run the capacity check and the create together in a serializable
     // transaction so concurrent bookings can't both slip past a full branch.
@@ -113,16 +127,36 @@ export const createReservation = async (req: Request, res: Response, next: NextF
       { isolationLevel: Prisma.TransactionIsolationLevel.Serializable }
     );
 
-    await notificationService.notifyManagerNewReservation({
-      customerName: reservation.customerName,
-      phone: reservation.phone,
-      email: reservation.email ?? undefined,
-      date: reservation.date,
-      time: reservation.time,
-      partySize: reservation.partySize,
-      branchName: reservation.branch.name,
-      specialRequest: reservation.specialRequest ?? undefined,
-    });
+    // The booking is already committed. A notification that fails must not turn
+    // a successful reservation into a 500 for the guest — log it and move on so
+    // the confirmation screen still shows.
+    try {
+      await notificationService.notifyManagerNewReservation({
+        customerName: reservation.customerName,
+        phone: reservation.phone,
+        email: reservation.email ?? undefined,
+        date: reservation.date,
+        time: reservation.time,
+        partySize: reservation.partySize,
+        branchName: reservation.branch.name,
+        specialRequest: reservation.specialRequest ?? undefined,
+      });
+
+      // Reassure the guest immediately. Without this they hear nothing until a
+      // manager gets around to confirming, which can be hours.
+      if (reservation.email) {
+        await notificationService.sendReservationReceived({
+          customerName: reservation.customerName,
+          email: reservation.email,
+          date: reservation.date,
+          time: reservation.time,
+          partySize: reservation.partySize,
+          branchName: reservation.branch.name,
+        });
+      }
+    } catch (err: any) {
+      logger.error({ err: err?.message, reservationId: reservation.id }, 'Reservation notifications failed');
+    }
 
     res.status(201).json({ status: 'success', data: reservation });
   } catch (error) {
@@ -142,16 +176,22 @@ export const updateReservationStatus = async (req: Request, res: Response, next:
     });
 
     if (status === 'CONFIRMED' || status === 'CANCELLED') {
-      await notificationService.notifyCustomerStatus(
-        reservation.phone,
-        reservation.email ?? undefined,
-        status,
-        reservation.customerName,
-        reservation.date,
-        reservation.time,
-        reservation.partySize,
-        reservation.branch?.name
-      );
+      // Same reasoning as on create: the status change is already saved, so a
+      // failed send must not roll the admin's action back into an error.
+      try {
+        await notificationService.notifyCustomerStatus(
+          reservation.phone,
+          reservation.email ?? undefined,
+          status,
+          reservation.customerName,
+          reservation.date,
+          reservation.time,
+          reservation.partySize,
+          reservation.branch?.name
+        );
+      } catch (err: any) {
+        logger.error({ err: err?.message, reservationId: reservation.id }, 'Status notification failed');
+      }
     }
 
     res.status(200).json({ status: 'success', data: reservation });

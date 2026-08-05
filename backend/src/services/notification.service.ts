@@ -166,6 +166,41 @@ export class NotificationService {
     }
   }
 
+  /**
+   * Acknowledges a booking the moment it is made. Reservations start PENDING and
+   * a manager may not confirm for hours, so without this the guest submits the
+   * form and hears nothing — the most common reason people phone to ask whether
+   * a booking went through.
+   */
+  async sendReservationReceived(details: {
+    customerName: string;
+    email?: string;
+    date: string;
+    time: string;
+    partySize: number;
+    branchName?: string;
+  }): Promise<void> {
+    if (!details.email) return;
+    const when = this.formatDateTimeForEAT(details.date, details.time);
+    const subject = `✨ We received your reservation — Lidya Cultural Food Zone`;
+    const html = brandedEmail({
+      preheader: `Thank you — we've received your table request for ${when.date}.`,
+      heading: `Thank you, ${details.customerName}!`,
+      paragraphs: [
+        'We have received your table request. Our team will review it and send you a confirmation shortly.',
+      ],
+      details: [
+        { label: 'Date', value: when.date },
+        { label: 'Time', value: `${when.time} (EAT)` },
+        { label: 'Party Size', value: `${details.partySize} ${details.partySize === 1 ? 'guest' : 'guests'}` },
+        { label: 'Branch', value: details.branchName },
+      ],
+      note: 'This is not yet a confirmation — we will email you again once your table is secured. For anything urgent, call 0920994499.',
+      button: { label: 'Call Us', url: 'tel:+251920994499' },
+    });
+    await this.emailService.sendEmail(details.email, subject, html);
+  }
+
   async notifyCustomerStatus(
     phone: string,
     email: string | undefined,

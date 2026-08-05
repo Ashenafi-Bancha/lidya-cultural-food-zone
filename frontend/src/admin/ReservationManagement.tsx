@@ -30,7 +30,8 @@ export function ReservationManagement() {
     return reservations.filter((r: any) => {
       const matchesSearch = 
         r.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        r.phone.includes(searchTerm);
+        r.phone.includes(searchTerm) ||
+        (r.email ?? '').toLowerCase().includes(searchTerm.toLowerCase());
       const matchesStatus = statusFilter === 'ALL' || r.status === statusFilter;
       return matchesSearch && matchesStatus;
     });
@@ -63,7 +64,7 @@ export function ReservationManagement() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search name or phone..."
+              placeholder="Search name, phone or email..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#d4a843]/50 focus:border-[#d4a843]"
@@ -122,6 +123,7 @@ export function ReservationManagement() {
                         <td className="p-4">
                           <div className="font-medium text-gray-900">{r.customerName}</div>
                           <div className="text-xs text-gray-500 mt-0.5">{r.phone}</div>
+                          {r.email && <div className="text-xs text-gray-400 mt-0.5 truncate max-w-[200px]" title={r.email}>{r.email}</div>}
                         </td>
                         <td className="p-4">
                           <div className="text-sm font-medium text-gray-900">{new Date(r.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
@@ -231,6 +233,7 @@ export function ReservationManagement() {
                   <div className="min-w-0">
                     <h3 className="font-semibold text-gray-900 truncate">{r.customerName}</h3>
                     <p className="text-xs text-gray-500 mt-0.5">{r.phone}</p>
+                    {r.email && <p className="text-xs text-gray-400 mt-0.5 truncate">{r.email}</p>}
                   </div>
                   <span className={`shrink-0 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusConfig[r.status]?.bg} ${statusConfig[r.status]?.text}`}>
                     <StatusIcon className="w-3.5 h-3.5" />

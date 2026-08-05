@@ -7,14 +7,14 @@ import { reservationService } from "../../../services/reservation.service";
 import { useBranches } from "../../../hooks/useBranches";
 import { useLang } from "../../../context/LanguageContext";
 import { toast } from "sonner";
-import { User, Phone, Calendar, Clock, Users, MapPin, MessageSquare, CheckCircle2 } from "lucide-react";
+import { User, Phone, Mail, Calendar, Clock, Users, MapPin, MessageSquare, CheckCircle2 } from "lucide-react";
 
 export function Reservation() {
   const { t } = useLang();
   const { data: branches } = useBranches();
 
   const [form, setForm] = useState({
-    customerName: "", phone: "", date: "", time: "19:00", partySize: "2",
+    customerName: "", phone: "", email: "", date: "", time: "19:00", partySize: "2",
     branchId: "", specialRequest: "",
   });
   const [submitted, setSubmitted] = useState(false);
@@ -24,6 +24,7 @@ export function Reservation() {
       const payload = {
         customerName: form.customerName,
         phone: form.phone,
+        email: form.email.trim() || null,
         date: form.date,
         time: form.time,
         partySize: parseInt(form.partySize, 10) || 2,
@@ -35,7 +36,7 @@ export function Reservation() {
     onSuccess: () => {
       setSubmitted(true);
       toast.success(t("reservation.toastSuccess"));
-      setForm({ customerName: "", phone: "", date: "", time: "19:00", partySize: "2", branchId: "", specialRequest: "" });
+      setForm({ customerName: "", phone: "", email: "", date: "", time: "19:00", partySize: "2", branchId: "", specialRequest: "" });
       setTimeout(() => setSubmitted(false), 5000);
     },
     onError: (error: any) => {
@@ -148,6 +149,25 @@ export function Reservation() {
                       <Phone className={iconCls} />
                       <input aria-label={t("reservation.phone")} type="tel" inputMode="tel" autoComplete="tel" maxLength={20} className={inputCls} style={inputStyle} placeholder={t("reservation.phone")} value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} required />
                     </div>
+                  </div>
+
+                  {/* Email is optional — many guests book by phone alone and a
+                      missing address must never block a booking. Supplying it is
+                      the only way to receive the confirmation by email. */}
+                  <div className={inputContainerCls}>
+                    <Mail className={iconCls} />
+                    <input
+                      aria-label={t("reservation.email")}
+                      type="email"
+                      inputMode="email"
+                      autoComplete="email"
+                      maxLength={160}
+                      className={inputCls}
+                      style={inputStyle}
+                      placeholder={t("reservation.email")}
+                      value={form.email}
+                      onChange={e => setForm({ ...form, email: e.target.value })}
+                    />
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
