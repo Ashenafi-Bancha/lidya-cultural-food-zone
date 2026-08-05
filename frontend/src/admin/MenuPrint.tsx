@@ -13,9 +13,26 @@ import { formatPrice } from "../lib/price";
  * "Print" and choose "Save as PDF" for an exact A4 file.
  */
 
-const PAPER = '#fffdf8';
-const INK = '#231508';
-const GOLD = '#a67c1f';
+// Palette taken from the client's printed hard menu: warm cream paper with
+// deep-brown ink, and rust/olive/gold used only as ornament accents.
+const PAPER = '#f0e5d2';
+const INK = '#3c2010';
+const GOLD = '#b7852e';
+const RUST = '#a63a22';
+const OLIVE = '#6f6d2f';
+const SOFT = '#6b4a2e';
+
+// Minimal Ethiopian telet motif — a gold diamond with rust satellites — used as
+// the section ornament instead of photographic clutter.
+const Telet = ({ size = 14 }: { size?: number }) => (
+  <svg viewBox="0 0 40 40" width={size} height={size} aria-hidden>
+    <rect x="14" y="14" width="12" height="12" transform="rotate(45 20 20)" fill={GOLD} />
+    <rect x="17" y="2"  width="6" height="6" transform="rotate(45 20 5)"  fill={RUST} />
+    <rect x="17" y="32" width="6" height="6" transform="rotate(45 20 35)" fill={RUST} />
+    <rect x="2"  y="17" width="6" height="6" transform="rotate(45 5 20)"  fill={OLIVE} />
+    <rect x="32" y="17" width="6" height="6" transform="rotate(45 35 20)" fill={OLIVE} />
+  </svg>
+);
 
 export function MenuPrint() {
   const { data: menuData } = useMenu();
@@ -93,8 +110,9 @@ export function MenuPrint() {
             position: absolute; inset: 0; margin: 0; width: 100%;
             box-shadow: none !important; border: 0 !important; padding: 0 !important;
           }
-          .print-group { break-inside: avoid; page-break-inside: avoid; }
+          #menu-print-sheet { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           .print-dish  { break-inside: avoid; page-break-inside: avoid; }
+          .print-head  { break-after: avoid; page-break-after: avoid; }
         }
       `}</style>
 
@@ -172,59 +190,106 @@ export function MenuPrint() {
         }}
       >
         {/* header */}
-        <header className="text-center pb-5 mb-7" style={{ borderBottom: `2px solid ${GOLD}` }}>
-          <img src={logoImg} alt="" className="w-14 h-14 rounded-full object-cover mx-auto mb-3" />
-          <h1 className="text-[26px] font-bold tracking-wide leading-tight" style={{ fontFamily: 'var(--font-lidya-serif)' }}>
+        <header className="text-center mb-7">
+          <div className="flex items-center justify-center gap-5 mb-1">
+            <Telet size={22} />
+            <img
+              src={logoImg} alt=""
+              className="w-16 h-16 rounded-full object-cover"
+              style={{ border: `2.5px solid ${GOLD}`, boxShadow: `0 0 0 1.5px ${PAPER}, 0 0 0 3px rgba(183,133,46,0.35)` }}
+            />
+            <Telet size={22} />
+          </div>
+          <h1 className="text-[24px] font-bold tracking-wide leading-tight mt-2" style={{ fontFamily: 'var(--font-lidya-serif)', color: INK }}>
             LIDYA CULTURAL FOOD ZONE
           </h1>
-          <p className="text-[15px] mt-0.5" style={{ color: GOLD, fontFamily: 'var(--font-lidya-serif)' }}>
+          <p className="text-[15px] mt-0.5" style={{ color: RUST, fontFamily: "'Noto Serif Ethiopic', serif" }}>
             ሊዲያ ባህላዊ ምግብ ቤት
           </p>
-          <p className="text-[9px] tracking-[0.32em] uppercase mt-2" style={{ color: '#6b5336' }}>
+          <p className="text-[8.5px] tracking-[0.34em] uppercase mt-1.5" style={{ color: SOFT }}>
             Authentic Ethiopian Cultural Cuisine
           </p>
+          <div className="flex justify-center mt-3">
+            <span style={{ width: '22mm', height: '1.1mm', background: '#1f8a3b' }} />
+            <span style={{ width: '22mm', height: '1.1mm', background: '#f5c842' }} />
+            <span style={{ width: '22mm', height: '1.1mm', background: '#e11d2a' }} />
+          </div>
         </header>
 
         {/* dish groups */}
         {visible.map(group => (
           <section key={group.name} className="print-group mb-7">
-            <div className="flex items-center gap-3 mb-3.5">
-              <span className="h-px flex-1" style={{ background: `linear-gradient(to right, transparent, ${GOLD})` }} />
-              <h2 className="text-[15px] font-bold tracking-[0.22em] uppercase whitespace-nowrap" style={{ fontFamily: 'var(--font-lidya-serif)', color: GOLD }}>
-                {group.name}
-                {showAmharic && group.nameAm ? <span className="ml-2 font-normal">· {group.nameAm}</span> : null}
+            <div className="print-head flex items-center gap-3 mb-3.5">
+              <span className="h-px flex-1" style={{ background: `linear-gradient(to right, transparent, ${RUST})` }} />
+              <Telet size={13} />
+              <h2 className="text-center whitespace-nowrap leading-tight">
+                {showAmharic && group.nameAm ? (
+                  <>
+                    <span className="block text-[15px] font-bold" style={{ fontFamily: "'Noto Serif Ethiopic', serif", color: INK }}>
+                      {group.nameAm}
+                    </span>
+                    <span className="block text-[9px] tracking-[0.26em] uppercase mt-0.5" style={{ fontFamily: 'var(--font-lidya-serif)', color: RUST }}>
+                      {group.name}
+                    </span>
+                  </>
+                ) : (
+                  <span className="block text-[14px] font-bold tracking-[0.2em] uppercase" style={{ fontFamily: 'var(--font-lidya-serif)', color: INK }}>
+                    {group.name}
+                  </span>
+                )}
               </h2>
-              <span className="h-px flex-1" style={{ background: `linear-gradient(to left, transparent, ${GOLD})` }} />
+              <Telet size={13} />
+              <span className="h-px flex-1" style={{ background: `linear-gradient(to left, transparent, ${RUST})` }} />
             </div>
 
-            {group.dishes.map((d: any) => (
-              <div key={d.id} className="print-dish mb-3">
-                <div className="flex items-baseline gap-2">
-                  <span className="text-[13px] font-semibold" style={{ fontFamily: 'var(--font-lidya-serif)' }}>
-                    {d.name}
-                    {showAmharic && d.nameAm ? <span className="font-normal" style={{ color: '#6b5336' }}> · {d.nameAm}</span> : null}
-                  </span>
-                  <span className="flex-1 border-b border-dotted" style={{ borderColor: 'rgba(35,21,8,0.3)', transform: 'translateY(-3px)' }} />
-                  <span className="text-[13px] font-bold whitespace-nowrap" style={{ color: GOLD }}>{formatPrice(d.price)}</span>
+            {/* Two columns, like a traditional printed menu — the client's full
+                dish list fits far fewer pages this way. */}
+            <div style={{ columns: 2, columnGap: '9mm' }}>
+              {group.dishes.map((d: any) => (
+                <div key={d.id} className="print-dish mb-2.5">
+                  <div className="flex items-baseline gap-1.5">
+                    <span className="text-[11.5px] font-semibold" style={{ fontFamily: 'var(--font-lidya-serif)', color: INK }}>
+                      {d.name}
+                      {showAmharic && d.nameAm ? (
+                        <span className="font-normal" style={{ color: SOFT, fontFamily: "'Noto Serif Ethiopic', serif" }}> · {d.nameAm}</span>
+                      ) : null}
+                    </span>
+                    <span className="flex-1 border-b border-dotted" style={{ borderColor: 'rgba(60,32,16,0.35)', transform: 'translateY(-3px)' }} />
+                    <span className="text-[11.5px] font-bold whitespace-nowrap" style={{ color: RUST }}>{formatPrice(d.price)}</span>
+                  </div>
+                  {(showAmharic && d.descriptionAm ? d.descriptionAm : d.description) && (
+                    <p className="text-[8.5px] leading-snug mt-0.5" style={{ color: SOFT }}>
+                      {showAmharic && d.descriptionAm ? d.descriptionAm : d.description}
+                    </p>
+                  )}
                 </div>
-                {d.description && (
-                  <p className="text-[10px] leading-snug mt-0.5 pr-16" style={{ color: '#6b5336' }}>{d.description}</p>
-                )}
-              </div>
-            ))}
+              ))}
+            </div>
           </section>
         ))}
 
         {/* footer with QR */}
-        <footer className="mt-8 pt-4 flex items-center gap-5" style={{ borderTop: `2px solid ${GOLD}` }}>
-          {qrPng && <img src={qrPng} alt="Scan for the digital menu" className="w-[26mm] h-[26mm] shrink-0" />}
-          <div className="flex-1 text-[9.5px] leading-relaxed" style={{ color: '#6b5336' }}>
-            <p className="font-bold text-[11px] mb-1" style={{ color: INK, fontFamily: 'var(--font-lidya-serif)' }}>
-              Scan for our always-up-to-date menu
-            </p>
-            <p>Addis Ababa — Lebu, Music Sefer · Wolaita Sodo 1 — Green Land Area · Wolaita Sodo 2</p>
-            <p>0920994499 · letusletalemma@gmail.com</p>
-            <p className="mt-1 italic">Prices effective {effectiveDate}</p>
+        <footer className="mt-8">
+          <div className="flex justify-center mb-4">
+            <span style={{ width: '22mm', height: '1.1mm', background: '#1f8a3b' }} />
+            <span style={{ width: '22mm', height: '1.1mm', background: '#f5c842' }} />
+            <span style={{ width: '22mm', height: '1.1mm', background: '#e11d2a' }} />
+          </div>
+          <div className="flex items-center gap-5">
+            {qrPng && (
+              <div style={{ background: '#fdfaf4', border: `1.5px solid ${GOLD}`, borderRadius: '2.5mm', padding: '2mm' }} className="shrink-0">
+                <img src={qrPng} alt="Scan for the digital menu" className="w-[24mm] h-[24mm] block" />
+              </div>
+            )}
+            <div className="flex-1 text-[9.5px] leading-relaxed" style={{ color: SOFT }}>
+              <p className="font-bold text-[11px] mb-0.5" style={{ color: INK, fontFamily: 'var(--font-lidya-serif)' }}>
+                Scan for our always-up-to-date menu · ሜኑውን ለማየት ኮዱን ይቃኙ
+              </p>
+              <p>Addis Ababa — Lebu, Music Sefer · Wolaita Sodo 1 — Green Land Area · Wolaita Sodo 2</p>
+              <p>0920994499 · lidyaculturalfood.com</p>
+              <p className="mt-1 italic">Prices effective {effectiveDate}</p>
+            </div>
+            <Telet size={26} />
           </div>
         </footer>
       </div>
