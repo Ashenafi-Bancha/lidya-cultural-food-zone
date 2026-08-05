@@ -62,7 +62,7 @@ export function MenuHero() {
         </motion.div>
 
         <motion.p
-          className="text-base md:text-lg text-[#e8dcc8]/70 max-w-2xl mx-auto leading-relaxed"
+          className="text-base md:text-lg text-[#f5efe6]/90 max-w-2xl mx-auto leading-relaxed"
           style={{ fontFamily: "var(--font-lidya-body)" }}
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}

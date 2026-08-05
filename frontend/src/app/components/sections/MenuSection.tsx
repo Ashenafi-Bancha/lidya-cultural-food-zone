@@ -51,12 +51,12 @@ export function MenuSection({
   // toggle. Falls back to one line when a category has no Amharic name yet.
   const BiLabel = ({ en, am }: { en: string; am?: string | null }) => (
     <span className="flex flex-col items-center leading-tight">
-      <span>{en}</span>
       {am && am !== en && (
-        <span className="normal-case tracking-normal opacity-80" style={{ fontFamily: "'Noto Serif Ethiopic', serif" }}>
+        <span className="normal-case tracking-normal" style={{ fontFamily: "'Noto Serif Ethiopic', serif" }}>
           {am}
         </span>
       )}
+      <span className={am && am !== en ? "opacity-80" : undefined}>{en}</span>
     </span>
   );
 
@@ -165,7 +165,7 @@ export function MenuSection({
 
                   <div className="pt-5 px-2 flex-1 flex flex-col items-center">
                     <h3
-                      className="text-[#f5efe6] font-semibold text-lg md:text-xl leading-snug transition-colors duration-300 group-hover:text-[#ffe488]"
+                      className="text-white font-semibold text-lg md:text-xl leading-snug transition-colors duration-300 group-hover:text-[#ffe488]"
                       style={{ fontFamily: "var(--font-lidya-serif)" }}
                     >
                       {tf(item, "name")}
@@ -184,7 +184,7 @@ export function MenuSection({
                     </div>
 
                     <p
-                      className="text-sm leading-relaxed text-[#e8dcc8]/50"
+                      className="text-sm leading-relaxed text-[#f5efe6]/80"
                       style={{ fontFamily: "var(--font-lidya-body)" }}
                     >
                       {tf(item, "description")}
@@ -241,17 +241,20 @@ export function MenuSection({
       <span className="flex-1 h-px bg-gradient-to-r from-transparent via-[#d4a843]/40 to-[#d4a843]/70" />
       <div className="text-center shrink-0 px-1">
         <span aria-hidden className="block text-[#d4a843]/80 text-[11px] tracking-[0.5em] mb-1.5">✦</span>
-        <h3
-          className="text-2xl sm:text-3xl md:text-4xl font-bold uppercase tracking-[0.1em] text-[#f5efe6] leading-none"
+        {am && (
+          <h3
+            className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-none"
+            style={{ fontFamily: "'Noto Serif Ethiopic', serif" }}
+          >
+            {am}
+          </h3>
+        )}
+        <p
+          className={`${am ? "mt-2 text-base sm:text-lg text-[#d4a843]" : "text-2xl sm:text-3xl md:text-4xl font-bold text-white"} uppercase tracking-[0.14em]`}
           style={{ fontFamily: "var(--font-lidya-serif)" }}
         >
           {en}
-        </h3>
-        {am && (
-          <p className="mt-2 text-lg sm:text-xl text-[#d4a843]" style={{ fontFamily: "'Noto Serif Ethiopic', serif" }}>
-            {am}
-          </p>
-        )}
+        </p>
       </div>
       <span className="flex-1 h-px bg-gradient-to-l from-transparent via-[#d4a843]/40 to-[#d4a843]/70" />
     </div>
@@ -262,15 +265,15 @@ export function MenuSection({
     <div className="flex items-center justify-center gap-3 sm:gap-4 mb-7 md:mb-9">
       <span className="w-8 sm:w-16 h-px bg-gradient-to-r from-transparent to-[#d4a843]/45" />
       <h4
-        className="text-center text-base sm:text-lg font-semibold tracking-[0.16em] uppercase text-[#e8dcc8]/90 leading-snug"
+        className="text-center text-base sm:text-lg font-semibold tracking-[0.16em] uppercase text-white leading-snug"
         style={{ fontFamily: "var(--font-lidya-serif)" }}
       >
-        {en}
         {am && am !== en && (
-          <span className="normal-case tracking-normal text-[#d4a843]/90" style={{ fontFamily: "'Noto Serif Ethiopic', serif" }}>
-            {" "}· {am}
+          <span className="normal-case tracking-normal" style={{ fontFamily: "'Noto Serif Ethiopic', serif" }}>
+            {am} ·{" "}
           </span>
         )}
+        <span className={am && am !== en ? "text-[#d4a843]" : undefined}>{en}</span>
       </h4>
       <span className="w-8 sm:w-16 h-px bg-gradient-to-l from-transparent to-[#d4a843]/45" />
     </div>
@@ -307,7 +310,7 @@ export function MenuSection({
                       ? "linear-gradient(135deg,#f5c842 0%,#d4a843 55%,#c8901f 100%)"
                       : "rgba(212,168,67,0.05)",
                     borderColor: activeTop === cat ? "#f5c842" : "rgba(212,168,67,0.28)",
-                    color: activeTop === cat ? "#1e1008" : "rgba(232,220,200,0.65)",
+                    color: activeTop === cat ? "#1e1008" : "rgba(250,245,238,0.88)",
                     fontWeight: activeTop === cat ? 700 : 500,
                     boxShadow: activeTop === cat ? "0 0 22px rgba(212,168,67,0.45)" : "none",
                   }}

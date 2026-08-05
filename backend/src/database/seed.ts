@@ -143,6 +143,7 @@ async function main() {
   const topLevelCategories = [
     { name: 'Food', nameAm: 'ምግብ', order: 0 },
     { name: 'Drinks', nameAm: 'መጠጦች', order: 1 },
+    { name: 'Extra', nameAm: 'ተጨማሪ', order: 2 },
   ];
 
   for (const cat of topLevelCategories) {
@@ -158,10 +159,12 @@ async function main() {
   const drinksId = categoryMap.get('Drinks')!;
 
   // Sub-categories nested under "Food".
+  // Lunch-and-dinner dishes follow the Ethiopian menu convention of splitting
+  // into non-fasting (የፍስክ) and fasting (የፆም).
   const foodSubCategories = [
     { name: 'Breakfast', nameAm: 'ቁርስ', order: 0 },
-    { name: 'Lunch and Dinner', nameAm: 'ምሳ እና እራት', order: 1 },
-    { name: 'Desserts', nameAm: 'ጣፋጮች', order: 2 },
+    { name: 'Non-Fasting', nameAm: 'የፍስክ', order: 1 },
+    { name: 'Fasting', nameAm: 'የፆም', order: 2 },
   ];
 
   for (const sub of foodSubCategories) {
@@ -175,9 +178,11 @@ async function main() {
 
   // Sub-categories nested under "Drinks".
   const drinkSubCategories = [
-    { name: 'Hot Drinks', nameAm: 'ትኩስ መጠጦች', order: 0 },
+    { name: 'Modern Drinks', nameAm: 'ዘመናዊ መጠጦች', order: 0 },
     { name: 'Soft Drinks', nameAm: 'ለስላሳ መጠጦች', order: 1 },
-    { name: 'Lidya Coffee', nameAm: 'ልዲያ ቡና', order: 2 },
+    { name: 'Lidya Yogurt', nameAm: 'ልዲያ እርጎ', order: 2 },
+    { name: 'Hot Drinks', nameAm: 'ትኩስ መጠጦች', order: 3 },
+    { name: 'Lidya Coffee', nameAm: 'ልዲያ ቡና', order: 4 },
   ];
 
   for (const sub of drinkSubCategories) {
@@ -192,7 +197,7 @@ async function main() {
   // Retire legacy categories from earlier seeds (soft-deleted so they drop out
   // of the API but existing data is preserved). Menu items are remapped below.
   await prisma.category.updateMany({
-    where: { name: { in: ['Traditional Mains', 'Coffee Ceremony', 'Vegetarian & Fasting'] } },
+    where: { name: { in: ['Traditional Mains', 'Coffee Ceremony', 'Vegetarian & Fasting', 'Desserts', 'Lunch and Dinner'] } },
     data: { deletedAt: new Date() },
   });
 
@@ -203,7 +208,7 @@ async function main() {
     {
       name: 'Kitfo',
       nameAm: 'ክትፎ',
-      cat: 'Lunch and Dinner',
+      cat: 'Non-Fasting',
       desc: 'Minced prime beef seasoned with mitmita and niter kibbeh, served raw, medium, or well done with ayib and gomen.',
       descAm: 'በሚጥሚጣና በንጥር ቅቤ የተቀመመ የተከተፈ የበሬ ስጋ፣ ጥሬ፣ ለብ ወይም ብስል ሆኖ ከአይብና ጎመን ጋር ይቀርባል።',
       price: '580 ETB',
@@ -212,7 +217,7 @@ async function main() {
     {
       name: 'Tibs Firfir',
       nameAm: 'ጥብስ ፍርፍር',
-      cat: 'Lunch and Dinner',
+      cat: 'Non-Fasting',
       desc: 'Pan-seared lamb tossed with torn injera, caramelized onions and berbere, served sizzling hot.',
       descAm: 'የተጠበሰ የበግ ስጋ ከተቆራረጠ እንጀራ፣ ከተጠበሰ ሽንኩርትና በርበሬ ጋር ተማስሎ፣ ትኩስ ሆኖ ይቀርባል።',
       price: '540 ETB',
@@ -221,7 +226,7 @@ async function main() {
     {
       name: 'Doro Wat',
       nameAm: 'ዶሮ ወጥ',
-      cat: 'Lunch and Dinner',
+      cat: 'Non-Fasting',
       desc: 'Slow-braised chicken drumsticks in rich red berbere sauce with hard-boiled eggs and clarified butter.',
       descAm: 'በበርበሬ ወጥ ቀስ ብሎ የበሰለ የዶሮ ስጋ ከተቀቀለ እንቁላልና ንጥር ቅቤ ጋር።',
       price: '510 ETB',
@@ -230,7 +235,7 @@ async function main() {
     {
       name: 'Shiro Beyaynetu',
       nameAm: 'ሽሮ በያይነቱ',
-      cat: 'Lunch and Dinner',
+      cat: 'Non-Fasting',
       desc: 'Full mesob spread of shiro, misir, tikil gomen and fosolia served on a bed of sour injera.',
       descAm: 'ሙሉ የመሶብ ድግስ — ሽሮ፣ ምስር፣ ጥቅል ጎመንና ፎሶሊያ በኮመጠጠ እንጀራ ላይ ይቀርባል።',
       price: '520 ETB',
@@ -257,7 +262,7 @@ async function main() {
     {
       name: 'Lidya Yogurt',
       nameAm: 'የልዲያ እርጎ',
-      cat: 'Desserts',
+      cat: 'Lidya Yogurt',
       desc: 'House-made fresh cultural yogurt, soothing and creamy.',
       descAm: 'በቤት ውስጥ የተሰራ ትኩስ ባህላዊ እርጎ፣ ለስላሳና ክሬማ።',
       price: '120 ETB',

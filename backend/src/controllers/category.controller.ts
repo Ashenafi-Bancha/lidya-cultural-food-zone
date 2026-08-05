@@ -23,9 +23,12 @@ export const getCategories = async (req: Request, res: Response, next: NextFunct
 
 export const createCategory = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { name, order } = req.body;
+    // Take every validated field. This previously destructured only name and
+    // order, silently dropping nameAm and parentId — so categories created via
+    // the API always landed at top level with no Amharic name.
+    const { name, nameAm, order, parentId } = req.body;
     const category = await prisma.category.create({
-      data: { name, order: order || 0 },
+      data: { name, nameAm: nameAm ?? null, order: order || 0, parentId: parentId ?? null },
     });
     res.status(201).json({ status: 'success', data: category });
   } catch (error) {
