@@ -162,9 +162,10 @@ async function main() {
   // Lunch-and-dinner dishes follow the Ethiopian menu convention of splitting
   // into non-fasting (የፍስክ) and fasting (የፆም).
   const foodSubCategories = [
-    { name: 'Breakfast', nameAm: 'ቁርስ', order: 0 },
-    { name: 'Non-Fasting', nameAm: 'የፍስክ', order: 1 },
-    { name: 'Fasting', nameAm: 'የፆም', order: 2 },
+    { name: 'Breakfast Non-Fasting', nameAm: 'የፍስክ ቁርስ', order: 0 },
+    { name: 'Breakfast Fasting', nameAm: 'የፆም ቁርስ', order: 1 },
+    { name: 'Lunch & Dinner Non-Fasting', nameAm: 'የፍስክ ምሳ እና እራት', order: 2 },
+    { name: 'Lunch & Dinner Fasting', nameAm: 'የፆም ምሳ እና እራት', order: 3 },
   ];
 
   for (const sub of foodSubCategories) {
@@ -197,7 +198,7 @@ async function main() {
   // Retire legacy categories from earlier seeds (soft-deleted so they drop out
   // of the API but existing data is preserved). Menu items are remapped below.
   await prisma.category.updateMany({
-    where: { name: { in: ['Traditional Mains', 'Coffee Ceremony', 'Vegetarian & Fasting', 'Desserts', 'Lunch and Dinner'] } },
+    where: { name: { in: ['Traditional Mains', 'Coffee Ceremony', 'Vegetarian & Fasting', 'Desserts', 'Lunch and Dinner', 'Breakfast', 'Non-Fasting', 'Fasting'] } },
     data: { deletedAt: new Date() },
   });
 
@@ -208,7 +209,7 @@ async function main() {
     {
       name: 'Kitfo',
       nameAm: 'ክትፎ',
-      cat: 'Non-Fasting',
+      cat: 'Lunch & Dinner Non-Fasting',
       desc: 'Minced prime beef seasoned with mitmita and niter kibbeh, served raw, medium, or well done with ayib and gomen.',
       descAm: 'በሚጥሚጣና በንጥር ቅቤ የተቀመመ የተከተፈ የበሬ ስጋ፣ ጥሬ፣ ለብ ወይም ብስል ሆኖ ከአይብና ጎመን ጋር ይቀርባል።',
       price: '580 ETB',
@@ -217,7 +218,7 @@ async function main() {
     {
       name: 'Tibs Firfir',
       nameAm: 'ጥብስ ፍርፍር',
-      cat: 'Non-Fasting',
+      cat: 'Lunch & Dinner Non-Fasting',
       desc: 'Pan-seared lamb tossed with torn injera, caramelized onions and berbere, served sizzling hot.',
       descAm: 'የተጠበሰ የበግ ስጋ ከተቆራረጠ እንጀራ፣ ከተጠበሰ ሽንኩርትና በርበሬ ጋር ተማስሎ፣ ትኩስ ሆኖ ይቀርባል።',
       price: '540 ETB',
@@ -226,7 +227,7 @@ async function main() {
     {
       name: 'Doro Wat',
       nameAm: 'ዶሮ ወጥ',
-      cat: 'Non-Fasting',
+      cat: 'Lunch & Dinner Non-Fasting',
       desc: 'Slow-braised chicken drumsticks in rich red berbere sauce with hard-boiled eggs and clarified butter.',
       descAm: 'በበርበሬ ወጥ ቀስ ብሎ የበሰለ የዶሮ ስጋ ከተቀቀለ እንቁላልና ንጥር ቅቤ ጋር።',
       price: '510 ETB',
@@ -235,7 +236,7 @@ async function main() {
     {
       name: 'Shiro Beyaynetu',
       nameAm: 'ሽሮ በያይነቱ',
-      cat: 'Non-Fasting',
+      cat: 'Lunch & Dinner Non-Fasting',
       desc: 'Full mesob spread of shiro, misir, tikil gomen and fosolia served on a bed of sour injera.',
       descAm: 'ሙሉ የመሶብ ድግስ — ሽሮ፣ ምስር፣ ጥቅል ጎመንና ፎሶሊያ በኮመጠጠ እንጀራ ላይ ይቀርባል።',
       price: '520 ETB',

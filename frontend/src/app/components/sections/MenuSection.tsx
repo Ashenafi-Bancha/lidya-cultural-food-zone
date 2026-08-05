@@ -303,7 +303,7 @@ export function MenuSection({
                 <motion.button
                   key={cat}
                   onClick={() => selectTop(cat)}
-                  className="px-6 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase border transition-all duration-300"
+                  className="px-4 py-2 min-w-[92px] rounded-full text-[9px] tracking-[0.14em] uppercase border transition-all duration-300"
                   style={{
                     fontFamily: "var(--font-lidya-sans)",
                     background: activeTop === cat
@@ -331,7 +331,7 @@ export function MenuSection({
               <div className="flex flex-wrap justify-center gap-2 mt-4">
                 <motion.button
                   onClick={() => setActiveSub(null)}
-                  className="px-3 py-1.5 text-[9px] tracking-[0.15em] uppercase rounded-full border transition-colors duration-200"
+                  className="px-2.5 py-1.5 min-w-[84px] text-[8px] tracking-[0.12em] uppercase rounded-full border transition-colors duration-200"
                   style={{
                     fontFamily: "var(--font-lidya-sans)",
                     background: activeSub === null ? "#d4a843" : "transparent",
@@ -349,7 +349,7 @@ export function MenuSection({
                   <motion.button
                     key={sub.id}
                     onClick={() => setActiveSub(sub.name)}
-                    className="px-3 py-1.5 text-[9px] tracking-[0.15em] uppercase rounded-full border transition-colors duration-200"
+                    className="px-2.5 py-1.5 min-w-[84px] text-[8px] tracking-[0.12em] uppercase rounded-full border transition-colors duration-200"
                     style={{
                       fontFamily: "var(--font-lidya-sans)",
                       background: activeSub === sub.name ? "#d4a843" : "transparent",
