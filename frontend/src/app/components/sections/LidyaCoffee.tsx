@@ -17,14 +17,14 @@ export function LidyaCoffee() {
         <Reveal className="mb-12 md:mb-16 text-center">
           <p className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("coffee.eyebrow")}</p>
           <div className="flex flex-col items-center gap-1 mb-4">
-            <div className="text-5xl sm:text-6xl md:text-7xl font-bold leading-none text-[#f5efe6]" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+            <div className="text-5xl sm:text-6xl md:text-7xl font-bold leading-none text-white" style={{ fontFamily: "var(--font-lidya-serif)" }}>
               Lidya <em className="text-[#d4a843]">Coffee</em>
             </div>
             <div className="text-2xl sm:text-3xl md:text-4xl text-[#f5efe6]/30 italic" style={{ fontFamily: "var(--font-lidya-serif)" }}>
               ሊዲያ ቡና
             </div>
           </div>
-          <p className="text-base md:text-lg max-w-xl mx-auto leading-relaxed text-[#e8dcc8]/55" style={{ fontFamily: "var(--font-lidya-body)" }}>
+          <p className="text-base md:text-lg max-w-xl mx-auto leading-relaxed text-[#f5efe6]/80" style={{ fontFamily: "var(--font-lidya-body)" }}>
             {t("coffee.intro")}
           </p>
         </Reveal>
@@ -41,18 +41,18 @@ export function LidyaCoffee() {
               <div className="absolute inset-0 bg-gradient-to-t from-[#0e0703] via-transparent to-transparent rounded-2xl opacity-80" />
             </div>
             <div className="order-1 lg:order-2">
-              <h4 className="text-[#f5efe6] text-3xl md:text-4xl font-bold mb-10 text-left" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+              <h4 className="text-white text-3xl md:text-4xl font-bold mb-10 text-left" style={{ fontFamily: "var(--font-lidya-serif)" }}>
                 {t("coffee.offeringsPre")} <em className="text-[#d4a843]">{t("coffee.offeringsEm")}</em>
               </h4>
               <div className="grid grid-cols-1 gap-y-8">
                 {OFFERINGS.map((o, i) => (
                   <div key={o.name} className="group cursor-pointer">
                     <div className="flex justify-between items-end gap-4 mb-2">
-                      <h5 className="text-[#f5efe6] font-medium text-lg md:text-xl transition-colors duration-300 group-hover:text-[#d4a843]" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t(`coffee.offerings.${i}.name`)}</h5>
+                      <h5 className="text-white font-medium text-lg md:text-xl transition-colors duration-300 group-hover:text-[#d4a843]" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t(`coffee.offerings.${i}.name`)}</h5>
                       <div className="flex-1 border-b border-dotted border-[#d4a843]/20 mb-2 transition-colors duration-300 group-hover:border-[#d4a843]/50" />
                       <span className="text-[#d4a843] font-bold text-base md:text-lg shrink-0" style={{ fontFamily: "var(--font-lidya-sans)" }}>{o.price}</span>
                     </div>
-                    <p className="text-sm md:text-base text-[#e8dcc8]/50 leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>{t(`coffee.offerings.${i}.desc`)}</p>
+                    <p className="text-sm md:text-base text-[#f5efe6]/75 leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>{t(`coffee.offerings.${i}.desc`)}</p>
                   </div>
                 ))}
               </div>

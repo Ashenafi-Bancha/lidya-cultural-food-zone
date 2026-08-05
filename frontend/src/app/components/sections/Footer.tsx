@@ -85,7 +85,7 @@ export function Footer() {
   const [subscribed, setSubscribed] = useState(false);
 
   return (
-    <footer className="bg-[#0e0703] pt-12 md:pt-16 pb-8 text-[#e8dcc8]/65">
+    <footer className="bg-[#0e0703] pt-12 md:pt-16 pb-8 text-[#f5efe6]/85">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-10 border-b border-[#e8dcc8]/7">
 
@@ -96,7 +96,7 @@ export function Footer() {
                 <ImageWithFallback src={logoImg} alt="Lidya Cultural Food Zone logo" className="w-full h-full object-cover" />
               </div>
               <div className="flex flex-col leading-none gap-[3px]">
-                <span className="text-xl font-bold tracking-[0.04em] text-[#f5efe6]" style={{ fontFamily: "var(--font-lidya-serif)" }}>Lidya Cultural</span>
+                <span className="text-xl font-bold tracking-[0.04em] text-white" style={{ fontFamily: "var(--font-lidya-serif)" }}>Lidya Cultural</span>
                 <span
                   className="text-[11px] tracking-[0.28em] uppercase font-bold"
                   style={{
@@ -112,7 +112,7 @@ export function Footer() {
                 </span>
               </div>
             </div>
-            <p className="text-sm leading-relaxed mt-4 mb-5 text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
+            <p className="text-sm leading-relaxed mt-4 mb-5 text-[#f5efe6]/75" style={{ fontFamily: "var(--font-lidya-body)" }}>
               {t("footer.brandTagline")}
             </p>
             {/* Desktop: Follow Us stays under the brand tagline */}
@@ -123,7 +123,7 @@ export function Footer() {
 
           {/* Navigate */}
           <div>
-            <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.navigate")}</h4>
+            <h4 className="text-white text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.navigate")}</h4>
             <ul className="space-y-3">
               {NAV_LINKS.map((link) => (
                 <li key={link.id}>
@@ -135,7 +135,7 @@ export function Footer() {
 
           {/* Branches */}
           <div>
-            <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.ourBranches")}</h4>
+            <h4 className="text-white text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.ourBranches")}</h4>
             <div className="space-y-5 text-sm" style={{ fontFamily: "var(--font-lidya-sans)" }}>
               {[
                 { city: "Wolaita Sodo", addr: "Green Land Area, Wolaita Sodo", hrs: "7:00 AM – 11:00 PM" },
@@ -143,7 +143,7 @@ export function Footer() {
               ].map(({ city, addr, hrs }) => (
                 <div key={city}>
                   <p className="text-[#d4a843] font-medium mb-1">{city}</p>
-                  <p className="text-[#e8dcc8]/55">{addr}</p>
+                  <p className="text-[#f5efe6]/80">{addr}</p>
                   <p className="mt-1 text-[#e8dcc8]/45">{hrs}</p>
                 </div>
               ))}
@@ -152,8 +152,8 @@ export function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-[#f5efe6] text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.stayConnected")}</h4>
-            <p className="text-sm leading-relaxed mb-5 text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
+            <h4 className="text-white text-[9px] tracking-[0.3em] uppercase mb-5 font-medium" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("footer.stayConnected")}</h4>
+            <p className="text-sm leading-relaxed mb-5 text-[#f5efe6]/75" style={{ fontFamily: "var(--font-lidya-body)" }}>
               {t("footer.newsletterBody")}
             </p>
             {subscribed ? (
@@ -165,7 +165,7 @@ export function Footer() {
                   placeholder={t("footer.emailPlaceholder")}
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  className="min-w-0 flex-1 border px-3 py-3 text-xs focus:outline-none transition-colors text-[#f5efe6]"
+                  className="min-w-0 flex-1 border px-3 py-3 text-xs focus:outline-none transition-colors text-white"
                   style={{ fontFamily: "var(--font-lidya-sans)", background: "#1e1008", borderColor: "rgba(232,220,200,0.12)" }}
                 />
                 <motion.button
@@ -181,11 +181,11 @@ export function Footer() {
               </form>
             )}
             <div className="mt-5 space-y-2 text-sm" style={{ fontFamily: "var(--font-lidya-sans)" }}>
-              <div className="flex items-center gap-2 text-[#e8dcc8]/50">
+              <div className="flex items-center gap-2 text-[#f5efe6]/75">
                 <span className="text-[#d4a843]"><Icon.Mail /></span>
                 <a href="mailto:letusletalemma@gmail.com" className="hover:text-[#d4a843] transition-colors">letusletalemma@gmail.com</a>
               </div>
-              <div className="flex items-center gap-2 text-[#e8dcc8]/50">
+              <div className="flex items-center gap-2 text-[#f5efe6]/75">
                 <span className="text-[#d4a843]"><Icon.Phone /></span>
                 <a href="tel:+251920994499" className="hover:text-[#d4a843] transition-colors">0920994499</a>
               </div>

@@ -175,7 +175,7 @@ export function Gallery() {
             {t("gallery.eyebrow")}
           </p>
           <h2
-            className="text-4xl md:text-5xl font-bold text-[#f5efe6] leading-tight"
+            className="text-4xl md:text-5xl font-bold text-white leading-tight"
             style={{ fontFamily: "var(--font-lidya-serif)" }}
           >
             {t("gallery.titlePre")} <em className="text-[#d4a843]">{t("gallery.titleEm")}</em>

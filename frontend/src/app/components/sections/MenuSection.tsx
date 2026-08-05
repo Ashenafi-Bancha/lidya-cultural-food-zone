@@ -284,7 +284,7 @@ export function MenuSection({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
         <Reveal className={`mb-12 text-center ${hideHeading ? "hidden" : ""}`}>
           <p className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("menu.eyebrow")}</p>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#f5efe6] leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>
             {t("menu.titlePre")} <em className="text-[#d4a843]">{t("menu.titleEm")}</em>
           </h2>
         </Reveal>
@@ -314,7 +314,7 @@ export function MenuSection({
                     fontWeight: activeTop === cat ? 700 : 500,
                     boxShadow: activeTop === cat ? "0 0 22px rgba(212,168,67,0.45)" : "none",
                   }}
-                  whileHover={activeTop === cat ? {} : { borderColor: "rgba(212,168,67,0.7)", color: "#f5efe6" }}
+                  whileHover={activeTop === cat ? {} : { borderColor: "rgba(212,168,67,0.7)", color: "#ffffff" }}
                   whileTap={{ scale: 0.95 }}
                 >
                   {cat === "All" ? (
@@ -381,7 +381,7 @@ export function MenuSection({
               ))}
             </div>
           ) : items.length === 0 ? (
-            <div className="col-span-full py-16 text-center text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
+            <div className="col-span-full py-16 text-center text-[#f5efe6]/75" style={{ fontFamily: "var(--font-lidya-body)" }}>
               {isErrorMenu ? t("menu.emptyError") : t("menu.emptyComingSoon")}
             </div>
           ) : preview ? (
@@ -389,7 +389,7 @@ export function MenuSection({
               {filtered.map((item, i) => renderDish(item, i))}
             </div>
           ) : visibleSections.length === 0 ? (
-            <div className="py-10 text-center text-[#e8dcc8]/50" style={{ fontFamily: "var(--font-lidya-body)" }}>
+            <div className="py-10 text-center text-[#f5efe6]/75" style={{ fontFamily: "var(--font-lidya-body)" }}>
               {t("menu.noneInCategory")}
             </div>
           ) : (

@@ -80,7 +80,7 @@ function Avatar({ img, alt, initials }: { img: string | null; alt: string; initi
 
 export function AboutUs() {
   const { t, lang } = useLang();
-  const founderNames = lang === "am" ? ["ሌታ ለማ", "ልዲያ ለማ"] : ["Leta Lemma", "Lidya Lemma"];
+  const founderNames = lang === "am" ? ["ሌታ ለማ", "ሊዲያ ለማ"] : ["Leta Lemma", "Lidya Lemma"];
 
   return (
     <section id="about-us" className="bg-[#f5efe6] py-16 md:py-24 lg:py-32 overflow-hidden">

@@ -50,7 +50,7 @@ export function Reservation() {
     fontFamily: "var(--font-lidya-sans)",
     background: "rgba(30,16,8,0.35)",
     borderColor: "rgba(232,220,200,0.15)",
-    color: "#f5efe6",
+    color: "#ffffff",
     backdropFilter: "blur(8px)",
   };
   const iconCls = "absolute left-4 top-1/2 -translate-y-1/2 text-[#d4a843]/70 group-focus-within:text-[#d4a843] transition-colors w-4 h-4";
@@ -73,21 +73,21 @@ export function Reservation() {
           {/* Left info */}
           <Reveal className="text-center lg:text-left">
             <p className="text-[#d4a843] text-[10.5px] tracking-[0.4em] uppercase mb-4 font-semibold" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("reservation.eyebrow")}</p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-[#f5efe6] leading-tight mb-6" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6" style={{ fontFamily: "var(--font-lidya-serif)" }}>
               {t("reservation.titlePre")}<br /><em className="text-[#d4a843] not-italic font-medium border-b border-[#d4a843]/30 pb-1">{t("reservation.titleEm")}</em>
             </h2>
-            <p className="text-lg leading-relaxed max-w-md mb-12 text-[#e8dcc8]/70 mx-auto lg:mx-0" style={{ fontFamily: "var(--font-lidya-body)" }}>
+            <p className="text-lg leading-relaxed max-w-md mb-12 text-[#f5efe6]/90 mx-auto lg:mx-0" style={{ fontFamily: "var(--font-lidya-body)" }}>
               {t("reservation.body")}
             </p>
             
             <div className="space-y-5 bg-[rgba(30,16,8,0.3)] p-6 rounded-lg border border-[#e8dcc8]/10 inline-block text-left w-full max-w-md">
-              <h4 className="text-[#f5efe6] font-semibold text-sm tracking-wider uppercase mb-2" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("reservation.hoursTitle")}</h4>
+              <h4 className="text-white font-semibold text-sm tracking-wider uppercase mb-2" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("reservation.hoursTitle")}</h4>
               {[
                 { I: Icon.Clock, t: "Wolaita Sodo: 7:00 AM – 11:00 PM", href: null },
                 { I: Icon.Clock, t: "Addis Ababa: 8:00 AM – 11:30 PM",  href: null },
                 { I: Icon.Phone, t: "Direct Line: 0920994499",                              href: "tel:+251920994499" },
               ].map(({ I, t, href }) => (
-                <div key={t} className="flex items-center gap-3 text-[15px] text-[#e8dcc8]/70" style={{ fontFamily: "var(--font-lidya-sans)" }}>
+                <div key={t} className="flex items-center gap-3 text-[15px] text-[#f5efe6]/90" style={{ fontFamily: "var(--font-lidya-sans)" }}>
                   <span className="text-[#d4a843] w-5"><I /></span>
                   {href
                     ? <a href={href} className="hover:text-[#d4a843] transition-colors">{t}</a>
@@ -113,8 +113,8 @@ export function Reservation() {
                 >
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#d4a843] to-transparent opacity-50"></div>
                   <CheckCircle2 className="w-16 h-16 text-[#d4a843] mx-auto mb-6" strokeWidth={1.5} />
-                  <h3 className="text-[#f5efe6] text-3xl mb-3" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("reservation.successTitle")}</h3>
-                  <p className="text-[#e8dcc8]/70 leading-relaxed max-w-[280px] mx-auto" style={{ fontFamily: "var(--font-lidya-body)" }}>
+                  <h3 className="text-white text-3xl mb-3" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("reservation.successTitle")}</h3>
+                  <p className="text-[#f5efe6]/90 leading-relaxed max-w-[280px] mx-auto" style={{ fontFamily: "var(--font-lidya-body)" }}>
                     {t("reservation.successBody")}
                   </p>
                 </motion.div>
@@ -138,7 +138,7 @@ export function Reservation() {
                 >
                   <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#d4a843]/40 to-transparent"></div>
                   
-                  <h3 className="text-2xl text-[#f5efe6] mb-2 text-center" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("reservation.formTitle")}</h3>
+                  <h3 className="text-2xl text-white mb-2 text-center" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("reservation.formTitle")}</h3>
                   
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div className={inputContainerCls}>

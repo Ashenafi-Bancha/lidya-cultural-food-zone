@@ -339,7 +339,7 @@ export function Hero() {
 
           {/* Headline */}
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-[#f5efe6] leading-[1.06] mb-4 md:mb-6"
+            className="text-4xl sm:text-5xl md:text-6xl xl:text-7xl font-bold text-white leading-[1.06] mb-4 md:mb-6"
             style={{ fontFamily: "var(--font-lidya-serif)", textShadow: "0 2px 14px rgba(0,0,0,0.55)" }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -352,7 +352,7 @@ export function Hero() {
 
           {/* Body */}
           <motion.p
-            className="text-[#e8dcc8]/70 text-base md:text-lg leading-relaxed max-w-md mb-4"
+            className="text-[#f5efe6]/90 text-base md:text-lg leading-relaxed max-w-md mb-4"
             style={{ fontFamily: "var(--font-lidya-body)" }}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -421,7 +421,7 @@ export function Hero() {
               />
               {/* inner face */}
               <span
-                className="relative z-10 flex items-center justify-center gap-2 whitespace-nowrap rounded-[10px] px-8 sm:px-6 py-4 sm:py-3.5 text-[12px] sm:text-[11px] tracking-[0.14em] uppercase text-[#e8dcc8]/85"
+                className="relative z-10 flex items-center justify-center gap-2 whitespace-nowrap rounded-[10px] px-8 sm:px-6 py-4 sm:py-3.5 text-[12px] sm:text-[11px] tracking-[0.14em] uppercase text-[#f5efe6]/95"
                 style={{ fontFamily: "var(--font-lidya-sans)", background: "#1e1008" }}
               >
                 <Icon.Phone /> {t("common.callUsNow")}

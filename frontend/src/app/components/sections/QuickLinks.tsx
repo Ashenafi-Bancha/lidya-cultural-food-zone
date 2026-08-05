@@ -42,7 +42,7 @@ export function QuickLinks() {
             {t("quickLinks.eyebrow")}
           </p>
           <h2
-            className="text-2xl md:text-3xl font-bold text-[#f5efe6] leading-tight"
+            className="text-2xl md:text-3xl font-bold text-white leading-tight"
             style={{ fontFamily: "var(--font-lidya-serif)" }}
           >
             {t("quickLinks.title")}
@@ -104,7 +104,7 @@ export function QuickLinks() {
                   </span>
 
                   <span className="relative z-10 flex-1 min-w-0">
-                    <span className="block text-[#f5efe6] text-[13px] sm:text-sm font-semibold leading-snug transition-colors duration-300 group-hover/tile:text-[#ffe488]">
+                    <span className="block text-white text-[13px] sm:text-sm font-semibold leading-snug transition-colors duration-300 group-hover/tile:text-[#ffe488]">
                       {t(link.labelKey ?? `nav.${link.id}`)}
                     </span>
                   </span>

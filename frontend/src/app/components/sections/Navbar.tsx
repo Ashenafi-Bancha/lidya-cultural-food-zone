@@ -29,14 +29,14 @@ export function Navbar({ onOpenChange }: NavbarProps) {
       >
         <button
           onClick={() => setLang("en")}
-          className={`${size} ${pad} rounded-none leading-none transition-colors ${lang === "en" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#e8dcc8]/70 hover:text-[#d4a843]"}`}
+          className={`${size} ${pad} rounded-none leading-none transition-colors ${lang === "en" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#f5efe6]/90 hover:text-[#d4a843]"}`}
           aria-pressed={lang === "en"}
         >
           EN
         </button>
         <button
           onClick={() => setLang("am")}
-          className={`${size} ${pad} rounded-none leading-none transition-colors ${lang === "am" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#e8dcc8]/70 hover:text-[#d4a843]"}`}
+          className={`${size} ${pad} rounded-none leading-none transition-colors ${lang === "am" ? "bg-[#d4a843] text-[#1a0e04] font-bold" : "text-[#f5efe6]/90 hover:text-[#d4a843]"}`}
           aria-pressed={lang === "am"}
         >
           አማ
@@ -118,7 +118,7 @@ export function Navbar({ onOpenChange }: NavbarProps) {
               links + call/facebook fit; shown on mobile and large desktops. */}
           <div className="flex flex-col leading-none gap-[3px] lg:hidden xl:flex">
             <span
-              className="text-[18px] font-bold tracking-[0.04em] text-[#f5efe6]"
+              className="text-[18px] font-bold tracking-[0.04em] text-white"
               style={{ fontFamily: "var(--font-lidya-serif)" }}
             >
               {t("common.brandLine1")}
@@ -145,7 +145,7 @@ export function Navbar({ onOpenChange }: NavbarProps) {
             <li key={link.id}>
               <button
                 onClick={() => navGo(link)}
-                className="text-[9px] xl:text-[11px] tracking-widest uppercase text-[#e8dcc8]/70 hover:text-[#d4a843] transition-colors duration-200 whitespace-nowrap"
+                className="text-[9px] xl:text-[11px] tracking-widest uppercase text-[#f5efe6]/90 hover:text-[#d4a843] transition-colors duration-200 whitespace-nowrap"
                 style={{ fontFamily: "var(--font-lidya-sans)" }}
               >
                 {t(`nav.${link.id}`)}
@@ -165,7 +165,7 @@ export function Navbar({ onOpenChange }: NavbarProps) {
 
         {/* Mobile: hamburger */}
         <button
-          className="lg:hidden text-[#f5efe6] p-2 -mr-2 text-[26px] shrink-0"
+          className="lg:hidden text-white p-2 -mr-2 text-[26px] shrink-0"
           onClick={() => toggleMenu(!open)}
           aria-label="Menu"
         >
@@ -189,7 +189,7 @@ export function Navbar({ onOpenChange }: NavbarProps) {
                 <li key={link.id}>
                   <button
                     onClick={() => { toggleMenu(false); navGo(link); }}
-                    className="w-full text-left py-3 text-base text-[#e8dcc8]/75 hover:text-[#d4a843] transition-colors"
+                    className="w-full text-left py-3 text-base text-[#f5efe6]/90 hover:text-[#d4a843] transition-colors"
                     style={{ fontFamily: "var(--font-lidya-sans)" }}
                   >
                     {t(`nav.${link.id}`)}

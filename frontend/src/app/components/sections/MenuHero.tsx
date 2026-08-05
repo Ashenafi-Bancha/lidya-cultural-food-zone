@@ -40,7 +40,7 @@ export function MenuHero() {
         </motion.p>
 
         <motion.h1
-          className="text-3xl sm:text-4xl md:text-5xl font-bold text-[#f5efe6] leading-[1.1]"
+          className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-[1.1]"
           style={{ fontFamily: "var(--font-lidya-serif)", textShadow: "0 3px 18px rgba(0,0,0,0.6)" }}
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}

@@ -51,8 +51,8 @@ export function Testimonials() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-10">
         <Reveal className="text-center mb-14">
           <p className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("testimonials.eyebrow")}</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#f5efe6] leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("testimonials.title")}</h2>
-          <p className="text-base md:text-lg text-[#e8dcc8]/60 max-w-2xl mx-auto mt-5 leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>{t("testimonials.subtitle")}</p>
+          <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("testimonials.title")}</h2>
+          <p className="text-base md:text-lg text-[#f5efe6]/80 max-w-2xl mx-auto mt-5 leading-relaxed" style={{ fontFamily: "var(--font-lidya-body)" }}>{t("testimonials.subtitle")}</p>
         </Reveal>
 
         <div className="min-h-[240px] flex items-center justify-center">
@@ -94,7 +94,7 @@ export function Testimonials() {
                     </div>
                   )}
                   <div className="text-left">
-                    <p className="text-[#f5efe6] font-medium text-sm" style={{ fontFamily: "var(--font-lidya-sans)" }}>{current.name}</p>
+                    <p className="text-white font-medium text-sm" style={{ fontFamily: "var(--font-lidya-sans)" }}>{current.name}</p>
                     {tf(current, "role") && (
                       <p className="text-xs text-[#e8dcc8]/45" style={{ fontFamily: "var(--font-lidya-sans)" }}>{tf(current, "role")}</p>
                     )}

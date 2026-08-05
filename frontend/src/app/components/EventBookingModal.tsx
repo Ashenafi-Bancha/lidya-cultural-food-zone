@@ -69,7 +69,7 @@ export function EventBookingModal({ open, onClose, initialService = "OTHER" }: P
     fontFamily: "var(--font-lidya-sans)",
     background: "rgba(30,16,8,0.55)",
     borderColor: "rgba(232,220,200,0.16)",
-    color: "#f5efe6",
+    color: "#ffffff",
   };
   const labelCls = "block text-[10px] tracking-[0.2em] uppercase text-[#d4a843]/80 mb-1.5";
 
@@ -96,7 +96,7 @@ export function EventBookingModal({ open, onClose, initialService = "OTHER" }: P
             <button
               onClick={onClose}
               aria-label="Close"
-              className="absolute top-4 right-4 text-[#e8dcc8]/60 hover:text-white transition-colors"
+              className="absolute top-4 right-4 text-[#f5efe6]/80 hover:text-white transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
@@ -104,10 +104,10 @@ export function EventBookingModal({ open, onClose, initialService = "OTHER" }: P
             {submitted ? (
               <div className="text-center py-8">
                 <CheckCircle2 className="w-14 h-14 text-[#d4a843] mx-auto mb-5" strokeWidth={1.5} />
-                <h3 className="text-2xl text-[#f5efe6] mb-3" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+                <h3 className="text-2xl text-white mb-3" style={{ fontFamily: "var(--font-lidya-serif)" }}>
                   {t("booking.successTitle")}
                 </h3>
-                <p className="text-[#e8dcc8]/70 leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "var(--font-lidya-body)" }}>
+                <p className="text-[#f5efe6]/90 leading-relaxed max-w-sm mx-auto" style={{ fontFamily: "var(--font-lidya-body)" }}>
                   {t("booking.successBody")}
                 </p>
                 <button
@@ -121,8 +121,8 @@ export function EventBookingModal({ open, onClose, initialService = "OTHER" }: P
             ) : (
               <form onSubmit={(e) => { e.preventDefault(); mutation.mutate(); }} className="flex flex-col gap-4">
                 <div className="mb-1">
-                  <h3 className="text-2xl text-[#f5efe6]" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("booking.title")}</h3>
-                  <p className="text-sm text-[#e8dcc8]/55 mt-1" style={{ fontFamily: "var(--font-lidya-body)" }}>{t("booking.subtitle")}</p>
+                  <h3 className="text-2xl text-white" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t("booking.title")}</h3>
+                  <p className="text-sm text-[#f5efe6]/80 mt-1" style={{ fontFamily: "var(--font-lidya-body)" }}>{t("booking.subtitle")}</p>
                 </div>
 
                 <div>

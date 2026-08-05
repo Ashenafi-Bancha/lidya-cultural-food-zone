@@ -93,10 +93,10 @@ export function Services({ preview = false }: { preview?: boolean } = {}) {
 
         <Reveal className="mb-12 md:mb-16 text-center">
           <p className="text-[#d4a843] text-[10px] tracking-[0.38em] uppercase mb-3" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("services.eyebrow")}</p>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#f5efe6] leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+          <h2 className="text-4xl md:text-5xl font-bold text-white leading-tight" style={{ fontFamily: "var(--font-lidya-serif)" }}>
             {t("services.titlePre")} <em className="text-[#d4a843]">{t("services.titleEm")}</em>
           </h2>
-          <p className="text-base md:text-lg max-w-xl mx-auto mt-5 leading-relaxed text-[#e8dcc8]/52" style={{ fontFamily: "var(--font-lidya-body)" }}>
+          <p className="text-base md:text-lg max-w-xl mx-auto mt-5 leading-relaxed text-[#f5efe6]/78" style={{ fontFamily: "var(--font-lidya-body)" }}>
             {t("services.intro")}
           </p>
         </Reveal>
@@ -131,7 +131,7 @@ export function Services({ preview = false }: { preview?: boolean } = {}) {
                 </div>
                 <ul className="flex flex-col gap-3 flex-1 mb-8">
                   {plan.featureKeys.map(fk => (
-                    <li key={fk} className="flex items-start gap-3 text-sm text-[#e8dcc8]/65" style={{ fontFamily: "var(--font-lidya-sans)" }}>
+                    <li key={fk} className="flex items-start gap-3 text-sm text-[#f5efe6]/85" style={{ fontFamily: "var(--font-lidya-sans)" }}>
                       <span className="mt-1 shrink-0 w-3.5 h-3.5 rounded-full border flex items-center justify-center" style={{ borderColor: plan.color }}>
                         <span className="w-1.5 h-1.5 rounded-full" style={{ background: plan.color }} />
                       </span>
@@ -162,7 +162,7 @@ export function Services({ preview = false }: { preview?: boolean } = {}) {
         {/* Events */}
         <Reveal className="mb-8 md:mb-10 text-center">
           <p className="text-[#c25e2a] text-[10px] tracking-[0.38em] uppercase mb-2" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("services.eventsEyebrow")}</p>
-          <h3 className="text-3xl md:text-4xl font-bold text-[#f5efe6]" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+          <h3 className="text-3xl md:text-4xl font-bold text-white" style={{ fontFamily: "var(--font-lidya-serif)" }}>
             {t("services.eventsTitlePre")} <em className="text-[#d4a843]">{t("services.eventsTitleEm")}</em>
           </h3>
         </Reveal>
@@ -201,10 +201,10 @@ export function Services({ preview = false }: { preview?: boolean } = {}) {
                   <span className="inline-flex items-center gap-2 self-start text-[10px] tracking-[0.28em] uppercase px-3 py-1 mb-4 border text-[#f5e6b8]" style={{ fontFamily: "var(--font-lidya-sans)", borderColor: "rgba(212,168,67,0.5)", background: "rgba(212,168,67,0.08)" }}>
                     ★ {t("services.flagshipBadge")}
                   </span>
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-[#f5efe6] leading-tight mb-4 group-hover/ev:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white leading-tight mb-4 group-hover/ev:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-serif)" }}>
                     {t(f.titleKey)}
                   </h3>
-                  <p className="text-sm sm:text-base leading-relaxed text-[#e8dcc8]/60 mb-6 max-w-xl" style={{ fontFamily: "var(--font-lidya-body)" }}>
+                  <p className="text-sm sm:text-base leading-relaxed text-[#f5efe6]/80 mb-6 max-w-xl" style={{ fontFamily: "var(--font-lidya-body)" }}>
                     {t(f.descKey)}
                   </p>
                   <span className="inline-block text-[11px] tracking-[0.22em] uppercase text-[#d4a843]" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("common.makeReservation")} →</span>
@@ -239,8 +239,8 @@ export function Services({ preview = false }: { preview?: boolean } = {}) {
                     <div className="absolute inset-0 bg-gradient-to-t from-[#160b04] via-transparent to-transparent pointer-events-none" />
                   </div>
                   <div className="p-6 flex flex-col flex-1">
-                    <h4 className="text-[#f5efe6] font-semibold text-lg mb-2 group-hover/ev:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t(ev.titleKey)}</h4>
-                    <p className="text-sm leading-relaxed text-[#e8dcc8]/50 flex-1" style={{ fontFamily: "var(--font-lidya-body)" }}>{t(ev.descKey)}</p>
+                    <h4 className="text-white font-semibold text-lg mb-2 group-hover/ev:text-[#d4a843] transition-colors" style={{ fontFamily: "var(--font-lidya-serif)" }}>{t(ev.titleKey)}</h4>
+                    <p className="text-sm leading-relaxed text-[#f5efe6]/75 flex-1" style={{ fontFamily: "var(--font-lidya-body)" }}>{t(ev.descKey)}</p>
                     <span className="inline-block mt-4 text-[10px] tracking-[0.2em] uppercase text-[#d4a843]/70" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("common.makeReservation")} →</span>
                   </div>
                 </motion.button>
@@ -282,7 +282,7 @@ export function Services({ preview = false }: { preview?: boolean } = {}) {
           >
             <div className="text-center sm:text-left">
               <p className="text-[#d4a843] text-[10px] tracking-[0.3em] uppercase mb-2" style={{ fontFamily: "var(--font-lidya-sans)" }}>{t("services.ctaEyebrow")}</p>
-              <p className="text-[#f5efe6] text-xl sm:text-2xl font-bold leading-snug" style={{ fontFamily: "var(--font-lidya-serif)" }}>
+              <p className="text-white text-xl sm:text-2xl font-bold leading-snug" style={{ fontFamily: "var(--font-lidya-serif)" }}>
                 {t("services.ctaTitle")}
               </p>
               <p className="text-sm mt-2 text-[#e8dcc8]/46" style={{ fontFamily: "var(--font-lidya-body)" }}>

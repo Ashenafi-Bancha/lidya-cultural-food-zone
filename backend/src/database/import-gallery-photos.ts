@@ -31,7 +31,7 @@ const ITEMS: Item[] = [
     title: 'A Welcome in Woven Colours',
     titleAm: 'በሽመና ቀለማት የታጀበ አቀባበል',
     description: 'Guests draped in traditional woven scarves gather at the entrance, roses in hand — the Lidya welcome begins before the first bite.',
-    descriptionAm: 'እንግዶች ባህላዊ የሽመና ሻርፕ ለብሰው በመግቢያው ላይ ተሰብስበዋል — የልዲያ አቀባበል ከመጀመሪያው ጉርሻ በፊት ይጀምራል።',
+    descriptionAm: 'እንግዶች ባህላዊ የሽመና ሻርፕ ለብሰው በመግቢያው ላይ ተሰብስበዋል — የሊዲያ አቀባበል ከመጀመሪያው ጉርሻ በፊት ይጀምራል።',
     alt: 'Guests wearing traditional woven scarves welcomed at the entrance of Lidya',
   },
   {
@@ -53,7 +53,7 @@ const ITEMS: Item[] = [
   {
     n: 4, file: 'gallery-4.JPG', group: 'LIFE', span: 'col-span-1 row-span-2',
     title: 'Friendship at Lidya',
-    titleAm: 'ወዳጅነት በልዲያ',
+    titleAm: 'ወዳጅነት በሊዲያ',
     description: 'Smiles beside modern Ethiopian art — the dining room where friendships are made and renewed.',
     descriptionAm: 'ከዘመናዊ የኢትዮጵያ ሥዕል አጠገብ ፈገግታ — ወዳጅነት የሚፈጠርበትና የሚታደስበት የመመገቢያ አዳራሽ።',
     alt: 'Two smiling friends beside modern Ethiopian artwork inside Lidya',
@@ -63,7 +63,7 @@ const ITEMS: Item[] = [
     title: 'Conversations in the Lounge',
     titleAm: 'በእንግዳ ማረፊያው ውስጥ ጭውውት',
     description: 'Unhurried conversation in the lounge — hospitality at Lidya means time is always on the menu.',
-    descriptionAm: 'በእንግዳ ማረፊያው ያልተቸኮለ ጭውውት — በልዲያ እንግዳ ተቀባይነት ማለት ጊዜ ሁሌም ከምናሌው ላይ ነው።',
+    descriptionAm: 'በእንግዳ ማረፊያው ያልተቸኮለ ጭውውት — በሊዲያ እንግዳ ተቀባይነት ማለት ጊዜ ሁሌም ከምናሌው ላይ ነው።',
     alt: 'Guests in relaxed conversation in the lounge at Lidya',
   },
   {
@@ -79,7 +79,7 @@ const ITEMS: Item[] = [
     title: 'Style Meets Heritage',
     titleAm: 'ዘመናዊነት ከቅርስ ጋር',
     description: 'Modern style and woven heritage side by side — at Lidya, every generation finds its place.',
-    descriptionAm: 'ዘመናዊ ስልትና የሽመና ቅርስ ጎን ለጎን — በልዲያ እያንዳንዱ ትውልድ ቦታውን ያገኛል።',
+    descriptionAm: 'ዘመናዊ ስልትና የሽመና ቅርስ ጎን ለጎን — በሊዲያ እያንዳንዱ ትውልድ ቦታውን ያገኛል።',
     alt: 'Guests in modern and traditional dress before the mural at Lidya',
   },
   {
@@ -103,7 +103,7 @@ const ITEMS: Item[] = [
     title: 'Dressed for the Occasion',
     titleAm: 'ለበዓሉ የተዋቡ',
     description: 'A couple on the red carpet — she in a hand-embroidered habesha kemis, welcomed beneath the Lidya banner.',
-    descriptionAm: 'ጥንዶች በቀይ ምንጣፍ ላይ — እሷ በእጅ የተጠለፈ የሀበሻ ቀሚስ ለብሳ፣ በልዲያ ባነር ስር ተቀብለዋል።',
+    descriptionAm: 'ጥንዶች በቀይ ምንጣፍ ላይ — እሷ በእጅ የተጠለፈ የሀበሻ ቀሚስ ለብሳ፣ በሊዲያ ባነር ስር ተቀብለዋል።',
     alt: 'Couple in elegant traditional dress on the red carpet at Lidya',
   },
   {
@@ -111,7 +111,7 @@ const ITEMS: Item[] = [
     title: 'Smiles of the House',
     titleAm: 'የቤቱ ፈገግታዎች',
     description: 'Woven scarves, embroidered jackets, and easy laughter — the everyday joy of an evening at Lidya.',
-    descriptionAm: 'የሽመና ሻርፕ፣ የተጠለፉ ጃኬቶችና ቀላል ሳቅ — በልዲያ ምሽት ያለው የየቀኑ ደስታ።',
+    descriptionAm: 'የሽመና ሻርፕ፣ የተጠለፉ ጃኬቶችና ቀላል ሳቅ — በሊዲያ ምሽት ያለው የየቀኑ ደስታ።',
     alt: 'Two smiling guests in traditional attire inside Lidya',
   },
   {
@@ -119,13 +119,13 @@ const ITEMS: Item[] = [
     title: 'Guests of Honour',
     titleAm: 'የክብር እንግዶች',
     description: 'Elegant guests before the welcome wall — every arrival at Lidya is received like family.',
-    descriptionAm: 'የተዋቡ እንግዶች በእንኳን ደህና መጡ ግድግዳ ፊት — በልዲያ እያንዳንዱ መምጣት እንደ ቤተሰብ ይቀበላል።',
+    descriptionAm: 'የተዋቡ እንግዶች በእንኳን ደህና መጡ ግድግዳ ፊት — በሊዲያ እያንዳንዱ መምጣት እንደ ቤተሰብ ይቀበላል።',
     alt: 'Three elegantly dressed guests before the welcome banner at Lidya',
   },
   {
     n: 13, file: 'gallery-13.JPG', group: 'LIFE', span: 'col-span-1 row-span-2',
     title: 'An Evening at Lidya',
-    titleAm: 'ምሽት በልዲያ',
+    titleAm: 'ምሽት በሊዲያ',
     description: 'Under handwoven lanterns, a guest pauses between courses — quiet style in a warm cultural room.',
     descriptionAm: 'በእጅ በተሸመኑ መብራቶች ስር አንድ እንግዳ በምግቦች መካከል ቆም ብሏል — በሞቃት ባህላዊ አዳራሽ ውስጥ ጸጥ ያለ ውበት።',
     alt: 'Guest with cultural scarf standing in the warm dining room of Lidya',
@@ -135,7 +135,7 @@ const ITEMS: Item[] = [
     title: 'A Grand Cultural Welcome',
     titleAm: 'ታላቅ ባህላዊ አቀባበል',
     description: 'Dancers in fringed traditional dress, flute players, and a flower-crowned tent before the thatched entrance — a full ceremonial welcome at Lidya.',
-    descriptionAm: 'የተንዘረዘረ ባህላዊ ልብስ የለበሱ ጨፋሪዎች፣ የዋሽንት ተጫዋቾችና በአበባ የተጌጠ ድንኳን በሳር ክዳን መግቢያው ፊት — በልዲያ የተሟላ ባህላዊ አቀባበል።',
+    descriptionAm: 'የተንዘረዘረ ባህላዊ ልብስ የለበሱ ጨፋሪዎች፣ የዋሽንት ተጫዋቾችና በአበባ የተጌጠ ድንኳን በሳር ክዳን መግቢያው ፊት — በሊዲያ የተሟላ ባህላዊ አቀባበል።',
     alt: 'Traditional dancers and musicians performing a ceremonial welcome outside Lidya',
   },
   {
@@ -143,7 +143,7 @@ const ITEMS: Item[] = [
     title: 'The Embrace of Friendship',
     titleAm: 'የወዳጅነት እቅፍ',
     description: 'Old friends reunite with an embrace before the cultural mural — Lidya is where people find each other again.',
-    descriptionAm: 'የቆዩ ወዳጆች በባህላዊው ሥዕል ፊት በእቅፍ ተገናኙ — ልዲያ ሰዎች እርስ በርስ የሚገናኙበት ስፍራ ነው።',
+    descriptionAm: 'የቆዩ ወዳጆች በባህላዊው ሥዕል ፊት በእቅፍ ተገናኙ — ሊዲያ ሰዎች እርስ በርስ የሚገናኙበት ስፍራ ነው።',
     alt: 'Guests embracing in greeting inside Lidya',
   },
   {
@@ -159,7 +159,7 @@ const ITEMS: Item[] = [
     title: 'An Evening of Elegance',
     titleAm: 'የውበት ምሽት',
     description: 'Guests dressed for a special evening arrive along the red carpet — celebrations at Lidya always begin in style.',
-    descriptionAm: 'ለልዩ ምሽት የተዋቡ እንግዶች በቀይ ምንጣፍ ላይ ይደርሳሉ — በልዲያ ክብረ በዓላት ሁሌም በውበት ይጀምራሉ።',
+    descriptionAm: 'ለልዩ ምሽት የተዋቡ እንግዶች በቀይ ምንጣፍ ላይ ይደርሳሉ — በሊዲያ ክብረ በዓላት ሁሌም በውበት ይጀምራሉ።',
     alt: 'Elegantly dressed guests arriving at Lidya',
   },
   {
@@ -183,7 +183,7 @@ const ITEMS: Item[] = [
     title: 'Honoured Guests at Home',
     titleAm: 'የክብር እንግዶች እንደ ቤታቸው',
     description: 'Honoured guests share a quiet moment together — at Lidya, every guest is received as family.',
-    descriptionAm: 'የክብር እንግዶች ጸጥ ያለ ጊዜ አብረው ያሳልፋሉ — በልዲያ እያንዳንዱ እንግዳ እንደ ቤተሰብ ይቀበላል።',
+    descriptionAm: 'የክብር እንግዶች ጸጥ ያለ ጊዜ አብረው ያሳልፋሉ — በሊዲያ እያንዳንዱ እንግዳ እንደ ቤተሰብ ይቀበላል።',
     alt: 'Honoured guests seated together at Lidya',
   },
 ];
