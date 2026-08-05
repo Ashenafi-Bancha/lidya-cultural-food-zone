@@ -45,6 +45,21 @@ export function MenuSection({
 
   const catNameOf = (i: any) => i.category?.name || i.cat;
 
+  // The QR code on every table opens this page, so guests see it without ever
+  // finding the language toggle. Category labels therefore show BOTH languages
+  // at once — English on top, Amharic beneath — rather than switching with the
+  // toggle. Falls back to one line when a category has no Amharic name yet.
+  const BiLabel = ({ en, am }: { en: string; am?: string | null }) => (
+    <span className="flex flex-col items-center leading-tight">
+      <span>{en}</span>
+      {am && am !== en && (
+        <span className="normal-case tracking-normal opacity-80" style={{ fontFamily: "'Noto Serif Ethiopic', serif" }}>
+          {am}
+        </span>
+      )}
+    </span>
+  );
+
   const selectTop = (name: string) => {
     setActiveTop(name);
     setActiveSub(null);
@@ -112,7 +127,11 @@ export function MenuSection({
                   whileHover={activeTop === cat ? {} : { borderColor: "rgba(212,168,67,0.7)", color: "#f5efe6" }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {cat === "All" ? t("menu.all") : (tf(tree.find(c => c.name === cat), "name") || cat)}
+                  {cat === "All" ? (
+                    <BiLabel en="All" am="ሁሉም" />
+                  ) : (
+                    <BiLabel en={cat} am={tree.find(c => c.name === cat)?.nameAm} />
+                  )}
                 </motion.button>
               ))}
             </div>
@@ -131,7 +150,10 @@ export function MenuSection({
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
-                  {t("menu.allPrefix")} {tf(activeTopNode, "name") || activeTop}
+                  <BiLabel
+                    en={`All ${activeTop}`}
+                    am={activeTopNode?.nameAm ? `ሁሉም ${activeTopNode.nameAm}` : undefined}
+                  />
                 </motion.button>
                 {subTabs.map(sub => (
                   <motion.button
@@ -146,7 +168,7 @@ export function MenuSection({
                     }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    {tf(sub, "name")}
+                    <BiLabel en={sub.name} am={sub.nameAm} />
                   </motion.button>
                 ))}
               </div>
