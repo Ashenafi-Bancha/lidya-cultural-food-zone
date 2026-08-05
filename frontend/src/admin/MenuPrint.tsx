@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import QRCode from 'qrcode';
 import { useMenu, useCategories } from '../hooks/useMenu';
 import logoImg from '@/imports/lidya-logo2.webp';
-import { formatPrice } from "../lib/price";
+import { formatPriceBare } from "../lib/price";
 
 /**
  * Print-ready A4 menu + digital-menu QR code.
@@ -255,7 +255,7 @@ export function MenuPrint() {
                       ) : null}
                     </span>
                     <span className="flex-1 border-b border-dotted" style={{ borderColor: 'rgba(60,32,16,0.35)', transform: 'translateY(-3px)' }} />
-                    <span className="text-[11.5px] font-bold whitespace-nowrap" style={{ color: RUST }}>{formatPrice(d.price)}</span>
+                    <span className="text-[11.5px] font-bold whitespace-nowrap" style={{ color: RUST }}>{formatPriceBare(d.price)}</span>
                   </div>
                   {(showAmharic && d.descriptionAm ? d.descriptionAm : d.description) && (
                     <p className="text-[8.5px] leading-snug mt-0.5" style={{ color: SOFT }}>
@@ -287,7 +287,7 @@ export function MenuPrint() {
               </p>
               <p>Addis Ababa — Lebu, Music Sefer · Wolaita Sodo 1 — Green Land Area · Wolaita Sodo 2</p>
               <p>0920994499 · lidyaculturalfood.com</p>
-              <p className="mt-1 italic">Prices effective {effectiveDate}</p>
+              <p className="mt-1 italic">All prices in Ethiopian Birr (ETB) · effective {effectiveDate}</p>
             </div>
             <Telet size={26} />
           </div>

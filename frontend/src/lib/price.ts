@@ -22,3 +22,17 @@ export function formatPrice(raw: string | number | null | undefined): string {
 
   return `${formatted} ${CURRENCY}`;
 }
+
+/**
+ * Bare number for the printed menu, matching the restaurant's hard menu style:
+ * "550.00", "11,000.00" — no currency label per line (the sheet says once that
+ * prices are in Birr). Unparseable values print exactly as entered.
+ */
+export function formatPriceBare(raw: string | number | null | undefined): string {
+  if (raw === null || raw === undefined) return '';
+  const value = String(raw).trim();
+  if (!value) return '';
+  const numeric = Number(value.replace(/[^0-9.]/g, ''));
+  if (!Number.isFinite(numeric) || numeric === 0) return value;
+  return numeric.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
