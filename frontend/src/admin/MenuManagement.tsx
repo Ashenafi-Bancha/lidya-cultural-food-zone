@@ -175,13 +175,17 @@ export function MenuManagement() {
                 <option value="">Select Category...</option>
                 {categories?.map((cat: any) =>
                   cat.children && cat.children.length > 0 ? (
-                    <optgroup key={cat.id} label={cat.name}>
+                    <optgroup key={cat.id} label={cat.nameAm ? `${cat.name} · ${cat.nameAm}` : cat.name}>
                       {cat.children.map((child: any) => (
-                        <option key={child.id} value={child.id}>{child.name}</option>
+                        <option key={child.id} value={child.id}>
+                          {child.nameAm ? `${child.name} · ${child.nameAm}` : child.name}
+                        </option>
                       ))}
                     </optgroup>
                   ) : (
-                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    <option key={cat.id} value={cat.id}>
+                      {cat.nameAm ? `${cat.name} · ${cat.nameAm}` : cat.name}
+                    </option>
                   )
                 )}
               </select>

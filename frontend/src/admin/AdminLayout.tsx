@@ -9,6 +9,7 @@ const links = [
   { to: '/admin', label: 'Dashboard' },
   { to: '/admin/menu', label: 'Menu Management' },
   { to: '/admin/menu/print', label: 'Print Menu & QR' },
+  { to: '/admin/menu/qr-card', label: 'Table QR Card' },
   { to: '/admin/reservations', label: 'Reservations' },
   { to: '/admin/events', label: 'Event Bookings' },
   { to: '/admin/branches', label: 'Branches' },
