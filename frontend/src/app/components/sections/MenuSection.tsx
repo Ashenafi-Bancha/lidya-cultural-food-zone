@@ -164,11 +164,25 @@ export function MenuSection({
                   </div>
 
                   <div className="pt-5 px-2 flex-1 flex flex-col items-center">
-                    <h3
-                      className="text-white font-semibold text-lg md:text-xl leading-snug transition-colors duration-300 group-hover:text-[#ffe488]"
-                      style={{ fontFamily: "var(--font-lidya-serif)" }}
-                    >
-                      {tf(item, "name")}
+                    {/* Both languages at once, Amharic first — same rule as
+                        the category labels; sizes reduced so two lines fit. */}
+                    <h3 className="leading-snug transition-colors duration-300 group-hover:text-[#ffe488] text-center">
+                      {item.nameAm && (
+                        <span
+                          className="block text-white font-semibold text-base md:text-lg"
+                          style={{ fontFamily: "'Noto Serif Ethiopic', serif" }}
+                        >
+                          {item.nameAm}
+                        </span>
+                      )}
+                      <span
+                        className={item.nameAm
+                          ? "block text-white/85 text-[12px] md:text-[13px] mt-0.5"
+                          : "block text-white font-semibold text-base md:text-lg"}
+                        style={{ fontFamily: "var(--font-lidya-serif)" }}
+                      >
+                        {item.name}
+                      </span>
                     </h3>
 
                     {/* gold price with flanking rules */}
@@ -183,12 +197,14 @@ export function MenuSection({
                       <span className="flex-1 h-px bg-gradient-to-l from-transparent to-[#d4a843]/40" />
                     </div>
 
-                    <p
-                      className="text-sm leading-relaxed text-[#f5efe6]/80"
-                      style={{ fontFamily: "var(--font-lidya-body)" }}
-                    >
-                      {tf(item, "description")}
-                    </p>
+                    {(tf(item, "description") || item.descriptionAm || item.description) && (
+                      <p
+                        className="text-[13px] leading-relaxed text-[#f5efe6]/80"
+                        style={{ fontFamily: "var(--font-lidya-body)" }}
+                      >
+                        {tf(item, "description") || item.descriptionAm || item.description}
+                      </p>
+                    )}
                   </div>
                 </motion.div>
   );
