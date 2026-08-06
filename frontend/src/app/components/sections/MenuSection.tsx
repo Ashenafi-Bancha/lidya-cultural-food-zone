@@ -169,7 +169,7 @@ export function MenuSection({
                     <h3 className="leading-snug transition-colors duration-300 group-hover:text-[#ffe488] text-center">
                       {item.nameAm && (
                         <span
-                          className="block text-white font-semibold text-base md:text-lg"
+                          className="block font-semibold text-[15px] md:text-base text-[#d4a843]"
                           style={{ fontFamily: "'Noto Serif Ethiopic', serif" }}
                         >
                           {item.nameAm}
@@ -177,8 +177,8 @@ export function MenuSection({
                       )}
                       <span
                         className={item.nameAm
-                          ? "block text-white/85 text-[12px] md:text-[13px] mt-0.5"
-                          : "block text-white font-semibold text-base md:text-lg"}
+                          ? "block text-white text-[15px] md:text-base mt-0.5"
+                          : "block text-white font-semibold text-[15px] md:text-base"}
                         style={{ fontFamily: "var(--font-lidya-serif)" }}
                       >
                         {item.name}
