@@ -134,7 +134,7 @@ export class NotificationService {
   }
 
   async notifyManagerNewReservation(reservationDetails: ReservationDetails): Promise<void> {
-    const managerEmail = env.MANAGER_EMAIL || 'manager@lidyafoodzone.com';
+    const managerEmail = env.MANAGER_EMAIL || 'ashenafibanchabassa01@gmail.com';
     const managerPhone = env.MANAGER_PHONE || '';
 
     const subject = `🔔 New Reservation at Lidya Cultural Food Zone`;
@@ -275,7 +275,7 @@ export class NotificationService {
   // ─── Event / VIP booking notifications ───────────────────────────────────
 
   async notifyManagerNewEventBooking(details: EventBookingDetails): Promise<void> {
-    const managerEmail = env.MANAGER_EMAIL || 'manager@lidyafoodzone.com';
+    const managerEmail = env.MANAGER_EMAIL || 'ashenafibanchabassa01@gmail.com';
     const managerPhone = env.MANAGER_PHONE || '';
     const label = serviceLabel(details.serviceType);
 
