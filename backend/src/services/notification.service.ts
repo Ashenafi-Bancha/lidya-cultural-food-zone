@@ -9,7 +9,7 @@ class EmailService {
 
   constructor() {
     this.apiKey = env.RESEND_API_KEY || '';
-    this.fromEmail = env.RESEND_FROM_EMAIL || 'noreply@lidyafoodzone.com';
+    this.fromEmail = env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
   }
 
   async sendEmail(to: string, subject: string, html: string): Promise<boolean> {

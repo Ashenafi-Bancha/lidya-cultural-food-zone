@@ -29,7 +29,7 @@ const envSchema = z.object({
   AWS_ENDPOINT_URL_S3: z.string().optional(),
   AWS_REGION: z.string().optional(),
   RESEND_API_KEY: z.string().optional(),
-  RESEND_FROM_EMAIL: z.string().optional().default('noreply@lidyafoodzone.com'),
+  RESEND_FROM_EMAIL: z.string().optional().default('onboarding@resend.dev'),
   MANAGER_EMAIL: z.string().optional(),
   TWILIO_ACCOUNT_SID: z.string().optional(),
   TWILIO_AUTH_TOKEN: z.string().optional(),
