@@ -460,17 +460,10 @@ export function MenuSection({
               type="button"
               onClick={() => navGo({ id: "menu", path: "/menu" })}
               className="group/cta relative rounded-xl p-[2px] overflow-hidden isolate"
-              animate={{
-                boxShadow: [
-                  "0 0 14px rgba(245,200,66,0.45)",
-                  "0 0 26px rgba(225,29,42,0.40)",
-                  "0 0 14px rgba(245,200,66,0.45)",
-                ],
-              }}
-              transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
+              style={{ animation: "menuglow 2.6s ease-in-out infinite" }}
               whileTap={{ scale: 0.96 }}
             >
-              <style>{`@keyframes menucta{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}`}</style>
+              <style>{`@keyframes menucta{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}@keyframes menuglow{0%,100%{box-shadow:0 0 14px rgba(245,200,66,0.45)}50%{box-shadow:0 0 26px rgba(225,29,42,0.4)}}`}</style>
               {/* two lights — gold and red — chasing opposite sides of the border */}
               <span
                 aria-hidden
