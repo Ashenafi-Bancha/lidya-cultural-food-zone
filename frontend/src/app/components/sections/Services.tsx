@@ -76,6 +76,10 @@ const EVENTS: ServiceCard[] = [
   { titleKey: "services.events.cateringTitle",    descKey: "services.events.cateringDesc",    service: "CATERING",    Glyph: Icon.Utensils, img: null },
   { titleKey: "services.events.corporateTitle",   descKey: "services.events.corporateDesc",   service: "CORPORATE",   Glyph: Icon.Users,    img: null },
   { titleKey: "services.events.birthdaysTitle",   descKey: "services.events.birthdaysDesc",   service: "BIRTHDAY",    Glyph: Icon.Calendar, img: birthdayImg },
+  { titleKey: "services.events.anniversariesTitle", descKey: "services.events.anniversariesDesc", service: "ANNIVERSARY",         Glyph: Icon.Heart,    img: null },
+  { titleKey: "services.events.familyTitle",        descKey: "services.events.familyDesc",        service: "FAMILY_CELEBRATION",  Glyph: Icon.Users,    img: null },
+  { titleKey: "services.events.productLaunchTitle", descKey: "services.events.productLaunchDesc", service: "PRODUCT_LAUNCH",      Glyph: Icon.Star,     img: null },
+  { titleKey: "services.events.holidayTitle",       descKey: "services.events.holidayDesc",       service: "HOLIDAY_CELEBRATION", Glyph: Icon.Calendar, img: null },
 ];
 
 /**

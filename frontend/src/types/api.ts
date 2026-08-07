@@ -82,6 +82,10 @@ export type EventType =
   | 'CATERING'
   | 'CORPORATE'
   | 'BIRTHDAY'
+  | 'ANNIVERSARY'
+  | 'FAMILY_CELEBRATION'
+  | 'PRODUCT_LAUNCH'
+  | 'HOLIDAY_CELEBRATION'
   | 'VIP'
   | 'VVIP'
   | 'OTHER';

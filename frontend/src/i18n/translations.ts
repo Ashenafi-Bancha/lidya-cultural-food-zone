@@ -122,6 +122,18 @@ export const translations: Record<Lang, any> = {
         birthdaysTitle: 'Birthdays & Milestones',
         birthdaysDesc:
           'Make birthdays, graduations, and anniversaries unforgettable with a personalised spread, custom cake, and live cultural entertainment on request.',
+        anniversariesTitle: 'Anniversaries',
+        anniversariesDesc:
+          'Relive the memory of your special day — an elegant cultural dinner, a mesob for two or a feast for the whole family, crowned with music and a traditional coffee ceremony.',
+        familyTitle: 'Family Celebrations',
+        familyDesc:
+          'Reunions, christenings, graduations and homecomings — gather everyone around one mesob with generous traditional platters and a warm, homely atmosphere.',
+        productLaunchTitle: 'Product Launches',
+        productLaunchDesc:
+          'Introduce your brand in a setting guests will remember — a distinctive cultural venue, full buffet service, and space for presentations, media, and networking.',
+        holidayTitle: 'National Holiday Celebrations',
+        holidayDesc:
+          'Enkutatash, Meskel, Genna, Fasika, Eid and more — celebrate Ethiopia’s great holidays with festive traditional menus, coffee ceremony, and live cultural entertainment.',
       },
     },
     reservation: {
@@ -314,6 +326,10 @@ export const translations: Record<Lang, any> = {
         CATERING: 'Full-Service Catering',
         CORPORATE: 'Corporate Event',
         BIRTHDAY: 'Birthday / Milestone',
+        ANNIVERSARY: 'Anniversary',
+        FAMILY_CELEBRATION: 'Family Celebration',
+        PRODUCT_LAUNCH: 'Product Launch',
+        HOLIDAY_CELEBRATION: 'National Holiday Celebration',
         VIP: 'VIP Experience',
         VVIP: 'VVIP Experience',
         OTHER: 'Other',
@@ -436,6 +452,18 @@ export const translations: Record<Lang, any> = {
         birthdaysTitle: 'ልደትና የተለዩ አጋጣሚዎች',
         birthdaysDesc:
           'ልደት፣ ምረቃና የምስረታ በዓላትን በተለየ ምግብ፣ በተዘጋጀ ኬክ እና በጥያቄ በቀጥታ ባህላዊ መዝናኛ የማይረሱ ያድርጉ።',
+        anniversariesTitle: 'ዓመታዊ በዓላት',
+        anniversariesDesc:
+          'የልዩ ቀንዎን ትዝታ ያድሱ — የሚያምር ባህላዊ እራት፣ ለሁለት መሶብ ወይም ለመላው ቤተሰብ ግብዣ፣ በሙዚቃና በባህላዊ የቡና ሥነ ሥርዓት የታጀበ።',
+        familyTitle: 'የቤተሰብ ክብረ በዓላት',
+        familyDesc:
+          'የቤተሰብ መገናኘት፣ ክርስትና፣ ምረቃና የመመለስ በዓላት — መላውን ቤተሰብ በአንድ መሶብ ዙሪያ ሰብስበው በበዛ ባህላዊ ምግብና ሞቅ ያለ ድባብ ያክብሩ።',
+        productLaunchTitle: 'የምርት ምረቃ ዝግጅቶች',
+        productLaunchDesc:
+          'ምርትዎን እንግዶች በማይረሱት ሁኔታ ያስተዋውቁ — ልዩ ባህላዊ ስፍራ፣ ሙሉ የቡፌ አገልግሎት እና ለአቀራረብ፣ ለሚዲያና ለትውውቅ የተመቻቸ ዝግጅት።',
+        holidayTitle: 'የብሔራዊ በዓላት አከባበር',
+        holidayDesc:
+          'እንቁጣጣሽ፣ መስቀል፣ ገና፣ ፋሲካ፣ ኢድ እና ሌሎችም — የኢትዮጵያን ታላላቅ በዓላት በበዓል ባህላዊ ምግቦች፣ በቡና ሥነ ሥርዓትና በቀጥታ ባህላዊ መዝናኛ ያክብሩ።',
       },
     },
     reservation: {
@@ -628,6 +656,10 @@ export const translations: Record<Lang, any> = {
         CATERING: 'ሙሉ የምግብ አቅርቦት',
         CORPORATE: 'የድርጅት ዝግጅት',
         BIRTHDAY: 'ልደት / የተለየ አጋጣሚ',
+        ANNIVERSARY: 'ዓመታዊ በዓል',
+        FAMILY_CELEBRATION: 'የቤተሰብ ክብረ በዓል',
+        PRODUCT_LAUNCH: 'የምርት ምረቃ',
+        HOLIDAY_CELEBRATION: 'የብሔራዊ በዓል አከባበር',
         VIP: 'VIP Experience',
         VVIP: 'VVIP Experience',
         OTHER: 'ሌላ',

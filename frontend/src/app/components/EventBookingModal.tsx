@@ -10,7 +10,8 @@ import { EventType } from "../../types/api";
 
 const SERVICE_ORDER: EventType[] = [
   "WEDDING", "ENGAGEMENT", "HALL_RENTAL", "CATERING",
-  "CORPORATE", "BIRTHDAY", "VIP", "VVIP", "OTHER",
+  "CORPORATE", "BIRTHDAY", "ANNIVERSARY", "FAMILY_CELEBRATION",
+  "PRODUCT_LAUNCH", "HOLIDAY_CELEBRATION", "VIP", "VVIP", "OTHER",
 ];
 
 interface Props {

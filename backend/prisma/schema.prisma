@@ -164,6 +164,10 @@ enum EventType {
   VIP
   VVIP
   OTHER
+  ANNIVERSARY
+  FAMILY_CELEBRATION
+  PRODUCT_LAUNCH
+  HOLIDAY_CELEBRATION
 }
 
 // Bookings/inquiries for events & premium services (weddings, catering,
