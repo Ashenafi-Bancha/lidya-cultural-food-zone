@@ -67,10 +67,27 @@ export function MenuSection({
 
   let filtered = items;
   if (preview) {
-    // Signature dishes first, then fill to four.
-    const signature = items.filter((i: any) => i.tag);
-    const rest = items.filter((i: any) => !i.tag);
-    filtered = [...signature, ...rest].slice(0, 4);
+    // Homepage sampler: 15 dishes (3 rows of 5 on desktop) drawn round-robin
+    // across every category except Extra, so the preview shows the menu's
+    // breadth rather than one section. Photographed dishes surface first.
+    const pool = items.filter((i: any) => catNameOf(i) !== "Extra");
+    const buckets = new Map<string, any[]>();
+    for (const i of pool) {
+      const k = i.categoryId || catNameOf(i) || "?";
+      buckets.set(k, [...(buckets.get(k) ?? []), i]);
+    }
+    const lists = [...buckets.values()].map(l =>
+      [...l].sort((a: any, b: any) => (b.imageUrl ? 1 : 0) - (a.imageUrl ? 1 : 0))
+    );
+    const mixed: any[] = [];
+    for (let r = 0; mixed.length < 15; r++) {
+      let took = false;
+      for (const l of lists) {
+        if (l[r]) { mixed.push(l[r]); took = true; if (mixed.length >= 15) break; }
+      }
+      if (!took) break;
+    }
+    filtered = mixed;
   } else if (activeTop !== "All") {
     if (activeSub) {
       // A specific sub-category is selected.
@@ -99,7 +116,7 @@ export function MenuSection({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4, delay: i * 0.05 }}
-                  className="group h-full flex flex-col items-center text-center"
+                  className={`group h-full flex-col items-center text-center ${preview && i >= 8 ? "hidden lg:flex" : "flex"}`}
                   whileHover={{ y: -8 }}
                 >
                   {/* Circular dish photo — echoes the plate, framed in gold.
@@ -401,7 +418,7 @@ export function MenuSection({
               {isErrorMenu ? t("menu.emptyError") : t("menu.emptyComingSoon")}
             </div>
           ) : preview ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10">
+            <div className={`grid gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 ${preview ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"}`}>
               {filtered.map((item, i) => renderDish(item, i))}
             </div>
           ) : visibleSections.length === 0 ? (
@@ -425,7 +442,7 @@ export function MenuSection({
                             <SubHeading en={g.en} am={g.am} />
                           </Reveal>
                         )}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10">
+                        <div className={`grid gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-10 ${preview ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-5" : "grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"}`}>
                           {g.dishes.map((item, i) => renderDish(item, i))}
                         </div>
                       </div>
@@ -442,20 +459,37 @@ export function MenuSection({
             <motion.button
               type="button"
               onClick={() => navGo({ id: "menu", path: "/menu" })}
-              className="group/cta inline-flex items-center gap-3 px-9 py-4 rounded-xl text-[11px] tracking-[0.24em] uppercase font-semibold"
-              style={{
-                fontFamily: "var(--font-lidya-sans)",
-                color: "#d4a843",
-                border: "1px solid rgba(212,168,67,0.5)",
-                background: "linear-gradient(135deg, rgba(212,168,67,0.10) 0%, rgba(194,94,42,0.08) 100%)",
+              className="group/cta relative rounded-xl p-[2px] overflow-hidden isolate"
+              animate={{
+                boxShadow: [
+                  "0 0 14px rgba(245,200,66,0.45)",
+                  "0 0 26px rgba(225,29,42,0.40)",
+                  "0 0 14px rgba(245,200,66,0.45)",
+                ],
               }}
-              whileHover={{ backgroundColor: "#d4a843", color: "#1e1008", boxShadow: "0 0 28px rgba(212,168,67,0.45)" }}
+              transition={{ duration: 2.6, repeat: Infinity, ease: "easeInOut" }}
               whileTap={{ scale: 0.96 }}
-              transition={{ duration: 0.25 }}
             >
-              {t("common2.viewFullMenu")}
-              <span aria-hidden className="inline-flex transition-transform duration-300 group-hover/cta:translate-x-1">
-                <Icon.ArrowRight />
+              <style>{`@keyframes menucta{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}`}</style>
+              {/* two lights — gold and red — chasing opposite sides of the border */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[260%]"
+                style={{
+                  background:
+                    "conic-gradient(from 0deg, transparent 0deg 55deg, rgba(245,200,66,0.25) 80deg, #ffe488 100deg, #f5c842 108deg, transparent 135deg 235deg, rgba(225,29,42,0.25) 260deg, #ff6b5e 280deg, #e11d2a 288deg, transparent 315deg 360deg)",
+                  animation: "menucta 3.2s linear infinite",
+                }}
+              />
+              <span aria-hidden className="pointer-events-none absolute inset-0 rounded-xl" style={{ boxShadow: "inset 0 0 0 1px rgba(212,168,67,0.35)" }} />
+              <span
+                className="relative z-10 inline-flex items-center gap-3 px-9 py-4 rounded-[10px] text-[11px] tracking-[0.24em] uppercase font-semibold transition-colors duration-300 group-hover/cta:text-[#ffe488]"
+                style={{ fontFamily: "var(--font-lidya-sans)", color: "#d4a843", background: "#1e1008" }}
+              >
+                {t("common2.viewFullMenu")}
+                <span aria-hidden className="inline-flex transition-transform duration-300 group-hover/cta:translate-x-1">
+                  <Icon.ArrowRight />
+                </span>
               </span>
             </motion.button>
           </Reveal>
