@@ -480,8 +480,8 @@ export function MenuSection({
               />
               <span aria-hidden className="pointer-events-none absolute inset-0 rounded-xl" style={{ boxShadow: "inset 0 0 0 1px rgba(212,168,67,0.35)" }} />
               <span
-                className="relative z-10 inline-flex items-center gap-3 px-9 py-4 rounded-[10px] text-[11px] tracking-[0.24em] uppercase font-semibold transition-colors duration-300 group-hover/cta:text-[#ffe488]"
-                style={{ fontFamily: "var(--font-lidya-sans)", color: "#d4a843", background: "#1e1008" }}
+                className="relative z-10 inline-flex items-center gap-3 px-9 py-4 rounded-[10px] text-[11px] tracking-[0.24em] uppercase font-semibold transition-colors duration-300 bg-[#1e1008] text-[#d4a843] group-hover/cta:bg-[#d4a843] group-hover/cta:text-[#120a03]"
+                style={{ fontFamily: "var(--font-lidya-sans)" }}
               >
                 {t("common2.viewFullMenu")}
                 <span aria-hidden className="inline-flex transition-transform duration-300 group-hover/cta:translate-x-1">

@@ -49,6 +49,7 @@ export function QuickLinks() {
           </h2>
         </Reveal>
 
+        <style>{`@keyframes qlspin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}`}</style>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
           {LINKS.map((link, i) => {
             const Glyph = link.Glyph;
@@ -79,16 +80,32 @@ export function QuickLinks() {
                   }}
                   whileHover={{
                     y: -4,
-                    borderColor: "rgba(212,168,67,0.75)",
-                    boxShadow: "0 0 26px rgba(212,168,67,0.35), 0 10px 24px rgba(0,0,0,0.45)",
+                    borderColor: "rgba(0,0,0,0)",
+                    boxShadow: "0 0 20px rgba(225,29,42,0.22), 0 0 26px rgba(212,168,67,0.30), 0 10px 24px rgba(0,0,0,0.45)",
                   }}
                   whileTap={{ scale: 0.97 }}
                   transition={{ duration: 0.25 }}
                 >
+                  {/* tri-colour light — red · yellow · black — circling the border on hover */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[300%] opacity-0 group-hover/tile:opacity-100 transition-opacity duration-300"
+                    style={{
+                      background:
+                        "conic-gradient(from 0deg, #e11d2a 0deg, #e11d2a 80deg, #f5c842 120deg, #f5c842 200deg, #0a0a0a 240deg, #0a0a0a 320deg, #e11d2a 360deg)",
+                      animation: "qlspin 3.5s linear infinite",
+                    }}
+                  />
+                  {/* inner face masks the gradient down to a 2px ring */}
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-[2px] rounded-[14px]"
+                    style={{ background: "linear-gradient(145deg, rgba(212,168,67,0.07) 0%, rgba(30,16,8,0) 70%), #160b04" }}
+                  />
                   {/* gold wash that blooms on hover */}
                   <span
                     aria-hidden
-                    className="pointer-events-none absolute inset-0 opacity-0 group-hover/tile:opacity-100 transition-opacity duration-500"
+                    className="pointer-events-none absolute inset-[2px] rounded-[14px] opacity-0 group-hover/tile:opacity-100 transition-opacity duration-500"
                     style={{ background: "radial-gradient(circle at 0% 50%, rgba(212,168,67,0.20), transparent 70%)" }}
                   />
 

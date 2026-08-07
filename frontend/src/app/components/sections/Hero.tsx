@@ -403,14 +403,14 @@ export function Hero() {
               whileTap={{ scale: 0.97 }}
               transition={{ duration: 0.2 }}
             >
-              {/* rotating light source — clipped to the border ring by the inner face */}
+              {/* three long lights — red · yellow · black — travelling the border */}
               <span
                 aria-hidden
                 className="pointer-events-none absolute left-1/2 top-1/2 aspect-square w-[220%]"
                 style={{
                   background:
-                    "conic-gradient(from 0deg, transparent 0deg 300deg, rgba(245,200,66,0.15) 320deg, #ffe488 340deg, #fff6cf 346deg, #f5c842 352deg, transparent 360deg)",
-                  animation: "ctaspin 3s linear infinite",
+                    "conic-gradient(from 0deg, #e11d2a 0deg, #e11d2a 80deg, #f5c842 120deg, #f5c842 200deg, #0a0a0a 240deg, #0a0a0a 320deg, #e11d2a 360deg)",
+                  animation: "ctaspin 4s linear infinite",
                 }}
               />
               {/* faint static ring so the border always reads */}
