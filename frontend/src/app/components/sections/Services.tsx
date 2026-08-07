@@ -6,7 +6,14 @@ import { useLang } from "../../../context/LanguageContext";
 import { useNavGo } from "../../hooks/useNavGo";
 import { EventBookingModal } from "../EventBookingModal";
 import { EventType } from "../../../types/api";
-import vipImg from "../../../imports/lidya-vip.webp";
+import vipRoomImg from "../../../imports/services/service-vip-room.webp";
+import vvipRoomImg from "../../../imports/services/service-vvip-room.webp";
+import culturalImg from "../../../imports/services/service-cultural-catering.webp";
+import deliveryImg from "../../../imports/services/service-delivery.webp";
+import weddingImg from "../../../imports/services/service-wedding.webp";
+import engagementImg from "../../../imports/services/service-engagement.webp";
+import hallImg from "../../../imports/services/service-hall.webp";
+import birthdayImg from "../../../imports/services/service-birthday.webp";
 
 const TIERS = [
   {
@@ -25,7 +32,7 @@ const TIERS = [
     ],
     ctaKey: "services.vipCta",
     filled: false,
-    img: null,         // VIP room banner — drop src/imports/services/service-vip-room.jpg
+    img: vipRoomImg,
   },
   {
     tier: "VVIP",
@@ -44,7 +51,7 @@ const TIERS = [
     ],
     ctaKey: "services.vvipCta",
     filled: true,
-    img: vipImg,       // VVIP room banner (existing photo — swap for a new one anytime)
+    img: vvipRoomImg,
   },
 ];
 
@@ -61,14 +68,14 @@ type ServiceCard = {
 };
 
 const EVENTS: ServiceCard[] = [
-  { titleKey: "services.events.culturalTitle",    descKey: "services.events.culturalDesc",    service: "CATERING",    Glyph: Icon.Utensils, img: null, flagship: true },
-  { titleKey: "services.events.deliveryTitle",    descKey: "services.events.deliveryDesc",    service: "OTHER",       Glyph: Icon.Send,     img: null },
-  { titleKey: "services.events.weddingsTitle",    descKey: "services.events.weddingsDesc",    service: "WEDDING",     Glyph: Icon.Star,     img: null },
-  { titleKey: "services.events.engagementsTitle", descKey: "services.events.engagementsDesc", service: "ENGAGEMENT",  Glyph: Icon.Star,     img: null },
-  { titleKey: "services.events.hallTitle",        descKey: "services.events.hallDesc",        service: "HALL_RENTAL", Glyph: Icon.MapPin,   img: null },
+  { titleKey: "services.events.culturalTitle",    descKey: "services.events.culturalDesc",    service: "CATERING",    Glyph: Icon.Utensils, img: culturalImg, flagship: true },
+  { titleKey: "services.events.deliveryTitle",    descKey: "services.events.deliveryDesc",    service: "OTHER",       Glyph: Icon.Send,     img: deliveryImg },
+  { titleKey: "services.events.weddingsTitle",    descKey: "services.events.weddingsDesc",    service: "WEDDING",     Glyph: Icon.Star,     img: weddingImg },
+  { titleKey: "services.events.engagementsTitle", descKey: "services.events.engagementsDesc", service: "ENGAGEMENT",  Glyph: Icon.Star,     img: engagementImg },
+  { titleKey: "services.events.hallTitle",        descKey: "services.events.hallDesc",        service: "HALL_RENTAL", Glyph: Icon.MapPin,   img: hallImg },
   { titleKey: "services.events.cateringTitle",    descKey: "services.events.cateringDesc",    service: "CATERING",    Glyph: Icon.Utensils, img: null },
   { titleKey: "services.events.corporateTitle",   descKey: "services.events.corporateDesc",   service: "CORPORATE",   Glyph: Icon.Users,    img: null },
-  { titleKey: "services.events.birthdaysTitle",   descKey: "services.events.birthdaysDesc",   service: "BIRTHDAY",    Glyph: Icon.Calendar, img: null },
+  { titleKey: "services.events.birthdaysTitle",   descKey: "services.events.birthdaysDesc",   service: "BIRTHDAY",    Glyph: Icon.Calendar, img: birthdayImg },
 ];
 
 /**
