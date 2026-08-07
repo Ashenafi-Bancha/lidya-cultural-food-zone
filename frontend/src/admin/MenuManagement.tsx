@@ -15,6 +15,7 @@ export function MenuManagement() {
   const [uploading, setUploading] = useState(false);
   const [query, setQuery] = useState('');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+  const [activeCat, setActiveCat] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: '', nameAm: '', description: '', descriptionAm: '', price: '', tag: '', categoryId: '', isAvailable: true, imageUrl: ''
   });
@@ -148,14 +149,16 @@ export function MenuManagement() {
   // ── Search + grouping ────────────────────────────────────────────────────
   const filtered = useMemo(() => {
     const q = norm(query);
-    if (!q) return items ?? [];
-    return (items ?? []).filter((i: any) =>
+    let list = items ?? [];
+    if (activeCat) list = list.filter((i: any) => i.categoryId === activeCat);
+    if (!q) return list;
+    return list.filter((i: any) =>
       norm(i.name).includes(q) ||
       norm(i.nameAm).includes(q) ||
       norm(i.tag).includes(q) ||
       norm(i.category?.name).includes(q)
     );
-  }, [items, query]);
+  }, [items, query, activeCat]);
 
   /** Categories flattened in menu order, each with its matching dishes. */
   const groups = useMemo(() => {
@@ -180,6 +183,20 @@ export function MenuManagement() {
     if (leftovers.length) out.push({ id: 'other', label: 'Other', dishes: leftovers });
     return out;
   }, [filtered, categories]);
+
+  /** Category chips (from all items, unfiltered) — tap to show one category. */
+  const catChips = useMemo(() => {
+    const tree = [...(categories ?? [])].sort((a: any, b: any) => a.order - b.order);
+    const ordered: Array<{ id: string; label: string; labelAm?: string }> = [];
+    for (const p of tree) {
+      const kids = [...(p.children ?? [])].sort((a: any, b: any) => a.order - b.order);
+      for (const c of kids) ordered.push({ id: c.id, label: c.name, labelAm: c.nameAm });
+      ordered.push({ id: p.id, label: p.name, labelAm: p.nameAm });
+    }
+    const counts = new Map<string, number>();
+    for (const i of items ?? []) counts.set(i.categoryId, (counts.get(i.categoryId) ?? 0) + 1);
+    return ordered.filter(c => counts.get(c.id)).map(c => ({ ...c, count: counts.get(c.id)! }));
+  }, [items, categories]);
 
   const toggleGroup = (id: string) => setCollapsed(s => ({ ...s, [id]: !s[id] }));
 
@@ -406,6 +423,30 @@ export function MenuManagement() {
           placeholder="Search dishes by name, Amharic name, tag or category…"
           className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-gray-300 text-sm focus:ring-2 focus:ring-[#c25e2a]/50 focus:border-[#c25e2a] outline-none bg-white"
         />
+      </div>
+
+      {/* Category quick-filter chips — scrollable strip on phones, wrapping on
+          desktop, so long menus are one tap away from any section. */}
+      <div className="flex gap-2 overflow-x-auto pb-1 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:overflow-visible [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <button
+          type="button"
+          onClick={() => setActiveCat(null)}
+          className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium border transition-colors ${activeCat === null ? 'bg-[#c25e2a] border-[#c25e2a] text-white shadow-sm' : 'bg-white border-gray-300 text-gray-700 hover:border-[#c25e2a]/60'}`}
+        >
+          All <span className="opacity-70">({(items ?? []).length})</span>
+        </button>
+        {catChips.map(c => (
+          <button
+            key={c.id}
+            type="button"
+            onClick={() => setActiveCat(activeCat === c.id ? null : c.id)}
+            className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium border transition-colors ${activeCat === c.id ? 'bg-[#c25e2a] border-[#c25e2a] text-white shadow-sm' : 'bg-white border-gray-300 text-gray-700 hover:border-[#c25e2a]/60'}`}
+          >
+            {c.label}
+            {c.labelAm && <span className={`ml-1.5 ${activeCat === c.id ? 'text-white/80' : 'text-[#b7852e]'}`} dir="auto">{c.labelAm}</span>}
+            <span className="ml-1.5 opacity-70">({c.count})</span>
+          </button>
+        ))}
       </div>
 
       {/* Desktop grouped table (md and up) */}
