@@ -67,26 +67,30 @@ export function MenuSection({
 
   let filtered = items;
   if (preview) {
-    // Homepage sampler: 15 dishes (3 rows of 5 on desktop) drawn round-robin
-    // across every category except Extra, so the preview shows the menu's
-    // breadth rather than one section. Photographed dishes surface first.
-    const pool = items.filter((i: any) => catNameOf(i) !== "Extra");
-    const buckets = new Map<string, any[]>();
-    for (const i of pool) {
-      const k = i.categoryId || catNameOf(i) || "?";
-      buckets.set(k, [...(buckets.get(k) ?? []), i]);
-    }
-    const lists = [...buckets.values()].map(l =>
-      [...l].sort((a: any, b: any) => (b.imageUrl ? 1 : 0) - (a.imageUrl ? 1 : 0))
-    );
-    const mixed: any[] = [];
-    for (let r = 0; mixed.length < 15; r++) {
-      let took = false;
-      for (const l of lists) {
-        if (l[r]) { mixed.push(l[r]); took = true; if (mixed.length >= 15) break; }
-      }
-      if (!took) break;
-    }
+    // Homepage sampler, one themed row each (5 dishes per row on desktop):
+    //   row 1 — non-fasting, Lidya specials and kitfo leading;
+    //   row 2 — fasting dishes;
+    //   row 3 — drinks only.
+    // Extra never appears. Photographed dishes surface first within each row.
+    const NF = new Set(["Breakfast Non-Fasting", "Lunch & Dinner Non-Fasting"]);
+    const FA = new Set(["Breakfast Fasting", "Lunch & Dinner Fasting"]);
+    const photo = (a: any, b: any) => (b.imageUrl ? 1 : 0) - (a.imageUrl ? 1 : 0);
+    const isSpecial = (i: any) =>
+      /lidya|special/i.test(i.name || "") || /ሊዲያ|ስፔሻል/.test(i.nameAm || "");
+
+    const nf = items
+      .filter((i: any) => NF.has(catNameOf(i)))
+      .sort((a: any, b: any) => (isSpecial(b) ? 1 : 0) - (isSpecial(a) ? 1 : 0) || photo(a, b));
+    const fa = items.filter((i: any) => FA.has(catNameOf(i))).sort(photo);
+    const dr = items
+      .filter((i: any) => { const c = catNameOf(i); return c !== "Extra" && !NF.has(c) && !FA.has(c); })
+      .sort(photo);
+
+    const rows = [nf.slice(0, 5), fa.slice(0, 5), dr.slice(0, 5)];
+    // If any row is short, keep 15 by borrowing from the food pools.
+    const spare = [...nf.slice(5), ...fa.slice(5), ...dr.slice(5)];
+    const mixed = rows.flat();
+    while (mixed.length < 15 && spare.length) mixed.push(spare.shift());
     filtered = mixed;
   } else if (activeTop !== "All") {
     if (activeSub) {
@@ -116,7 +120,7 @@ export function MenuSection({
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }}
                   transition={{ duration: 0.4, delay: i * 0.05 }}
-                  className={`group h-full flex-col items-center text-center ${preview && i >= 8 ? "hidden lg:flex" : "flex"}`}
+                  className={`group h-full flex-col items-center text-center ${preview && i >= 14 ? "hidden lg:flex" : "flex"}`}
                   whileHover={{ y: -8 }}
                 >
                   {/* Circular dish photo — echoes the plate, framed in gold.
