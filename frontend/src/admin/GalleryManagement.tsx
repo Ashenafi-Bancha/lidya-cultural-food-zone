@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { galleryService } from '../services/gallery.service';
 import { api } from '../lib/api';
 import { toast } from 'sonner';
+import { useConfirm, scrollToForm } from './ui';
 import { Pencil, Trash2, Image as ImageIcon } from 'lucide-react';
 
 export function GalleryManagement() {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
+  const { confirm, dialog } = useConfirm();
+  const formRef = useRef<HTMLFormElement>(null);
   const [uploading, setUploading] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({
@@ -70,6 +73,7 @@ export function GalleryManagement() {
     });
     setEditingId(item.id);
     setShowForm(true);
+    scrollToForm(formRef);
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,8 +131,9 @@ export function GalleryManagement() {
         </button>
       </div>
 
+      {dialog}
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form ref={formRef} onSubmit={handleSubmit} className="scroll-mt-20 bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="md:col-span-2 p-4 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 flex flex-col sm:flex-row items-center gap-6">
             <div className="flex-shrink-0 w-48 h-32 bg-gray-200 rounded-lg overflow-hidden border border-gray-300 flex items-center justify-center">
               {form.imageUrl ? (
@@ -244,7 +249,7 @@ export function GalleryManagement() {
                     Edit
                   </button>
                   <button
-                    onClick={() => { if (confirm('Are you sure you want to delete this image?')) deleteMutation.mutate(item.id); }}
+                    onClick={async () => { if (await confirm({ title: 'Delete this photo?', message: 'This permanently removes the photo from the public gallery. This cannot be undone.', confirmLabel: 'Delete Permanently', cancelLabel: 'Keep Photo', variant: 'danger' })) deleteMutation.mutate(item.id); }}
                     className="flex-1 flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
                   >
                     <Trash2 className="w-3.5 h-3.5" />

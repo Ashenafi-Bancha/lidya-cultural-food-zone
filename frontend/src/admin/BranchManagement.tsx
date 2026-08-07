@@ -1,12 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { branchService } from '../services/branch.service';
 import { toast } from 'sonner';
+import { useConfirm, scrollToForm } from './ui';
 import { Pencil, Trash2 } from 'lucide-react';
 
 export function BranchManagement() {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
+  const { confirm, dialog } = useConfirm();
+  const formRef = useRef<HTMLFormElement>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: '', nameAm: '', label: '', labelAm: '', address: '', phone: '', email: '', workingHours: '', workingHoursAm: '', note: '', noteAm: '', capacity: '50',
@@ -72,6 +75,7 @@ export function BranchManagement() {
     });
     setEditingId(branch.id);
     setShowForm(true);
+    scrollToForm(formRef);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -96,8 +100,9 @@ export function BranchManagement() {
         </button>
       </div>
 
+      {dialog}
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-sm border border-[#2a1a0e]/10 p-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form ref={formRef} onSubmit={handleSubmit} className="scroll-mt-20 bg-white rounded-lg shadow-sm border border-[#2a1a0e]/10 p-6 mb-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           <input className="border rounded px-3 py-2 text-sm" placeholder="Branch Name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} required />
           <input dir="auto" className="border rounded px-3 py-2 text-sm" placeholder="የቅርንጫፍ ስም (አማርኛ)" value={form.nameAm} onChange={e => setForm({ ...form, nameAm: e.target.value })} />
           <input className="border rounded px-3 py-2 text-sm" placeholder="Label (e.g., Flagship)" value={form.label} onChange={e => setForm({ ...form, label: e.target.value })} />
@@ -142,7 +147,7 @@ export function BranchManagement() {
                     Edit
                   </button>
                   <button 
-                    onClick={() => { if (confirm('Delete this branch?')) deleteMutation.mutate(branch.id); }} 
+                    onClick={async () => { if (await confirm({ title: `Delete the ${branch.name} branch?`, message: 'This permanently removes the branch from the website, including the reservation form and branches section. This cannot be undone.', confirmLabel: 'Delete Permanently', cancelLabel: 'Keep Branch', variant: 'danger' })) deleteMutation.mutate(branch.id); }} 
                     className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors"
                   >
                     <Trash2 className="w-3.5 h-3.5" />

@@ -67,7 +67,7 @@ createRoot(document.getElementById("root")!).render(
           </Routes>
         </Suspense>
       </BrowserRouter>
-      <Toaster position="top-right" richColors />
+      <Toaster position="top-right" richColors toastOptions={{ style: { borderRadius: "12px", border: "1px solid rgba(212,168,67,0.5)", fontFamily: "var(--font-lidya-sans)", boxShadow: "0 8px 30px rgba(30,16,8,0.18)" } }} />
     </AuthProvider>
     </LanguageProvider>
   </QueryClientProvider>

@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { testimonialService } from '../services/testimonial.service';
 import { api } from '../lib/api';
 import { toast } from 'sonner';
+import { useConfirm, scrollToForm } from './ui';
 import { Pencil, Trash2, Star, User as UserIcon } from 'lucide-react';
 
 const EMPTY = {
@@ -12,6 +13,8 @@ const EMPTY = {
 export function TestimonialManagement() {
   const queryClient = useQueryClient();
   const [showForm, setShowForm] = useState(false);
+  const { confirm, dialog } = useConfirm();
+  const formRef = useRef<HTMLFormElement>(null);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [form, setForm] = useState({ ...EMPTY });
@@ -64,6 +67,7 @@ export function TestimonialManagement() {
     });
     setEditingId(item.id);
     setShowForm(true);
+    scrollToForm(formRef);
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,8 +112,9 @@ export function TestimonialManagement() {
         </button>
       </div>
 
+      {dialog}
       {showForm && (
-        <form onSubmit={handleSubmit} className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
+        <form ref={formRef} onSubmit={handleSubmit} className="scroll-mt-20 bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Photo */}
             <div className="md:col-span-2 p-4 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50 flex flex-col sm:flex-row items-center gap-6">
@@ -217,7 +222,7 @@ export function TestimonialManagement() {
                 <button onClick={() => handleEdit(item)} className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
                   <Pencil className="w-4 h-4" /> Edit
                 </button>
-                <button onClick={() => { if (confirm(`Delete testimonial from ${item.name}?`)) deleteMutation.mutate(item.id); }} className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                <button onClick={async () => { if (await confirm({ title: `Delete ${item.name}'s testimonial?`, message: 'This permanently removes the testimonial from the website. This cannot be undone.', confirmLabel: 'Delete Permanently', cancelLabel: 'Keep It', variant: 'danger' })) deleteMutation.mutate(item.id); }} className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
                   <Trash2 className="w-4 h-4" /> Delete
                 </button>
               </div>
