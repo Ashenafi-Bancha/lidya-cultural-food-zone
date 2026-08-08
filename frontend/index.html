@@ -8,20 +8,94 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta name="theme-color" content="#1e1008" />
       <title>Lidya Cultural Food Zone — Authentic Ethiopian Cultural Cuisine</title>
-      <meta name="description" content="Lidya Cultural Food Zone celebrates the cultural cuisines of Ethiopia with traditional coffee ceremonies. Reserve a table at our Wolaita Sodo and Addis Ababa branches." />
+      <meta name="description" content="Lidya Cultural Food Zone (ሊዲያ የባህል ምግብ ዞን) celebrates the cultural cuisines of Ethiopia with traditional coffee ceremonies. Reserve a table at our Wolaita Sodo and Addis Ababa branches." />
+      <link rel="canonical" href="https://lidyaculturalfood.com/" />
 
       <!-- Open Graph / Facebook -->
       <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://lidyaculturalfood.com/" />
       <meta property="og:title" content="Lidya Cultural Food Zone — Authentic Ethiopian Cultural Cuisine" />
       <meta property="og:description" content="Authentic Ethiopian cultural cuisine with traditional coffee ceremonies. Reserve a table at our Wolaita Sodo and Addis Ababa branches." />
-      <meta property="og:image" content="/lidya-logo.png" />
+      <meta property="og:image" content="https://lidyaculturalfood.com/lidya-logo.png" />
       <meta property="og:site_name" content="Lidya Cultural Food Zone" />
 
       <!-- Twitter -->
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="Lidya Cultural Food Zone — Authentic Ethiopian Cultural Cuisine" />
       <meta name="twitter:description" content="Authentic Ethiopian cultural cuisine with traditional coffee ceremonies. Reserve a table today." />
-      <meta name="twitter:image" content="/lidya-logo.png" />
+      <meta name="twitter:image" content="https://lidyaculturalfood.com/lidya-logo.png" />
+
+      <!-- Structured data: restaurant chain with three branches -->
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://lidyaculturalfood.com/#org",
+            "name": "Lidya Cultural Food Zone",
+            "alternateName": "ሊዲያ የባህል ምግብ ዞን",
+            "url": "https://lidyaculturalfood.com/",
+            "logo": "https://lidyaculturalfood.com/lidya-logo.png",
+            "telephone": "+251920994499",
+            "sameAs": ["https://web.facebook.com/Lidyaculturalfoodzoneandcatering"]
+          },
+          {
+            "@type": "Restaurant",
+            "name": "Lidya Cultural Food Zone — Addis Ababa",
+            "parentOrganization": { "@id": "https://lidyaculturalfood.com/#org" },
+            "url": "https://lidyaculturalfood.com/",
+            "image": "https://lidyaculturalfood.com/lidya-logo.png",
+            "telephone": "+251920994499",
+            "servesCuisine": "Ethiopian",
+            "priceRange": "$$",
+            "hasMenu": "https://lidyaculturalfood.com/menu",
+            "acceptsReservations": "True",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Lebu, Music Sefer",
+              "addressLocality": "Addis Ababa",
+              "addressCountry": "ET"
+            }
+          },
+          {
+            "@type": "Restaurant",
+            "name": "Lidya Cultural Food Zone — Wolaita Sodo 1",
+            "parentOrganization": { "@id": "https://lidyaculturalfood.com/#org" },
+            "url": "https://lidyaculturalfood.com/",
+            "image": "https://lidyaculturalfood.com/lidya-logo.png",
+            "telephone": "+251920994499",
+            "servesCuisine": "Ethiopian",
+            "priceRange": "$$",
+            "hasMenu": "https://lidyaculturalfood.com/menu",
+            "acceptsReservations": "True",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Green Land Area",
+              "addressLocality": "Wolaita Sodo",
+              "addressCountry": "ET"
+            }
+          },
+          {
+            "@type": "Restaurant",
+            "name": "Lidya Cultural Food Zone — Wolaita Sodo 2",
+            "parentOrganization": { "@id": "https://lidyaculturalfood.com/#org" },
+            "url": "https://lidyaculturalfood.com/",
+            "image": "https://lidyaculturalfood.com/lidya-logo.png",
+            "telephone": "+251920994499",
+            "servesCuisine": "Ethiopian",
+            "priceRange": "$$",
+            "hasMenu": "https://lidyaculturalfood.com/menu",
+            "acceptsReservations": "True",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Wolaita Sodo",
+              "addressCountry": "ET"
+            }
+          }
+        ]
+      }
+      </script>
 
       <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
       

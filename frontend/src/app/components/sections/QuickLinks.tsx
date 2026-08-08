@@ -65,7 +65,7 @@ export function QuickLinks() {
                 delay={i * 0.05}
                 className={
                   isOrphanOnMobile
-                    ? "col-span-2 justify-self-center w-[calc(50%-0.375rem)] sm:col-span-1 sm:w-auto"
+                    ? "col-span-2 justify-self-center w-[calc(50%-0.375rem)] sm:col-span-1 sm:w-auto sm:justify-self-stretch"
                     : undefined
                 }
               >
