@@ -15,6 +15,9 @@ const MenuPage = lazy(() => import("./app/pages/MenuPage.tsx").then(m => ({ defa
 const ServicesPage = lazy(() => import("./app/pages/ServicesPage.tsx").then(m => ({ default: m.ServicesPage })));
 const ExperiencePage = lazy(() => import("./app/pages/ExperiencePage.tsx").then(m => ({ default: m.ExperiencePage })));
 const AboutPage = lazy(() => import("./app/pages/AboutPage.tsx").then(m => ({ default: m.AboutPage })));
+const BranchesPage = lazy(() => import("./app/pages/BranchesPage.tsx").then(m => ({ default: m.BranchesPage })));
+const ReservationPage = lazy(() => import("./app/pages/ReservationPage.tsx").then(m => ({ default: m.ReservationPage })));
+const ReviewsPage = lazy(() => import("./app/pages/ReviewsPage.tsx").then(m => ({ default: m.ReviewsPage })));
 
 // Lazy-load the admin area so public visitors don't download the admin UI and
 // charting library (recharts) as part of the initial marketing-page bundle.
@@ -50,6 +53,9 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/gallery" element={<ExperiencePage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/branches" element={<BranchesPage />} />
+              <Route path="/reservation" element={<ReservationPage />} />
+              <Route path="/reviews" element={<ReviewsPage />} />
             </Route>
             <Route path="/admin/login" element={<Login />} />
             <Route path="/admin" element={<AdminLayout />}>
