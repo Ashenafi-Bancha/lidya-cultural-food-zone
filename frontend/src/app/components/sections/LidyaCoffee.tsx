@@ -1,7 +1,7 @@
 import React from "react";
 import { Reveal } from "../Reveal";
 import { useLang } from "../../../context/LanguageContext";
-import lidyaCoffee2 from "../../../imports/ldiyacoffee2.webp";
+import coffeeHero from "../../../imports/lidya-coffee-hero.webp";
 
 const OFFERINGS = [
   { name: "Abol Buna",     price: "50 ETB" },
@@ -31,16 +31,16 @@ export function LidyaCoffee() {
 
         <Reveal>
           <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div className="order-2 lg:order-1 relative h-72 sm:h-96 md:h-[500px] w-full group">
+            <div className="order-1 relative h-72 sm:h-96 md:h-[500px] w-full group">
               <img
-                src={lidyaCoffee2}
+                src={coffeeHero}
                 alt="Lidya Coffee"
                 className="w-full h-full object-cover rounded-2xl border border-[#d4a843]/20 shadow-2xl transition-transform duration-700 group-hover:scale-[1.02]"
                 loading="lazy"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#0e0703] via-transparent to-transparent rounded-2xl opacity-80" />
             </div>
-            <div className="order-1 lg:order-2">
+            <div className="order-2">
               <h4 className="text-white text-3xl md:text-4xl font-bold mb-10 text-left" style={{ fontFamily: "var(--font-lidya-serif)" }}>
                 {t("coffee.offeringsPre")} <em className="text-[#d4a843]">{t("coffee.offeringsEm")}</em>
               </h4>
