@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec tsx src/index.ts",
-    "build": "tsc",
+    "build": "prisma generate && tsc",
     "start": "prisma migrate deploy && node dist/index.js",
     "import:gallery": "tsx src/database/import-gallery.ts",
     "postinstall": "prisma generate",
